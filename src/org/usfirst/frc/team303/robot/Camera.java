@@ -36,16 +36,25 @@ public class Camera {
 		visionThread = new Thread(() -> {
 			
 			while(!Thread.interrupted()) { //this should only be false when shutting down
-				cvSink.grabFrame(mat); //fill mat with image from camera TODO exception handling (there is an error if it returns 0)
+				
+				if(cvSink.grabFrame(mat)==0) { //fill mat with image from camera TODO exception handling (there is an error if it returns 0)
+					outputStream.notifyError(cvSink.getError()); //send an error instead of the mat
+					continue; //skip to the next iteration of the thread
+				}
+				
 				pipeline.process(mat); //process the mat (this does not change the mat, and has an internal output to pipeline)
 				
 				if(!pipeline.filterContoursOutput().isEmpty()) {
 					Rect rect = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)); //get the first MatOfPoint, calculate up-right bounding rectangle
 					
-					centerX = rect.x + (rect.width/2);
-					centerY = rect.y + (rect.height/2);
+					//rect.x is the left edge as far as I can tell
+					//rect.y is the top edge as far as I can tell
+					centerX = rect.x + (rect.width/2); //returns the center of the bounding rectangle
+					centerY = rect.y + (rect.height/2); //returns the center of the bounding rectangle
 
-					Imgproc.rectangle(mat, new Point(centerX - 20, centerY - 20), new Point(centerX + 20, centerY + 20), new Scalar(255, 255, 255), 5); //draw rectangle of the detected tape onto the image
+					//scalar(int, int, int) is in BGR color space as far as I can tell
+					//the points are the two corners of the rectangle as far as I can tell
+					Imgproc.rectangle(mat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 5); //draw rectangle of the detected object onto the image
 					
 					SmartDashboard.putString("Vision State", "Executed overlay!");
 				}
