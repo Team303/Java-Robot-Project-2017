@@ -14,23 +14,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Camera {
 	private Thread visionThread;
 	private BoilerPipeline pipeline;
-	private final int IMG_WIDTH = 640;
-	private final int IMG_HEIGHT = 480;
 	private double centerX = 0.0;
 	private double centerY = 0.0;
 	
+	Thread rawThread;
+	AxisCamera rawCamera;
+	CvSink rawCvSink;
+	CvSource rawOutputStream;
+	Mat rawMat;
+	
 	public Camera() {
-		//enableRawThread(); //outputs a raw feed to the dashboard
+		//enableRawCam(); //outputs a raw feed to the dashboard
 		enableVisionThread(); //outputs a processed feed to the dashboard (overlays the found boiler tape)
 	}
 	
 	public void enableVisionThread() {
 		pipeline = new BoilerPipeline();
-		AxisCamera camera = CameraServer.getInstance().addAxisCamera("axis-camera.local");
-		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.31");
+		camera.setResolution(160, 120);
 		
 		CvSink cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
-		CvSource outputStream = CameraServer.getInstance().putVideo("Processed Stream", IMG_WIDTH, IMG_HEIGHT); //send steam to CameraServer
+		CvSource outputStream = CameraServer.getInstance().putVideo("Processed Stream", 160, 120); //send steam to CameraServer
 		Mat mat = new Mat(); //define mat in order to reuse it
 		
 		visionThread = new Thread(() -> {
@@ -45,7 +49,7 @@ public class Camera {
 				pipeline.process(mat); //process the mat (this does not change the mat, and has an internal output to pipeline)
 				
 				if(!pipeline.filterContoursOutput().isEmpty()) {
-					Rect rect = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)); //get the first MatOfPoint, calculate up-right bounding rectangle
+					Rect rect = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)); //get the first MatOfPoint (contour), calculate bounding rectangle
 					
 					//rect.x is the left edge as far as I can tell
 					//rect.y is the top edge as far as I can tell
@@ -63,6 +67,7 @@ public class Camera {
 				}
 				
 				outputStream.putFrame(mat); //give stream (and CameraServer) a new frame
+			
 			}
 			
 		});	
@@ -78,10 +83,32 @@ public class Camera {
 		return centerX;
 	}
 
-	public void enableRawThread() {
-		AxisCamera camera = CameraServer.getInstance().addAxisCamera("axis-camera.local");
-		camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-		CameraServer.getInstance().startAutomaticCapture(camera);
+	public void enableRawCam() {
+		rawThread = new Thread(() -> {
+			rawCamera = CameraServer.getInstance().addAxisCamera("10.3.3.31");
+			rawCamera.setResolution(160, 120);
+			rawCvSink = CameraServer.getInstance().getVideo();
+			rawOutputStream = CameraServer.getInstance().putVideo("Rectangle", 160, 120);
+			rawMat = new Mat();
+			
+			while(!Thread.interrupted()) {
+				String sdOutput = runRawCam();
+				SmartDashboard.putString("vision thread output", sdOutput);
+			}
+			
+		});
+		rawThread.setDaemon(true);
+		rawThread.start();
 	}
 	
+	public String runRawCam() {
+		if(rawCvSink.grabFrame(rawMat)==0) {
+			rawOutputStream.notifyError(rawCvSink.getError());
+			return "errored";
+		} else {
+			rawOutputStream.putFrame(rawMat);
+			return "did not error";
+		}
+		
+	}	
 }
