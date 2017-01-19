@@ -14,8 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Camera {
 	private Thread visionThread;
 	private BoilerPipeline pipeline;
-	private double centerX = 0.0;
-	private double centerY = 0.0;
+	private double centerXOne = 0.0;
+	private double centerYOne = 0.0;
+	private double centerXTwo = 0.0;
+	private double centerYTwo = 0.0;
+	private double centerXAvg = 0.0;
+	private double centerYAvg = 0.0;
 	
 	Thread rawThread;
 	AxisCamera rawCamera;
@@ -31,10 +35,10 @@ public class Camera {
 	public void enableVisionThread() {
 		pipeline = new BoilerPipeline();
 		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.31");
-		camera.setResolution(160, 120);
+		camera.setResolution(640, 480);
 		
 		CvSink cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
-		CvSource outputStream = CameraServer.getInstance().putVideo("Processed Stream", 160, 120); //send steam to CameraServer
+		CvSource outputStream = CameraServer.getInstance().putVideo("Processed Stream", 640, 480); //send steam to CameraServer
 		Mat mat = new Mat(); //define mat in order to reuse it
 		
 		visionThread = new Thread(() -> {
@@ -49,16 +53,21 @@ public class Camera {
 				pipeline.process(mat); //process the mat (this does not change the mat, and has an internal output to pipeline)
 				
 				if(!pipeline.filterContoursOutput().isEmpty()) {
-					Rect rect = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)); //get the first MatOfPoint (contour), calculate bounding rectangle
+					Rect rectOne = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)); //get the first MatOfPoint (contour), calculate bounding rectangle
+					Rect rectTwo = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1)); //get the second MatOfPoint (contour)
 					
 					//rect.x is the left edge as far as I can tell
 					//rect.y is the top edge as far as I can tell
-					centerX = rect.x + (rect.width/2); //returns the center of the bounding rectangle
-					centerY = rect.y + (rect.height/2); //returns the center of the bounding rectangle
-
+					centerXOne = rectOne.x + (rectOne.width/2); //returns the center of the bounding rectangle
+					centerYOne = rectOne.y + (rectOne.height/2); //returns the center of the bounding rectangle
+					centerXTwo = rectTwo.x + (rectTwo.width/2);
+					centerYTwo = rectTwo.y + (rectTwo.height/2);
+					centerYAvg = (centerYOne + centerYTwo)/2;
+					centerXAvg = (centerXOne + centerXTwo)/2;
 					//scalar(int, int, int) is in BGR color space as far as I can tell
 					//the points are the two corners of the rectangle as far as I can tell
-					Imgproc.rectangle(mat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 5); //draw rectangle of the detected object onto the image
+					Imgproc.rectangle(mat, new Point(rectOne.x, rectOne.y), new Point(rectTwo.x + rectTwo.width, rectTwo.y + rectTwo.height), new Scalar(0, 0, 255), 1); //draw rectangle of the detected object onto the image
+					Imgproc.rectangle(mat, new Point(centerXAvg-3,centerYAvg-3), new Point(centerXAvg+3,centerYAvg+3), new Scalar(255, 0, 0), 5);
 					
 					SmartDashboard.putString("Vision State", "Executed overlay!");
 				}
@@ -76,11 +85,11 @@ public class Camera {
 	}
 	
 	public double getCenterY() {
-		return centerY;
+		return centerYAvg;
 	}
 
 	public double getCenterX() {
-		return centerX;
+		return centerXAvg;
 	}
 
 	public void enableRawCam() {

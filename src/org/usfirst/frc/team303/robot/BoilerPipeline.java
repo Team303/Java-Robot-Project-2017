@@ -3,6 +3,7 @@ package org.usfirst.frc.team303.robot;
 import java.util.ArrayList;
 import java.util.List;
 import edu.wpi.first.wpilibj.vision.VisionPipeline;
+
 import org.opencv.core.*;
 import org.opencv.imgproc.*;
 
@@ -30,9 +31,9 @@ public class BoilerPipeline implements VisionPipeline {
 	@Override	public void process(Mat source0) {
 		// Step HSL_Threshold0:
 		Mat hslThresholdInput = source0;
-		double[] hslThresholdHue = {77.6978417266187, 92.45733788395904};
-		double[] hslThresholdSaturation = {171.98741007194243, 255.0};
-		double[] hslThresholdLuminance = {43.57014388489208, 255.0};
+		double[] hslThresholdHue = {33.99280575539569, 93.97248939911054};
+		double[] hslThresholdSaturation = {169.6942446043165, 255.0};
+		double[] hslThresholdLuminance = {103.19244604316546, 158.4090909090909};
 		hslThreshold(hslThresholdInput, hslThresholdHue, hslThresholdSaturation, hslThresholdLuminance, hslThresholdOutput);
 
 		// Step Find_Contours0:
@@ -56,7 +57,7 @@ public class BoilerPipeline implements VisionPipeline {
 		filterContours(filterContoursContours, filterContoursMinArea, filterContoursMinPerimeter, filterContoursMinWidth, filterContoursMaxWidth, filterContoursMinHeight, filterContoursMaxHeight, filterContoursSolidity, filterContoursMaxVertices, filterContoursMinVertices, filterContoursMinRatio, filterContoursMaxRatio, filterContoursOutput);
 
 	}
-	
+
 	/**
 	 * This method is a generated getter for the output of a HSL_Threshold.
 	 * @return Mat output from HSL_Threshold.
@@ -168,6 +169,9 @@ public class BoilerPipeline implements VisionPipeline {
 			output.add(contour);
 		}
 	}
-}
 
+
+
+
+}
 
