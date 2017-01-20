@@ -14,6 +14,7 @@ public class RobotMap {
 	
 	public static final int CLIMBER_MOTOR = 0;
 	public static final int INTAKE_MOTOR = 0;
+	public static final int SHOOTER_MOTOR = 10;
 	
 	public static final int GEAR_SOLENOID = 0;
 }

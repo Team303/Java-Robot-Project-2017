@@ -17,7 +17,7 @@ public class OI {
 	static boolean[] rBtn = new boolean[9];	
 	static boolean xBtnA, xBtnB, xBtnX, xBtnY, xLeftBumper, xRightBumper, xBtnStart, xBtnBack, xLeftStickBtn, xRightStickBtn;
 	
-	public void update() {
+	public static void update() {
 		
 		for(int i=1;i<8;i++) { //wpilib buttons are 1 indexed
 			lBtn[i] = left.getRawButton(i);

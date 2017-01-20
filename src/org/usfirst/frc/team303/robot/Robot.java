@@ -2,6 +2,7 @@ package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,9 +19,11 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	Camera camera;
+	Shooter shooter;
 	Timer timer = new Timer();
 	double deltaMs = 0.0;
 	double oldTime = 0.0;
+	NetworkTable preferences;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -32,6 +35,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
+		shooter = new Shooter();
 		SmartDashboard.putBoolean("init message", true);
 		timer.start();
 	}
@@ -74,6 +78,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		timer.reset();
+		
+		preferences = NetworkTable.getTable("Preferences");
+		shooter.setPIDF(preferences.getNumber("sP", 0), preferences.getNumber("sI",0), preferences.getNumber("sD",0), preferences.getNumber("sF",0));
 	}
 	
 	/**
@@ -81,6 +88,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		OI.update(); //update joystick values
+		
+		//temporary: robot values are controllable by the dashboard
+		preferences = NetworkTable.getTable("Preferences");
+		shooter.setSetpoint(preferences.getNumber("shooterS", 0));
+	
+		//SmartDashboard Outputs
+		SmartDashboard.putNumber("Shooter Speed", shooter.getSpeed());
 	}
 
 	/**
@@ -94,11 +109,7 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		SmartDashboard.putNumber("Time Elapsed", timer.get());
 		
-		deltaMs = System.nanoTime() - oldTime;
-		oldTime = System.nanoTime();
-		
 		SmartDashboard.putNumber("Time Elapsed Between Executions", deltaMs);
-		
 	}
 }
 
