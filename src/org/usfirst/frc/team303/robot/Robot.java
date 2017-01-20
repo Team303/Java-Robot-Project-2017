@@ -1,6 +1,7 @@
 package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,6 +18,9 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	Camera camera;
+	Timer timer = new Timer();
+	double deltaMs = 0.0;
+	double oldTime = 0.0;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -29,6 +33,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
 		SmartDashboard.putBoolean("init message", true);
+		timer.start();
 	}
 
 	/**
@@ -66,6 +71,11 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
+	@Override
+	public void teleopInit() {
+		timer.reset();
+	}
+	
 	/**
 	 * This function is called periodically during operator control
 	 */
@@ -82,6 +92,13 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void disabledPeriodic() {
+		SmartDashboard.putNumber("Time Elapsed", timer.get());
+		
+		deltaMs = System.nanoTime() - oldTime;
+		oldTime = System.nanoTime();
+		
+		SmartDashboard.putNumber("Time Elapsed Between Executions", deltaMs);
+		
 	}
 }
 

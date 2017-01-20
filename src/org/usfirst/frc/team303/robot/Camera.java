@@ -35,10 +35,10 @@ public class Camera {
 	public void enableVisionThread() {
 		pipeline = new BoilerPipeline();
 		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.31");
-		camera.setResolution(640, 480);
+		camera.setResolution(480, 360);
 		
 		CvSink cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
-		CvSource outputStream = CameraServer.getInstance().putVideo("Processed Stream", 640, 480); //send steam to CameraServer
+		CvSource outputStream = CameraServer.getInstance().putVideo("Processed Stream", 480, 360); //send steam to CameraServer
 		Mat mat = new Mat(); //define mat in order to reuse it
 		
 		visionThread = new Thread(() -> {
@@ -47,12 +47,14 @@ public class Camera {
 				
 				if(cvSink.grabFrame(mat)==0) { //fill mat with image from camera TODO exception handling (there is an error if it returns 0)
 					outputStream.notifyError(cvSink.getError()); //send an error instead of the mat
+					SmartDashboard.putString("Vision State", "Acquisition Error");
 					continue; //skip to the next iteration of the thread
 				}
 				
 				pipeline.process(mat); //process the mat (this does not change the mat, and has an internal output to pipeline)
 				
-				if(!pipeline.filterContoursOutput().isEmpty()) {
+				if(pipeline.filterContoursOutput().size()==2) {
+					
 					Rect rectOne = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)); //get the first MatOfPoint (contour), calculate bounding rectangle
 					Rect rectTwo = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1)); //get the second MatOfPoint (contour)
 					
@@ -66,7 +68,7 @@ public class Camera {
 					centerXAvg = (centerXOne + centerXTwo)/2;
 					//scalar(int, int, int) is in BGR color space as far as I can tell
 					//the points are the two corners of the rectangle as far as I can tell
-					Imgproc.rectangle(mat, new Point(rectOne.x, rectOne.y), new Point(rectTwo.x + rectTwo.width, rectTwo.y + rectTwo.height), new Scalar(0, 0, 255), 1); //draw rectangle of the detected object onto the image
+					Imgproc.rectangle(mat, new Point(rectOne.x, rectOne.y), new Point(rectTwo.x + rectTwo.width, rectTwo.y + rectTwo.height), new Scalar(0, 0, 255), 2); //draw rectangle of the detected object onto the image
 					Imgproc.rectangle(mat, new Point(centerXAvg-3,centerYAvg-3), new Point(centerXAvg+3,centerYAvg+3), new Scalar(255, 0, 0), 5);
 					
 					SmartDashboard.putString("Vision State", "Executed overlay!");
