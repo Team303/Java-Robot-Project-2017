@@ -94,32 +94,5 @@ public class Camera {
 		return centerXAvg;
 	}
 
-	public void enableRawCam() {
-		rawThread = new Thread(() -> {
-			rawCamera = CameraServer.getInstance().addAxisCamera("10.3.3.31");
-			rawCamera.setResolution(160, 120);
-			rawCvSink = CameraServer.getInstance().getVideo();
-			rawOutputStream = CameraServer.getInstance().putVideo("Rectangle", 160, 120);
-			rawMat = new Mat();
-			
-			while(!Thread.interrupted()) {
-				String sdOutput = runRawCam();
-				SmartDashboard.putString("vision thread output", sdOutput);
-			}
-			
-		});
-		rawThread.setDaemon(true);
-		rawThread.start();
-	}
-	
-	public String runRawCam() {
-		if(rawCvSink.grabFrame(rawMat)==0) {
-			rawOutputStream.notifyError(rawCvSink.getError());
-			return "errored";
-		} else {
-			rawOutputStream.putFrame(rawMat);
-			return "did not error";
-		}
-		
-	}	
 }
+

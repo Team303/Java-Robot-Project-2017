@@ -18,12 +18,15 @@ public class Robot extends IterativeRobot {
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	Camera camera;
-	Shooter shooter;
-	Timer timer = new Timer();
+	static Camera camera;
+	static Shooter shooter;
+	static VictorSixDrivebase drivebase;
+	static Timer timer = new Timer();
+	static Autonomous auto;
+	static NavX navX;
 	double deltaMs = 0.0;
 	double oldTime = 0.0;
-	NetworkTable preferences;
+	static NetworkTable preferences;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -38,6 +41,9 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		SmartDashboard.putBoolean("init message", true);
 		timer.start();
+		drivebase = new VictorSixDrivebase();
+		auto = new Autonomous();
+		navX = new NavX();
 	}
 
 	/**
@@ -54,6 +60,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autoSelected = chooser.getSelected();
+		navX.initController(1, 0, 0, 0, 2.0f);
+		navX.closeController();
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
@@ -64,16 +72,29 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (autoSelected) {
+		
+		/* 
+		 * TODO - ATTENTION
+		 * THE "OUTPUT" VALUE IS SUPPOSED TO BE FED INTO A MECANUM (CARTESIAN) ROBOT.
+		 * THIS IS IMPOSSIBLE AT THE MOMENT BECAUSE WE ARE USING VICTORS.
+		 * IT MAY OR MANY NOT WORK AS IS
+		 * 
+		 * THIS NOTE APPLIES TO ALL GYRO PID CALCULATIONS
+		 */
+			
+		double[] motorValues = auto.centerTapeWithCamera();
+		drivebase.drive(motorValues[0], motorValues[1]);
+		
+/*		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
 			break;
 		case defaultAuto:
-		default:
+			default:
 			// Put default auto code here
 			break;
 		}
-	}
+*/	}
 
 	@Override
 	public void teleopInit() {
