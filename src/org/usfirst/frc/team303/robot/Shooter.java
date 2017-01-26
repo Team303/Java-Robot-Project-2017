@@ -8,7 +8,7 @@ public class Shooter {
 	CANTalon shooter;
 	
 	public Shooter() {
-		shooter = new CANTalon(RobotMap.SHOOTER_MOTOR);
+		shooter = new CANTalon(RobotMap.SHOOTER_ID);
 		shooter.changeControlMode(TalonControlMode.Speed);
 		shooter.setPID(0.16, .0003, .04, 0, 1000000, 1, 0);
 		shooter.setSafetyEnabled(true);

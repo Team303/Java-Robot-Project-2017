@@ -20,10 +20,12 @@ public class Robot extends IterativeRobot {
 	SendableChooser<String> chooser = new SendableChooser<>();
 	static Camera camera;
 	static Shooter shooter;
-	static VictorSixDrivebase drivebase;
+	static Drivebase drivebase;
 	static Timer timer = new Timer();
 	static Autonomous auto;
 	static NavX navX;
+	static Climber climber;
+	static Intake intake;
 	double deltaMs = 0.0;
 	double oldTime = 0.0;
 	static NetworkTable preferences;
@@ -41,9 +43,11 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		SmartDashboard.putBoolean("init message", true);
 		timer.start();
-		drivebase = new VictorSixDrivebase();
+		drivebase = new Drivebase();
 		auto = new Autonomous();
 		navX = new NavX();
+		climber = new Climber();
+		intake = new Intake();
 	}
 
 	/**
@@ -119,7 +123,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		OI.update(); //update joystick values
-		
+		climber.control();
+		intake.control();
 		drivebase.drive(OI.lY, OI.rY);
 		
 		//temporary: robot values are controllable by the dashboard
