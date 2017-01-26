@@ -17,24 +17,24 @@ public class VictorSixDrivebase {
 		leftTwo = new VictorSP(1);
 		leftThree = new VictorSP(2);
 		right = new VictorSP(3);
-		leftTwo = new VictorSP(4);
-		leftThree = new VictorSP(5);
+		rightTwo = new VictorSP(4);
+		rightThree = new VictorSP(5);
 		
-		left.setSafetyEnabled(true);
-		leftTwo.setSafetyEnabled(true);
-		leftThree.setSafetyEnabled(true);
-		right.setSafetyEnabled(true);
-		rightTwo.setSafetyEnabled(true);
-		rightThree.setSafetyEnabled(true);
+		left.setSafetyEnabled(false);
+		leftTwo.setSafetyEnabled(false);
+		leftThree.setSafetyEnabled(false);
+		right.setSafetyEnabled(false);
+		rightTwo.setSafetyEnabled(false);
+		rightThree.setSafetyEnabled(false);
 	}
 	
 	public void drive(double leftPower, double rightPower) {
-		left.set(leftPower);
-		leftTwo.set(leftPower);
-		leftThree.set(leftPower);
-		right.set(rightPower);
-		rightTwo.set(rightPower);
-		rightThree.set(rightPower);
+		left.set(-leftPower);
+		leftTwo.set(-leftPower);
+		leftThree.set(-leftPower);
+		right.set(-rightPower);
+		rightTwo.set(-rightPower);
+		rightThree.set(-rightPower);
 	}
 	
 }

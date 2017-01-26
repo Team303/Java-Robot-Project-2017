@@ -60,8 +60,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autoSelected = chooser.getSelected();
-		navX.initController(1, 0, 0, 0, 2.0f);
+		preferences = NetworkTable.getTable("Preferences");
+		navX.initController(preferences.getNumber("nP", 0), preferences.getNumber("nI", 0), preferences.getNumber("nD", 0), 0, 2.0f);
 		navX.closeController();
+		SmartDashboard.putNumber("nP Value", preferences.getNumber("nP", 0));
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
@@ -82,8 +84,8 @@ public class Robot extends IterativeRobot {
 		 * THIS NOTE APPLIES TO ALL GYRO PID CALCULATIONS
 		 */
 			
-		double[] motorValues = auto.centerTapeWithCamera();
-		drivebase.drive(motorValues[0], motorValues[1]);
+//		double[] motorValues = auto.centerTapeWithCamera();
+//		drivebase.drive(motorValues[0], motorValues[1]);
 		
 /*		switch (autoSelected) {
 		case customAuto:
@@ -93,8 +95,15 @@ public class Robot extends IterativeRobot {
 			default:
 			// Put default auto code here
 			break;
-		}
-*/	}
+		} */
+		
+		preferences = NetworkTable.getTable("Preferences");
+		SmartDashboard.putNumber("Theta", navX.getYaw());
+		SmartDashboard.putNumber("NavX PID Setpoint", navX.turnController.getSetpoint());
+		double[] output = auto.rotateToAngle(preferences.getNumber("nSetpoint", 0));
+		drivebase.drive(output[0], output[1]);
+		
+	}
 
 	@Override
 	public void teleopInit() {
@@ -111,12 +120,15 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		OI.update(); //update joystick values
 		
+		drivebase.drive(OI.lY, OI.rY);
+		
 		//temporary: robot values are controllable by the dashboard
 		preferences = NetworkTable.getTable("Preferences");
 		shooter.setSetpoint(preferences.getNumber("shooterS", 0));
 	
 		//SmartDashboard Outputs
 		SmartDashboard.putNumber("Shooter Speed", shooter.getSpeed());
+		SmartDashboard.putNumber("Theta", navX.getYaw());
 	}
 
 	/**
@@ -129,7 +141,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledPeriodic() {
 		SmartDashboard.putNumber("Time Elapsed", timer.get());
-		
+		SmartDashboard.putNumber("Theta", navX.getYaw());
 		SmartDashboard.putNumber("Time Elapsed Between Executions", deltaMs);
 	}
 }

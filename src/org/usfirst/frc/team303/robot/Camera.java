@@ -77,6 +77,7 @@ public class Camera {
 					SmartDashboard.putString("Vision State", "Did not find goal");
 				}
 				
+				SmartDashboard.putNumber("Center X", centerXAvg);
 				outputStream.putFrame(mat); //give stream (and CameraServer) a new frame
 			
 			}
