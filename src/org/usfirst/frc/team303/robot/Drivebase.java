@@ -15,7 +15,7 @@ public class Drivebase {
 	CANTalon BR;
 	RobotDrive drivebase;
 	//Encoder lDriveEnc;
-	//ncoder rDriveEnc;
+	//Encoder rDriveEnc;
 	double navXYaw;
 	double lDriveEncDist;
 	double rDriveEncDist;
@@ -25,6 +25,7 @@ public class Drivebase {
 		FR = new CANTalon(RobotMap.FRONT_RIGHT);
 		BL = new CANTalon(RobotMap.REAR_LEFT);
 		BR = new CANTalon(RobotMap.REAR_RIGHT);
+		drivebaseInit();
 	}
 	
 	public void drivebaseInit() {

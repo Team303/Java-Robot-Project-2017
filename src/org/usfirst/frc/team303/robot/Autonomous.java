@@ -59,7 +59,6 @@ public class Autonomous {
 	}
 	
 	public double[] rotateToAngle(double setpoint) {
-		Robot.navX.openController();
 		Robot.navX.setSetpoint(setpoint);
 		double output = Robot.navX.getPidOutput();
 		SmartDashboard.putNumber("NavX PID Output", output);

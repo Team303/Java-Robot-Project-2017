@@ -66,7 +66,7 @@ public class Robot extends IterativeRobot {
 		autoSelected = chooser.getSelected();
 		preferences = NetworkTable.getTable("Preferences");
 		navX.initController(preferences.getNumber("nP", 0), preferences.getNumber("nI", 0), preferences.getNumber("nD", 0), 0, 2.0f);
-		navX.closeController();
+		//navX.closeController();
 		SmartDashboard.putNumber("nP Value", preferences.getNumber("nP", 0));
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
@@ -101,11 +101,20 @@ public class Robot extends IterativeRobot {
 			break;
 		} */
 		
+		if(!navX.turnController.isEnabled()) {
+			navX.turnController.enable();
+		}
+		
 		preferences = NetworkTable.getTable("Preferences");
 		SmartDashboard.putNumber("Theta", navX.getYaw());
 		SmartDashboard.putNumber("NavX PID Setpoint", navX.turnController.getSetpoint());
 		double[] output = auto.rotateToAngle(preferences.getNumber("nSetpoint", 0));
 		drivebase.drive(output[0], output[1]);
+		
+//		if(output[0]<0) {
+//			SmartDashboard.putData("");
+//		}
+		
 		
 	}
 

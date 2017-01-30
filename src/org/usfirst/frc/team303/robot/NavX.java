@@ -23,7 +23,8 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 	public void initController(double P, double I, double D, double F, double tolerance) {
 		turnController = new PIDController(P, I, D, F, navX, this);
 		turnController.setInputRange(-180.0f, 180.0f);
-		turnController.setOutputRange(-0.7, 0.7);
+		turnController.setOutputRange(-0.7, .7);
+		
 		//turnController.setAbsoluteTolerance(tolerance);
 		turnController.setContinuous();
 		openController();
@@ -54,22 +55,7 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 		}
 		else {
 			rate = output;
-		}
-		
-		int rateSign = (rate<0) ? -1 : 1;
-		rate = (Math.abs(rate) > 0.7) ? 0.7*rateSign : rate;
-		
-		
-/*		valueHistory.add(0, new Double(rate));
-		
-		if(valueHistory.size()>=10){
-			double storage = 0;
-			for(int i = 0; i<10; i++){
-				storage += valueHistory.get(i).doubleValue();
-			}
-			storage = storage/10;
-			rate = storage;
-		} */
+		}	
 		
 		rate = Double.valueOf(String.format("%.3g", rate));
 	}

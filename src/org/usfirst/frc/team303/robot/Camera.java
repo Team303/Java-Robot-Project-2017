@@ -34,7 +34,7 @@ public class Camera {
 	
 	public void enableVisionThread() {
 		pipeline = new BoilerPipeline();
-		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.31");
+		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.6");
 		camera.setResolution(480, 360);
 		
 		CvSink cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
