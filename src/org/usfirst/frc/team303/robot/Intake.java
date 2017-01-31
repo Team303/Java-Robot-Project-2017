@@ -18,10 +18,12 @@ public class Intake {
 			set(1);
 		}else if(OI.lBtn[3]){
 			set(-1);
+		}else {
+			set(0);
 		}
 	}
 	
-	public void set(double in){
-		motor.set(in);
+	public void set(double percentVoltage){
+		motor.set(percentVoltage);
 	}
 }

@@ -2,9 +2,6 @@ package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -14,10 +11,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	final String defaultAuto = "Default";
-	final String customAuto = "My Auto";
-	String autoSelected;
-	SendableChooser<String> chooser = new SendableChooser<>();
+	//final String defaultAuto = "Default";
+	//final String customAuto = "My Auto";
+	//String autoSelected;
+	//SendableChooser<String> chooser = new SendableChooser<>();
 	static Camera camera;
 	static Shooter shooter;
 	static Drivebase drivebase;
@@ -26,9 +23,6 @@ public class Robot extends IterativeRobot {
 	static NavX navX;
 	static Climber climber;
 	static Intake intake;
-	double deltaMs = 0.0;
-	double oldTime = 0.0;
-	static NetworkTable preferences;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -36,12 +30,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
-		SmartDashboard.putData("Auto choices", chooser);
+		//chooser.addDefault("Default Auto", defaultAuto);
+		//chooser.addObject("My Auto", customAuto);
+		//SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
 		shooter = new Shooter();
-		SmartDashboard.putBoolean("init message", true);
 		timer.start();
 		drivebase = new Drivebase();
 		auto = new Autonomous();
@@ -63,14 +56,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autoSelected = chooser.getSelected();
-		preferences = NetworkTable.getTable("Preferences");
-		navX.initController(preferences.getNumber("nP", 0), preferences.getNumber("nI", 0), preferences.getNumber("nD", 0), 0, 2.0f);
-		//navX.closeController();
-		SmartDashboard.putNumber("nP Value", preferences.getNumber("nP", 0));
-		// autoSelected = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
+		OI.update();
+		//autoSelected = chooser.getSelected();
+		navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
+		// autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
+		//System.out.println("Auto selected: " + autoSelected);
 	}
 
 	/**
@@ -78,18 +68,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		
-		/* 
-		 * TODO - ATTENTION
-		 * THE "OUTPUT" VALUE IS SUPPOSED TO BE FED INTO A MECANUM (CARTESIAN) ROBOT.
-		 * THIS IS IMPOSSIBLE AT THE MOMENT BECAUSE WE ARE USING VICTORS.
-		 * IT MAY OR MANY NOT WORK AS IS
-		 * 
-		 * THIS NOTE APPLIES TO ALL GYRO PID CALCULATIONS
-		 */
-			
-//		double[] motorValues = auto.centerTapeWithCamera();
-//		drivebase.drive(motorValues[0], motorValues[1]);
+		OI.update();		
 		
 /*		switch (autoSelected) {
 		case customAuto:
@@ -105,25 +84,18 @@ public class Robot extends IterativeRobot {
 			navX.turnController.enable();
 		}
 		
-		preferences = NetworkTable.getTable("Preferences");
-		SmartDashboard.putNumber("Theta", navX.getYaw());
-		SmartDashboard.putNumber("NavX PID Setpoint", navX.turnController.getSetpoint());
-		double[] output = auto.rotateToAngle(preferences.getNumber("nSetpoint", 0));
+		double[] output = auto.rotateToAngle(OI.preferences.getNumber("nSetpoint", 0));
 		drivebase.drive(output[0], output[1]);
 		
-//		if(output[0]<0) {
-//			SmartDashboard.putData("");
-//		}
-		
-		
+		OI.outputs();
 	}
 
 	@Override
 	public void teleopInit() {
+		OI.update();
 		timer.reset();
-		
-		preferences = NetworkTable.getTable("Preferences");
-		shooter.setPIDF(preferences.getNumber("sP", 0), preferences.getNumber("sI",0), preferences.getNumber("sD",0), preferences.getNumber("sF",0));
+		shooter.setPIDF(OI.preferences.getNumber("sP", 0), OI.preferences.getNumber("sI",0), OI.preferences.getNumber("sD",0), OI.preferences.getNumber("sF",0));
+		OI.outputs();
 	}
 	
 	/**
@@ -131,18 +103,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		OI.update(); //update joystick values
+		OI.update(); //update joystick values and preferences window
 		climber.control();
 		intake.control();
 		drivebase.drive(OI.lY, OI.rY);
+		shooter.setSetpoint(OI.preferences.getNumber("shooterS", 0));
+		OI.outputs();
 		
-		//temporary: robot values are controllable by the dashboard
-		preferences = NetworkTable.getTable("Preferences");
-		shooter.setSetpoint(preferences.getNumber("shooterS", 0));
-	
-		//SmartDashboard Outputs
-		SmartDashboard.putNumber("Shooter Speed", shooter.getSpeed());
-		SmartDashboard.putNumber("Theta", navX.getYaw());
 	}
 
 	/**
@@ -150,13 +117,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		OI.update();
+		OI.outputs();
 	}
 	
 	@Override
 	public void disabledPeriodic() {
-		SmartDashboard.putNumber("Time Elapsed", timer.get());
-		SmartDashboard.putNumber("Theta", navX.getYaw());
-		SmartDashboard.putNumber("Time Elapsed Between Executions", deltaMs);
+		OI.update();
+		OI.outputs();
 	}
 }
 

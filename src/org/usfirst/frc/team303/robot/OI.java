@@ -1,13 +1,17 @@
 package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class OI {
+	static NetworkTable preferences = NetworkTable.getTable("Preferences");
 	static Joystick left = new Joystick(0);
 	static Joystick right = new Joystick(1);
-	static XboxController xbox = new XboxController(3);
+	static XboxController xbox = new XboxController(2);
 	
 	static double lX = 0, lY = 0, lZ = 0;
 	static double rX = 0, rY = 0, rZ = 0;
@@ -23,7 +27,33 @@ public class OI {
 			lBtn[i] = left.getRawButton(i);
 			rBtn[i] = right.getRawButton(i);
 		}
+		
+		updateXbox();
+		preferences = NetworkTable.getTable("Preferences");
+		
+	}
 	
+	public static void outputs() {
+		
+		//TODO temp outputs start here
+			SmartDashboard.putBoolean("Intake Is Active", (OI.lBtn[2] || OI.lBtn[3]));
+		//TODO temp outputs end here
+		
+		if(RobotState.isAutonomous()) { //auto only outputs
+			
+		} else if (RobotState.isEnabled()) { //teleop only outputs
+			
+		} 
+		
+		//universal outputs
+		SmartDashboard.putNumber("NavX PID Output", Robot.navX.getPidOutput());
+		SmartDashboard.putNumber("NavX PID Setpoint", Robot.navX.turnController.getSetpoint());
+		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getSpeed());
+		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
+		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());
+	}
+	
+	public static void updateXbox() {
 		lX = left.getX();
 		lY = left.getY();
 		lZ = left.getZ();
@@ -47,6 +77,5 @@ public class OI {
 		xBtnBack = xbox.getBackButton();
 		xLeftStickBtn = xbox.getStickButton(Hand.kLeft);
 		xRightStickBtn = xbox.getStickButton(Hand.kRight);
-		
 	}
 }

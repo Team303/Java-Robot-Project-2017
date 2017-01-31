@@ -1,7 +1,5 @@
 package org.usfirst.frc.team303.robot;
 
-import java.util.ArrayList;
-
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.I2C;
@@ -14,7 +12,8 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 	int intRate = 0;
 	double rate; //this is the output
 	double setPoint = 0;
-	ArrayList<Double> valueHistory = new ArrayList<Double>();
+	double storedRate = 0;	
+	
 	
 	public NavX() {
 		navX = new AHRS(I2C.Port.kMXP);
@@ -23,9 +22,7 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 	public void initController(double P, double I, double D, double F, double tolerance) {
 		turnController = new PIDController(P, I, D, F, navX, this);
 		turnController.setInputRange(-180.0f, 180.0f);
-		turnController.setOutputRange(-0.7, .7);
-		
-		//turnController.setAbsoluteTolerance(tolerance);
+		turnController.setOutputRange(-0.8, .8);
 		turnController.setContinuous();
 		openController();
 	}
@@ -48,16 +45,14 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 	}
 
 	@Override
-	public void pidWrite(double output) {
+	public void pidWrite(double output) {		
 		
-		if((navX.getYaw()>=setPoint-2.0) && (navX.getYaw()<=setPoint+2.0)) {
+		if((navX.getYaw()>=setPoint-0.5) && (navX.getYaw()<=setPoint+0.5)) {
 			rate = 0;
 		}
 		else {
-			rate = output;
-		}	
-		
-		rate = Double.valueOf(String.format("%.3g", rate));
+			rate = Double.valueOf(String.format("%.3g", output));
+		}
 	}
 	
 	public double getPidOutput() {

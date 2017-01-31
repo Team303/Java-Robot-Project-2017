@@ -1,12 +1,6 @@
 package org.usfirst.frc.team303.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Autonomous {
-	
-	public Autonomous() {
-		
-	}
 	
 	public double[] centerTapeWithBangBang() {
 		int range = 20; //acceptable range where robot will not turn
@@ -31,13 +25,8 @@ public class Autonomous {
 		return new double[] {0, 0};
 	}
 
-	public double[] centerTapeWithGyroPID() {
-		int range = 20;
-		int leftBound = 240-(range/2);
-		int rightBound = 240-(range/2);
-		double minOutput = 0.5;
+	public double[] centerTapeWithGyro() {
 		double centerX = Robot.camera.getCenterX();
-		double error = centerX - 240;
 		final double degreesPerPixel = 0.0643809523809524;
 		double output = 0;
 		
@@ -45,24 +34,16 @@ public class Autonomous {
 			return new double[] {0, 0};
 		}
 		
-		if(!((centerX>leftBound)&&(centerX<rightBound))) { //true if root is not pointed at tape
-			Robot.navX.openController();
-			Robot.navX.setSetpoint(error*degreesPerPixel);
-			output = Robot.navX.getPidOutput();
-			output = (output>minOutput) ? output : minOutput; //check that output is greater than minError
-			return new double[] {output, output};
-		}
-		else {
-			Robot.navX.closeController();
-			return new double[] {0, 0};
-		}
+		Robot.navX.setSetpoint(centerX*degreesPerPixel);
+		output = Robot.navX.getPidOutput();
+		return new double[] {-1*output, output};
+		
 	}
 	
 	public double[] rotateToAngle(double setpoint) {
 		Robot.navX.setSetpoint(setpoint);
 		double output = Robot.navX.getPidOutput();
-		SmartDashboard.putNumber("NavX PID Output", output);
-		return new double[] {output-(output*2), output};
+		return new double[] {-1*output, output};
 	}
 	
 }
