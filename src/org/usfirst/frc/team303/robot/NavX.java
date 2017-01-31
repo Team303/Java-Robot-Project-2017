@@ -5,6 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.SPI;
 
 public class NavX implements PIDOutput { //this class controls the PID for the navX as well as the AHRS class itself
 	AHRS navX;
@@ -14,9 +15,8 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 	double setPoint = 0;
 	double storedRate = 0;	
 	
-	
 	public NavX() {
-		navX = new AHRS(I2C.Port.kMXP);
+		navX = new AHRS(SPI.Port.kMXP);
 	}
 	
 	public void initController(double P, double I, double D, double F, double tolerance) {
@@ -56,7 +56,7 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 	}
 	
 	public double getPidOutput() {
-		return rate;
+		return rate; 
 	}
 	
 }

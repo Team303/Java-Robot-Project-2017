@@ -36,18 +36,16 @@ public class OI {
 	public static void outputs() {
 		
 		//TODO temp outputs start here
-			SmartDashboard.putBoolean("Intake Is Active", (OI.lBtn[2] || OI.lBtn[3]));
 		//TODO temp outputs end here
 		
-		if(RobotState.isAutonomous()) { //auto only outputs
-			
-		} else if (RobotState.isEnabled()) { //teleop only outputs
+		if(RobotState.isOperatorControl() && RobotState.isAutonomous()) { //auto only outputs
+			SmartDashboard.putNumber("NavX PID Setpoint", Robot.navX.turnController.getSetpoint());
+		} else if (RobotState.isOperatorControl() && RobotState.isEnabled()) { //teleop only outputs
 			
 		} 
 		
 		//universal outputs
 		SmartDashboard.putNumber("NavX PID Output", Robot.navX.getPidOutput());
-		SmartDashboard.putNumber("NavX PID Setpoint", Robot.navX.turnController.getSetpoint());
 		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getSpeed());
 		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());

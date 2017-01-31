@@ -18,13 +18,13 @@ public class RobotMap {
 	public static final boolean REAR_RIGHT_INV = false;
 	
 	
-	public static final int CLIMBER_ID = 10;
+	public static final int CLIMBER_ID = 0; //TODO
 	public static final boolean CLIMBER_INV = false;
 	
-	public static final int INTAKE_ID = 6;
+	public static final int INTAKE_ID = 10;
 	public static final boolean INTAKE_INV = false;
 	
-	public static final int SHOOTER_ID = 10;
+	public static final int SHOOTER_ID = 6;
 	
 	public static final int GEAR_ID = 0;
 }

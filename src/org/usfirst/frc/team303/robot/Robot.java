@@ -43,6 +43,13 @@ public class Robot extends IterativeRobot {
 		intake = new Intake();
 	}
 
+	@Override
+	public void robotPeriodic() {
+		OI.update();
+		OI.outputs();
+	}
+	
+	
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
 	 * between different autonomous modes using the dashboard. The sendable
@@ -56,7 +63,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		OI.update();
 		//autoSelected = chooser.getSelected();
 		navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
 		// autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
@@ -67,8 +73,7 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during autonomous
 	 */
 	@Override
-	public void autonomousPeriodic() {
-		OI.update();		
+	public void autonomousPeriodic() {		
 		
 /*		switch (autoSelected) {
 		case customAuto:
@@ -86,16 +91,12 @@ public class Robot extends IterativeRobot {
 		
 		double[] output = auto.rotateToAngle(OI.preferences.getNumber("nSetpoint", 0));
 		drivebase.drive(output[0], output[1]);
-		
-		OI.outputs();
 	}
 
 	@Override
 	public void teleopInit() {
-		OI.update();
 		timer.reset();
 		shooter.setPIDF(OI.preferences.getNumber("sP", 0), OI.preferences.getNumber("sI",0), OI.preferences.getNumber("sD",0), OI.preferences.getNumber("sF",0));
-		OI.outputs();
 	}
 	
 	/**
@@ -103,13 +104,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		OI.update(); //update joystick values and preferences window
 		climber.control();
 		intake.control();
 		drivebase.drive(OI.lY, OI.rY);
 		shooter.setSetpoint(OI.preferences.getNumber("shooterS", 0));
-		OI.outputs();
-		
 	}
 
 	/**
@@ -117,14 +115,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		OI.update();
-		OI.outputs();
 	}
 	
 	@Override
 	public void disabledPeriodic() {
-		OI.update();
-		OI.outputs();
 	}
 }
 

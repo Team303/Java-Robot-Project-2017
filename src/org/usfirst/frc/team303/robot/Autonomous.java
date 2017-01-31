@@ -2,6 +2,8 @@ package org.usfirst.frc.team303.robot;
 
 public class Autonomous {
 	
+	double degreeSetpoint = 0;
+	
 	public double[] centerTapeWithBangBang() {
 		int range = 20; //acceptable range where robot will not turn
 		int leftBound = 240-(range/2);
@@ -25,11 +27,16 @@ public class Autonomous {
 		return new double[] {0, 0};
 	}
 
+	
+	public void updateDegreeSetpoint() {
+		
+	}
+	
 	public double[] centerTapeWithGyro() {
 		double centerX = Robot.camera.getCenterX();
 		final double degreesPerPixel = 0.0643809523809524;
 		double output = 0;
-		
+																	//delicious memes
 		if(centerX==0) {
 			return new double[] {0, 0};
 		}
@@ -45,5 +52,4 @@ public class Autonomous {
 		double output = Robot.navX.getPidOutput();
 		return new double[] {-1*output, output};
 	}
-	
-}
+ } 

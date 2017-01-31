@@ -5,12 +5,12 @@ import com.ctre.CANTalon.TalonControlMode;
 
 public class Intake {
 	
-	CANTalon motor = new CANTalon(RobotMap.INTAKE_ID);
+	CANTalon intake = new CANTalon(RobotMap.INTAKE_ID);
 	
 	public Intake(){
-		motor.changeControlMode(TalonControlMode.PercentVbus);
-		motor.setSafetyEnabled(true);
-		motor.setInverted(RobotMap.INTAKE_INV);
+		intake.changeControlMode(TalonControlMode.PercentVbus);
+		intake.setSafetyEnabled(true);
+		intake.setInverted(RobotMap.INTAKE_INV);
 	}
 	
 	public void control(){
@@ -24,6 +24,6 @@ public class Intake {
 	}
 	
 	public void set(double percentVoltage){
-		motor.set(percentVoltage);
+		intake.set(percentVoltage);
 	}
 }
