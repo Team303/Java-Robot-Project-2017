@@ -113,9 +113,15 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		climber.control();
 		intake.control();
+		camera.control();
 		drivebase.drive(OI.lY, OI.rY);
 		shooter.setSetpoint(OI.preferences.getNumber("shooterS", 0));
+		
+		
+		
 	}
+	
+	
 
 	/**
 	 * This function is called periodically during test mode

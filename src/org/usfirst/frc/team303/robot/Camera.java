@@ -90,8 +90,12 @@ public class Camera {
 	}
 	
 	public void control() {
-		if(OI.xLeftBumper) {
+		if(OI.xBtnA){
 			enableProcessing();
+			
+		}
+		else if(OI.xBtnB){
+			disableProcessing();
 		}
 	}
 	

@@ -3,7 +3,7 @@ package org.usfirst.frc.team303.robot;
 public class Autonomous {
 	
 	double degreeSetpoint = 0;
-	double pixelPerDegreeConstant = 0.3; //experimental constant is 0.064, theoretical constant is 0.09792
+	double pixelPerDegreeConstant = 0.09792; //experimental constant is 0.064, theoretical constant is 0.09792
 	
 	public void updateDegreeSetpoint() {
 		if(Robot.camera.getCenterX()<= 240){
