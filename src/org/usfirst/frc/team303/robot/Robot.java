@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
 	static NavX navX;
 	static Climber climber;
 	static Intake intake;
+	static boolean autoRunOnce = false;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -64,7 +65,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		//autoSelected = chooser.getSelected();
-		navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
+		
 		// autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
 		//System.out.println("Auto selected: " + autoSelected);
 	}
@@ -75,6 +76,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {		
 		
+		if(!autoRunOnce){
+			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
+			auto.updateDegreeSetpoint();
+		}
 /*		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
@@ -89,8 +94,10 @@ public class Robot extends IterativeRobot {
 			navX.turnController.enable();
 		}
 		
-		double[] output = auto.rotateToAngle(OI.preferences.getNumber("nSetpoint", 0));
+		double[] output = auto.centerTapeWithGyro();
 		drivebase.drive(output[0], output[1]);
+		
+		autoRunOnce = true;
 	}
 
 	@Override
@@ -119,6 +126,7 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void disabledPeriodic() {
+		autoRunOnce = false;
 	}
 }
 
