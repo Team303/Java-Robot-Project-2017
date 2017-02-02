@@ -75,6 +75,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {		
+		boolean approachTape = false;
 		
 		if(!autoRunOnce){
 			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
@@ -94,8 +95,16 @@ public class Robot extends IterativeRobot {
 			navX.turnController.enable();
 		}
 		
-		double[] output = auto.centerTapeWithGyro();
-		drivebase.drive(output[0], output[1]);
+		if(approachTape) { //approach the vision target at angle
+			if(camera.getArea()<9000) {
+				auto.updateDegreeSetpoint();
+				double[] output = auto.driveStraightAngle(-0.5, auto.getDegreeOffset(), -0.01);
+				drivebase.drive(output[0], output[1]);
+			}
+		} else { //turn to the vision target
+			double[] output = auto.centerTapeWithGyro();
+			drivebase.drive(output[0], output[1]);	
+		}
 		
 		autoRunOnce = true;
 	}

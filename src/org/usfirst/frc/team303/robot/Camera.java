@@ -23,6 +23,7 @@ public class Camera {
 	private double centerYTwo = 0.0;
 	private double centerXAvg = 0.0;
 	private double centerYAvg = 0.0;
+	private double rectangleArea=0.0;
 	
 	public Camera() {
 		enableVisionThread(); //outputs a processed feed to the dashboard (overlays the found boiler tape)
@@ -66,6 +67,9 @@ public class Camera {
 						centerYTwo = rectTwo.y + (rectTwo.height/2);
 						centerYAvg = (centerYOne + centerYTwo)/2;
 						centerXAvg = (centerXOne + centerXTwo)/2;
+						double width=rectTwo.x-(rectOne.x+rectOne.width);
+						double height=rectOne.y-(rectTwo.y+rectTwo.height);
+						rectangleArea=width*height;
 						//scalar(int, int, int) is in BGR color space
 						//the points are the two corners of the rectangle as far as I can tell
 						Imgproc.rectangle(mat, new Point(rectOne.x, rectOne.y), new Point(rectTwo.x + rectTwo.width, rectTwo.y + rectTwo.height), new Scalar(0, 0, 255), 2); //draw rectangle of the detected object onto the image
@@ -87,6 +91,9 @@ public class Camera {
 		});	
 		visionThread.setDaemon(true);
 		visionThread.start();
+	}
+	public double getArea(){
+		return rectangleArea;
 	}
 	
 	public void control() {
