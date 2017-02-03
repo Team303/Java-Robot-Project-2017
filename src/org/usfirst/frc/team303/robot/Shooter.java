@@ -10,9 +10,13 @@ public class Shooter {
 	public Shooter() {
 		shooter = new CANTalon(RobotMap.SHOOTER_ID);
 		shooter.changeControlMode(TalonControlMode.Speed);
-		shooter.setPID(0.16, .0003, .04, 0, 1000000, 1, 0);
+		shooter.setPID(0.11, .00005, .04, 0.024, 1000000, 1, 0);
 		shooter.setSafetyEnabled(true);
 		shooter.enable();
+	}
+	
+	public void control() {
+		
 	}
 	
 	public void setSetpoint(double setpoint) {

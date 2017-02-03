@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {		
-		boolean approachTape = false;
+		boolean approachTape = true;
 		
 		if(!autoRunOnce){
 			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);

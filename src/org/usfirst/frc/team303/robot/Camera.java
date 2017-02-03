@@ -53,12 +53,58 @@ public class Camera {
 				if(runProcessing) {		
 					
 					pipeline.process(mat); //process the mat (this does not change the mat, and has an internal output to pipeline)
-				
-					if(pipeline.filterContoursOutput().size()>=2) {
+					int contoursFound = pipeline.filterContoursOutput().size();
 					
+					if(contoursFound>=2) {
+						
 						Rect rectOne = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0)); //get the first MatOfPoint (contour), calculate bounding rectangle
 						Rect rectTwo = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1)); //get the second MatOfPoint (contour)
-					
+						Rect rectThree = null;
+						
+						if(contoursFound>2) {
+							
+							SmartDashboard.putString("More Vision State", "Saw Three Contours");
+							
+							rectThree = Imgproc.boundingRect(pipeline.filterContoursOutput().get(2));
+							Rect[] rectangleAray={rectOne,rectTwo,rectThree};
+							Rect[] orderedRectangles= new Rect[3];
+							Rect least=rectOne;
+							Rect greatest=rectOne;
+							
+							for(Rect r:rectangleAray){
+								if(r.area()<least.area()){
+									least=r;
+								}
+								if(r.area()>greatest.area()){
+									greatest=r;
+								}
+							}
+							
+							orderedRectangles[0]=greatest;
+							orderedRectangles[2]=least;
+							
+							for(Rect r:rectangleAray){
+								if(r!=least && r!=greatest){
+									orderedRectangles[1]=r;
+								}
+							}
+							
+							Rect topRect = (orderedRectangles[2].y>orderedRectangles[1].y) ? orderedRectangles[1] : orderedRectangles[2]; 
+							Rect bottomRect = (orderedRectangles[2].y>orderedRectangles[1].y) ? orderedRectangles[2] : orderedRectangles[1];
+							Rect mergedRect = new Rect(topRect.x, topRect.y, (int)(bottomRect.br().x-topRect.tl().x), (int)(bottomRect.br().y-topRect.tl().y));
+							
+							if(rectOne==orderedRectangles[1] || rectOne==orderedRectangles[2]){
+								rectOne = mergedRect;
+								rectTwo = greatest;
+							}
+							else {
+								rectOne = greatest;
+								rectTwo = mergedRect;
+							}
+						} else {
+							SmartDashboard.putString("More Vision State", "Saw Two Contours");			
+						}
+						
 						//rect.x is the left edge as far as I can tell
 						//rect.y is the top edge as far as I can tell
 						centerXOne = rectOne.x + (rectOne.width/2); //returns the center of the bounding rectangle
