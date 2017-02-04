@@ -2,6 +2,7 @@ package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -98,7 +99,8 @@ public class Robot extends IterativeRobot {
 		if(approachTape) { //approach the vision target at angle
 			if(camera.getArea()<9000) {
 				auto.updateDegreeSetpoint();
-				double[] output = auto.driveStraightAngle(-0.5, auto.getDegreeOffset(), -0.01);
+				double[] output = auto.driveStraightAngle(-0.7, auto.getDegreeOffset(), -0.01);
+				SmartDashboard.putNumber("auto output", output[0]);
 				drivebase.drive(output[0], output[1]);
 			}
 		} else { //turn to the vision target

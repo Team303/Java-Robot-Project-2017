@@ -1,4 +1,3 @@
-//eat bread
 package org.usfirst.frc.team303.robot;
 
 public class Autonomous {
@@ -31,7 +30,7 @@ public class Autonomous {
 		return rotateToAngle(degreeSetpoint);
 	}
 	
-	public double[] rotateToAngle(double setpoint) {                                                                                    //memes
+	public double[] rotateToAngle(double setpoint) {                                                                                    
 		Robot.navX.setSetpoint(setpoint);
 		double output = Robot.navX.getPidOutput();
 		return new double[] {-1*output, output};

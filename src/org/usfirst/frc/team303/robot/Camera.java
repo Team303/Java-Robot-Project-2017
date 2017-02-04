@@ -1,5 +1,7 @@
 package org.usfirst.frc.team303.robot;
 
+import java.util.ArrayList;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -64,44 +66,36 @@ public class Camera {
 						if(contoursFound>2) {
 							
 							SmartDashboard.putString("More Vision State", "Saw Three Contours");
-							
 							rectThree = Imgproc.boundingRect(pipeline.filterContoursOutput().get(2));
-							Rect[] rectangleAray={rectOne,rectTwo,rectThree};
-							Rect[] orderedRectangles= new Rect[3];
-							Rect least=rectOne;
-							Rect greatest=rectOne;
+							ArrayList<Rect> orderedRectangles= new ArrayList<Rect>();
+							orderedRectangles.add(rectOne);
+							if(rectTwo.area()>rectOne.area()){
+								orderedRectangles.add(0,rectTwo);
+							} else {
+								orderedRectangles.add(rectTwo);
+							} 
 							
-							for(Rect r:rectangleAray){
-								if(r.area()<least.area()){
-									least=r;
-								}
-								if(r.area()>greatest.area()){
-									greatest=r;
-								}
+							if(rectThree.area()>orderedRectangles.get(0).area()){
+								orderedRectangles.add(0,rectThree);
+							} else if(rectThree.area()>orderedRectangles.get(1).area()){
+								orderedRectangles.add(1,rectThree);
+							} else {
+								orderedRectangles.add(rectThree);
 							}
 							
-							orderedRectangles[0]=greatest;
-							orderedRectangles[2]=least;
-							
-							for(Rect r:rectangleAray){
-								if(r!=least && r!=greatest){
-									orderedRectangles[1]=r;
-								}
-							}
-							
-							Rect topRect = (orderedRectangles[2].y>orderedRectangles[1].y) ? orderedRectangles[1] : orderedRectangles[2]; 
-							Rect bottomRect = (orderedRectangles[2].y>orderedRectangles[1].y) ? orderedRectangles[2] : orderedRectangles[1];
+							Rect topRect = (orderedRectangles.get(2).y>orderedRectangles.get(1).y) ? orderedRectangles.get(1) : orderedRectangles.get(2); 
+							Rect bottomRect = (orderedRectangles.get(2).y>orderedRectangles.get(1).y) ? orderedRectangles.get(2) : orderedRectangles.get(1);
 							Rect mergedRect = new Rect(topRect.x, topRect.y, (int)(bottomRect.br().x-topRect.tl().x), (int)(bottomRect.br().y-topRect.tl().y));
 							
-							if(rectOne==orderedRectangles[1] || rectOne==orderedRectangles[2]){
+							if(rectOne==orderedRectangles.get(1) || rectOne==orderedRectangles.get(2)){
 								rectOne = mergedRect;
-								rectTwo = greatest;
-							}
-							else {
-								rectOne = greatest;
+								rectTwo = orderedRectangles.get(0);
+							} else {
+								rectOne = orderedRectangles.get(0);
 								rectTwo = mergedRect;
 							}
-						} else {
+						} 
+						else {
 							SmartDashboard.putString("More Vision State", "Saw Two Contours");			
 						}
 						
@@ -138,6 +132,7 @@ public class Camera {
 		visionThread.setDaemon(true);
 		visionThread.start();
 	}
+	
 	public double getArea(){
 		return rectangleArea;
 	}
