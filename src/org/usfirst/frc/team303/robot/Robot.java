@@ -1,6 +1,7 @@
 package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -24,7 +25,9 @@ public class Robot extends IterativeRobot {
 	static NavX navX;
 	static Climber climber;
 	static Intake intake;
+	static NacRac nacrac;
 	static boolean autoRunOnce = false;
+	static PowerDistributionPanel pdp;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -43,6 +46,8 @@ public class Robot extends IterativeRobot {
 		navX = new NavX();
 		climber = new Climber();
 		intake = new Intake();
+		pdp = new PowerDistributionPanel();
+		nacrac = new NacRac();
 	}
 
 	@Override
@@ -76,7 +81,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {		
-		boolean approachTape = true;
+		boolean approachTape = false;
 		
 		if(!autoRunOnce){
 			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
@@ -126,13 +131,9 @@ public class Robot extends IterativeRobot {
 		intake.control();
 		camera.control();
 		drivebase.drive(OI.lY, OI.rY);
-		shooter.setSetpoint(OI.preferences.getNumber("shooterS", 0));
-		
-		
+		shooter.control();
 		
 	}
-	
-	
 
 	/**
 	 * This function is called periodically during test mode

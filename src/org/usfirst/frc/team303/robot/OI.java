@@ -16,6 +16,7 @@ public class OI {
 	static double lX = 0, lY = 0, lZ = 0;
 	static double rX = 0, rY = 0, rZ = 0;
 	static double xlX = 0, xlY = 0, xrX = 0, xrY = 0;
+	static double xLeftTrigger=0, xRightTrigger=0;
 	
 	static boolean[] lBtn = new boolean[9];
 	static boolean[] rBtn = new boolean[9];	
@@ -78,5 +79,7 @@ public class OI {
 		xBtnBack = xbox.getBackButton();
 		xLeftStickBtn = xbox.getStickButton(Hand.kLeft);
 		xRightStickBtn = xbox.getStickButton(Hand.kRight);
+		xLeftTrigger = xbox.getTriggerAxis(Hand.kLeft);
+		xRightTrigger = xbox.getTriggerAxis(Hand.kRight);
 	}
 }

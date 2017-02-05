@@ -105,11 +105,15 @@ public class Camera {
 						centerYOne = rectOne.y + (rectOne.height/2); //returns the center of the bounding rectangle
 						centerXTwo = rectTwo.x + (rectTwo.width/2);
 						centerYTwo = rectTwo.y + (rectTwo.height/2);
-						centerYAvg = (centerYOne + centerYTwo)/2;
-						centerXAvg = (centerXOne + centerXTwo)/2;
 						double width=rectTwo.x-(rectOne.x+rectOne.width);
 						double height=rectOne.y-(rectTwo.y+rectTwo.height);
-						rectangleArea=width*height;
+						
+						synchronized (imgLock){
+							rectangleArea=width*height;
+							centerYAvg = (centerYOne + centerYTwo)/2;
+							centerXAvg = (centerXOne + centerXTwo)/2;
+						}
+						
 						//scalar(int, int, int) is in BGR color space
 						//the points are the two corners of the rectangle as far as I can tell
 						Imgproc.rectangle(mat, new Point(rectOne.x, rectOne.y), new Point(rectTwo.x + rectTwo.width, rectTwo.y + rectTwo.height), new Scalar(0, 0, 255), 2); //draw rectangle of the detected object onto the image
@@ -134,7 +138,9 @@ public class Camera {
 	}
 	
 	public double getArea(){
-		return rectangleArea;
+		synchronized(imgLock) {
+			return rectangleArea;
+		}
 	}
 	
 	public void control() {
@@ -148,11 +154,15 @@ public class Camera {
 	}
 	
 	public double getCenterY() {
-		return centerYAvg;
+		synchronized(imgLock) {
+			return centerYAvg;
+		}
 	}
 
 	public double getCenterX() {
-		return centerXAvg;
+		synchronized(imgLock) {
+			return centerXAvg;
+		}
 	}
 
 	public void disableProcessing() {
