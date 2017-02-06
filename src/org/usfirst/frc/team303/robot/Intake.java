@@ -15,6 +15,7 @@ public class Intake {
 	
 	public void control(){
 		if(OI.lBtn[2]){
+			
 			set(1);
 		}else if(OI.lBtn[3]){
 			set(-1);

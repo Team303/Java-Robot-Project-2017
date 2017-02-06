@@ -46,7 +46,7 @@ public class Robot extends IterativeRobot {
 		navX = new NavX();
 		climber = new Climber();
 		intake = new Intake();
-		pdp = new PowerDistributionPanel();
+		pdp = new PowerDistributionPanel(RobotMap.PDP);
 		nacrac = new NacRac();
 	}
 
@@ -127,11 +127,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		nacrac.control();
 		climber.control();
 		intake.control();
 		camera.control();
 		drivebase.drive(OI.lY, OI.rY);
 		shooter.control();
+		SmartDashboard.putNumber("Shooter Velocity", shooter.getSpeed());
 		
 	}
 

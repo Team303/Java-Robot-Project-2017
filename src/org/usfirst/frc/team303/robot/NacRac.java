@@ -15,8 +15,8 @@ public class NacRac {
 	
 	public void control() {
 		
-		if(!OI.rBtn[RobotMap.NACRAC_DOWN_BUTTON]) {
-			set(0.4); //power needed to travel up
+		if(!OI.rBtn[3]) {
+			set(0.5); //power needed to travel up
 		} else {
 			set(-.05); //power needed to travel down
 		}

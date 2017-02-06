@@ -17,7 +17,7 @@ public class RobotMap {
 	public static final boolean REAR_LEFT_INV = true;
 	public static final boolean REAR_RIGHT_INV = true;
 	
-	public static final int CLIMBER_PDP_CHANNEL = 0;
+	public static final int CLIMBER_PDP_CHANNEL = 13;
 	public static final int CLIMBER_ID = 3; 
 	public static final int CLIMBER_SLAVE_ID = 4;
 	public static final boolean CLIMBER_INV = false;
@@ -25,23 +25,19 @@ public class RobotMap {
 	
 	public static final int INTAKE_ID = 5;
 	public static final boolean INTAKE_INV = false;
-	public static final int INTAKE_IN_BUTTON = 2; //runs in OI.lBtn[INTAKE_IN_BUTTON];
-	public static final int INTAKE_OUT_BUTTON = 3; //runs in OI.lBtn[INTAKE_OUT_BUTTON];
 	
-	public static final int SHOOTER_ID = 8;
-	public static final int SHOOTER_SLAVE_ID = 9;
+	public static final int SHOOTER_ID = 9;
+	public static final int SHOOTER_SLAVE_ID = 8;
 	public static final boolean SHOOTER_INV = false;
 	public static final boolean SHOOTER_SLAVE_INV = true; 
 	//XBOX BUTTON SETPOINTS FOR SHOOTER ARE IN THE SHOOTER CLASS
 	
 	public static final int NACRAC_ID = 7;
-	public static final boolean NACRAC_INV = false;
-	public static final int NACRAC_UP_BUTTON = 0; //runs in 
-	public static final int NACRAC_DOWN_BUTTON = 0;
+	public static final boolean NACRAC_INV = true;
 	
 	public static final int INDEXER_ID = 6;
 	public static final boolean INDEXER_INV = false;
 	
 	public static final int AGITATOR_ID = 12;
-	public static final boolean AGITATOR_INV = false;
+	public static final boolean AGITATOR_INV = true;
 }

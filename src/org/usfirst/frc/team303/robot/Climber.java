@@ -15,6 +15,7 @@ public class Climber {
 	int loadCounter;
 	boolean dropped = false;
 	public boolean disableState = false;
+	boolean cTT = false;
 	
 	enum ControlStates {
 		NORMAL, HIGH
@@ -37,10 +38,13 @@ public class Climber {
 	
 	public ControlStates findControlMode() {
 		current = Robot.pdp.getCurrent(RobotMap.CLIMBER_PDP_CHANNEL);
-		double cT = 10; //current threshold TODO test this value
-		double lag = 0.2; //in seconds
-			
-		if(t.get()>lag && current>cT) {
+		SmartDashboard.putNumber("Climber Amperage", current);
+		
+		double cT = 0.01; //current threshold TODO test this value
+		double lag = 0.1; //in seconds
+		
+		if((t.get()>lag && current>cT) || cTT) {
+			cTT = true;
 			return ControlStates.HIGH;
 		}
 		else{
@@ -55,8 +59,7 @@ public class Climber {
 		if(pulse(btnState)) {
 			t.start();
 		} else {
-			t.stop();
-			t.reset();
+			
 		}
 		
 		if(btnState) {
@@ -65,9 +68,11 @@ public class Climber {
 			} else {
 				set(1);
 			}
+		} else {
+			t.stop();
+			t.reset();
+			cTT = false;
 		}
-		
-		SmartDashboard.putNumber("Climber Amperage", current);
 		
 	}
 	
