@@ -37,4 +37,7 @@ public class Drivebase {
 		drivebase.tankDrive(left, right);
 	}
 	
+	public int getEncPos() {
+		return FL.getEncPosition();
+	}
 }

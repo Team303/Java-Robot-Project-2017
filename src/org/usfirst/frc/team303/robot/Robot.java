@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
 	static Drivebase drivebase;
 	static Timer timer = new Timer();
 	static Autonomous auto;
-	static NavX navX;
+	public static NavX navX;
 	static Climber climber;
 	static Intake intake;
 	static NacRac nacrac;
@@ -42,12 +42,13 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		timer.start();
 		drivebase = new Drivebase();
-		auto = new Autonomous();
 		navX = new NavX();
+		System.out.println(navX.getYaw());
 		climber = new Climber();
 		intake = new Intake();
 		pdp = new PowerDistributionPanel(RobotMap.PDP);
 		nacrac = new NacRac();
+		auto = new Autonomous();
 	}
 
 	@Override
@@ -85,8 +86,10 @@ public class Robot extends IterativeRobot {
 		
 		if(!autoRunOnce){
 			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
-			auto.updateDegreeSetpoint();
 		}
+		
+		auto.run();
+		
 /*		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
@@ -96,22 +99,6 @@ public class Robot extends IterativeRobot {
 			// Put default auto code here
 			break;
 		} */
-		
-		if(!navX.turnController.isEnabled()) {
-			navX.turnController.enable();
-		}
-		
-		if(approachTape) { //approach the vision target at angle
-			if(camera.getArea()<9000) {
-				auto.updateDegreeSetpoint();
-				double[] output = auto.driveStraightAngle(-0.7, auto.getDegreeOffset(), -0.01);
-				SmartDashboard.putNumber("auto output", output[0]);
-				drivebase.drive(output[0], output[1]);
-			}
-		} else { //turn to the vision target
-			double[] output = auto.centerTapeWithGyro();
-			drivebase.drive(output[0], output[1]);	
-		}
 		
 		autoRunOnce = true;
 	}
@@ -133,6 +120,7 @@ public class Robot extends IterativeRobot {
 		camera.control();
 		drivebase.drive(OI.lY, OI.rY);
 		shooter.control();
+		SmartDashboard.putNumber("Shooter Percent Voltage", (shooter.shooter.getOutputVoltage()/pdp.getVoltage()));
 		SmartDashboard.putNumber("Shooter Velocity", shooter.getSpeed());
 		
 	}

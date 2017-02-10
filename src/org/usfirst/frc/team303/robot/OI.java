@@ -50,9 +50,7 @@ public class OI {
 		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getSpeed());
 		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());
-		SmartDashboard.putNumber("Camera Setpoint", Robot.auto.degreeSetpoint);
 		SmartDashboard.putNumber("Rectangle Area", Robot.camera.getArea());
-		SmartDashboard.putNumber("Degree Offset", Robot.auto.getDegreeOffset());
 	}
 	
 	public static void updateXbox() {

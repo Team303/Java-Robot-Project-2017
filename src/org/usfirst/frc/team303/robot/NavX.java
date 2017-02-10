@@ -23,6 +23,7 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 		turnController = new PIDController(P, I, D, F, navX, this);
 		turnController.setInputRange(-180.0f, 180.0f);
 		turnController.setOutputRange(-0.8, .8);
+		turnController.setAbsoluteTolerance(4.0f);
 		turnController.setContinuous();
 		openController();
 	}

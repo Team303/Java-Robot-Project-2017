@@ -16,18 +16,21 @@ public class Shooter {
 	
 	public Shooter() {
 		shooter = new CANTalon(RobotMap.SHOOTER_ID);
-		shooter.setInverted(RobotMap.SHOOTER_INV);
 		shooter.changeControlMode(TalonControlMode.Speed);
-		shooter.setPID(0.11, .00005, .04, 0.024, 1000000, 1, 0);
+		//shooter.setPID(1, 0, 0);
 		shooter.setSafetyEnabled(true);
+		shooter.reverseOutput(RobotMap.SHOOTER_INV);
 		shooter.enable();
+		shooter.setSetpoint(0);
+		shooter.set(0);
 		
 		shooterSlave = new CANTalon(RobotMap.SHOOTER_SLAVE_ID);
 		shooterSlave.changeControlMode(TalonControlMode.Follower);
-		shooterSlave.set(shooter.getDeviceID());
-		shooterSlave.reverseOutput(RobotMap.SHOOTER_SLAVE_INV);
+		shooterSlave.reverseOutput(RobotMap.SHOOTER_INV);
 		shooterSlave.setSafetyEnabled(true);
 		shooterSlave.enable();
+		shooterSlave.setSetpoint(0);
+		shooterSlave.set(RobotMap.SHOOTER_ID);
 		
 		indexer = new Indexer();
 		agitator = new Agitator();
@@ -36,36 +39,36 @@ public class Shooter {
 	
 	public void control() {
 		
-		if(OI.lBtn[6]) {
-			indexer.set(.8);
-		}
-		
-		//--------------------------
-		
 		double setpoint;
 
-		if(OI.xBtnY) {
+		if(OI.xBtnY) { //set setpoint
 			setpoint = 0;
 		} else if(OI.xBtnX) {
-			setpoint = 25600;
+			setpoint = -26150;
 		} else {
 			setpoint = savedSetpoint;
 		}
 		
 		setSetpoint(setpoint);
-		shooterSlave.set(shooter.getDeviceID());
 		
 		if(setpoint!=savedSetpoint) { //setpoint changed
 			if(setpoint==0) { //setpoint changed and is stopped
 				t.stop();
 				t.reset();
+				agitator.set(0);
+				indexer.set(0);
 			} else { //setpoint changed and is not stopped
 				t.start();
+				agitator.set(0);
+				indexer.set(0);
 			}
 		} else { //setpoint unchanged
 			if(t.get()>0.3) { //setpoint unchanged and delay is over
-				agitator.set(0.8);
-				indexer.set(0.5);
+				agitator.set(0.9);
+				indexer.set(0.25);
+			} else { //setpoint unchanged and delay is not over
+				agitator.set(0); 
+				indexer.set(0);
 			}
 		}
 		
@@ -73,7 +76,8 @@ public class Shooter {
 	}
 	
 	public void setSetpoint(double setpoint) {
-		shooter.setSetpoint(setpoint);
+		shooter.set(setpoint);
+		shooterSlave.set(RobotMap.SHOOTER_ID);
 	}
 	
 	public double getSpeed() {

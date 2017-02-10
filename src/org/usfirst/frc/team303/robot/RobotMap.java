@@ -7,10 +7,10 @@ public class RobotMap {
 	//these don't do anything, but are here so we don't accidentally use their IDs
 	public static final int PDP = 0;
 	
-	public static final int FROMT_LEFT = 1; 
+	public static final int FROMT_LEFT = 1;  //encoder on this talon
 	public static final int FRONT_RIGHT = 10; 
 	public static final int REAR_LEFT = 2; 
-	public static final int REAR_RIGHT = 11; 
+	public static final int REAR_RIGHT = 11; //encoder on this talon
 	
 	public static final boolean FRONT_LEFT_INV = true;
 	public static final boolean FRONT_RIGHT_INV = false;
@@ -28,9 +28,8 @@ public class RobotMap {
 	
 	public static final int SHOOTER_ID = 9;
 	public static final int SHOOTER_SLAVE_ID = 8;
-	public static final boolean SHOOTER_INV = false;
-	public static final boolean SHOOTER_SLAVE_INV = true; 
-	//XBOX BUTTON SETPOINTS FOR SHOOTER ARE IN THE SHOOTER CLASS
+	public static final boolean SHOOTER_INV = true;
+	//public static final boolean SHOOTER_SLAVE_INV = true; 
 	
 	public static final int NACRAC_ID = 7;
 	public static final boolean NACRAC_INV = true;

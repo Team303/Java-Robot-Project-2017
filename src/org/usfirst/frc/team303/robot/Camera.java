@@ -26,6 +26,8 @@ public class Camera {
 	private double centerXAvg = 0.0;
 	private double centerYAvg = 0.0;
 	private double rectangleArea=0.0;
+	public int cameraResX = 480;
+	public int cameraResY = 360;
 	
 	public Camera() {
 		enableVisionThread(); //outputs a processed feed to the dashboard (overlays the found boiler tape)
@@ -33,11 +35,11 @@ public class Camera {
 	
 	public void enableVisionThread() {
 		pipeline = new BoilerPipeline();
-		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.6");
-		camera.setResolution(480, 360);
+		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.7");
+		camera.setResolution(cameraResX, cameraResY);
 		
 		CvSink cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
-		CvSource outputStream = CameraServer.getInstance().putVideo("Stream", 480, 360); //send steam to CameraServer
+		CvSource outputStream = CameraServer.getInstance().putVideo("Stream", cameraResX, cameraResY); //send steam to CameraServer
 		Mat mat = new Mat(); //define mat in order to reuse it
 		
 		runProcessing = true;

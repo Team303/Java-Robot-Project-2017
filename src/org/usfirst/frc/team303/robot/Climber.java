@@ -63,6 +63,8 @@ public class Climber {
 		}
 		
 		if(btnState) {
+			Robot.intake.set(0.9);
+			
 			if(findControlMode().equals(ControlStates.NORMAL)) {
 				set(.2);
 			} else {
@@ -72,6 +74,7 @@ public class Climber {
 			t.stop();
 			t.reset();
 			cTT = false;
+			set(0);
 		}
 		
 	}

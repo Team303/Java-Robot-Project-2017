@@ -19,7 +19,7 @@ public class Intake {
 			set(1);
 		}else if(OI.lBtn[3]){
 			set(-1);
-		}else {
+		}else if(!OI.rBtn[RobotMap.CLIMBER_CLIMB_BUTTON]) { //don't run the intake if climber control is active
 			set(0);
 		}
 	}
