@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
 	static Drivebase drivebase;
 	static Timer timer = new Timer();
 	static Autonomous auto;
-	public static NavX navX;
+    static NavX navX;
 	static Climber climber;
 	static Intake intake;
 	static NacRac nacrac;
@@ -82,12 +82,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {		
-		boolean approachTape = false;
 		
 		if(!autoRunOnce){
 			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
+			auto.taskNum = 0;
 		}
+		
 		auto.run();
+		SmartDashboard.putNumber("L Encoder", drivebase.getLeftEncoder());
+		SmartDashboard.putNumber("R Encoder", drivebase.getRightEncoder());
 		
 /*		switch (autoSelected) {
 		case customAuto:
@@ -113,6 +116,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
+		if(OI.lZ<0.5) {
+			drivebase.zeroEncoders();
+		}
+		
 		nacrac.control();
 		climber.control();
 		intake.control();
@@ -121,6 +129,8 @@ public class Robot extends IterativeRobot {
 		shooter.control();
 		SmartDashboard.putNumber("Shooter Percent Voltage", (shooter.shooter.getOutputVoltage()/pdp.getVoltage()));
 		SmartDashboard.putNumber("Shooter Velocity", shooter.getSpeed());
+		SmartDashboard.putNumber("L Encoder", drivebase.getLeftEncoder());
+		SmartDashboard.putNumber("R Encoder", drivebase.getRightEncoder());
 		
 	}
 

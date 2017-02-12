@@ -14,12 +14,8 @@ public class Drivebase {
 	CANTalon BL;
 	CANTalon BR;
 	RobotDrive drivebase;
-	//Encoder lDriveEnc;
-	//Encoder rDriveEnc;
 	double navXYaw;
-	//double lDriveEncDist;
-	//double rDriveEncDist;
-	
+
 	public Drivebase() {
 		FL = new CANTalon(RobotMap.FROMT_LEFT);
 		FR = new CANTalon(RobotMap.FRONT_RIGHT);
@@ -37,7 +33,16 @@ public class Drivebase {
 		drivebase.tankDrive(left, right);
 	}
 	
-	public int getEncPos() {
+	public void zeroEncoders() {
+		FL.setEncPosition(0);
+		BR.setEncPosition(0);
+	}
+	
+	public int getLeftEncoder() {
 		return FL.getEncPosition();
+	}
+	
+	public int getRightEncoder() {
+		return BR.getEncPosition();
 	}
 }
