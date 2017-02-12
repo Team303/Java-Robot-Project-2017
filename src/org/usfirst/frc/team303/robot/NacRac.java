@@ -16,9 +16,9 @@ public class NacRac {
 	public void control() {
 		
 		if(!OI.rBtn[3]) {
-			set(0.5); //power needed to travel up
+			set(0.2); //power needed to travel up
 		} else {
-			set(-.05); //power needed to travel down
+			set(-.15); //power needed to travel down
 		}
 	}
 	

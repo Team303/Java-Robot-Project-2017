@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
 		intake = new Intake();
 		pdp = new PowerDistributionPanel(RobotMap.PDP);
 		nacrac = new NacRac();
-		auto = new Autonomous();
+		
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		//autoSelected = chooser.getSelected();
-		
+		auto = new Autonomous();
 		// autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
 		//System.out.println("Auto selected: " + autoSelected);
 	}
@@ -87,7 +87,6 @@ public class Robot extends IterativeRobot {
 		if(!autoRunOnce){
 			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
 		}
-		
 		auto.run();
 		
 /*		switch (autoSelected) {
