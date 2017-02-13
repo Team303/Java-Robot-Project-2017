@@ -36,9 +36,6 @@ public class OI {
 	
 	public static void outputs() {
 		
-		//TODO temp outputs start here
-		//TODO temp outputs end here
-		
 		if(RobotState.isOperatorControl() && RobotState.isAutonomous()) { //auto only outputs
 			SmartDashboard.putNumber("NavX PID Setpoint", Robot.navX.turnController.getSetpoint());
 		} else if (RobotState.isOperatorControl() && RobotState.isEnabled()) { //teleop only outputs
@@ -51,6 +48,10 @@ public class OI {
 		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());
 		SmartDashboard.putNumber("Rectangle Area", Robot.camera.getArea());
+		SmartDashboard.putNumber("Shooter Percent Voltage", (Robot.shooter.shooter.getOutputVoltage()/Robot.pdp.getVoltage()));
+		SmartDashboard.putNumber("Shooter Velocity", Robot.shooter.getSpeed());
+		SmartDashboard.putNumber("L Encoder", Robot.drivebase.getLeftEncoder());
+		SmartDashboard.putNumber("R Encoder", Robot.drivebase.getRightEncoder());
 	}
 	
 	public static void updateXbox() {

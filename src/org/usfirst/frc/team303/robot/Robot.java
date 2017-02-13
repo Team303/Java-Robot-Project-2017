@@ -89,9 +89,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 		auto.run();
-		SmartDashboard.putNumber("L Encoder", drivebase.getLeftEncoder());
-		SmartDashboard.putNumber("R Encoder", drivebase.getRightEncoder());
-		
+
 /*		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
@@ -126,12 +124,7 @@ public class Robot extends IterativeRobot {
 		intake.control();
 		camera.control();
 		drivebase.drive(OI.lY, OI.rY);
-		shooter.control();
-		SmartDashboard.putNumber("Shooter Percent Voltage", (shooter.shooter.getOutputVoltage()/pdp.getVoltage()));
-		SmartDashboard.putNumber("Shooter Velocity", shooter.getSpeed());
-		SmartDashboard.putNumber("L Encoder", drivebase.getLeftEncoder());
-		SmartDashboard.putNumber("R Encoder", drivebase.getRightEncoder());
-		
+		shooter.control();	
 	}
 
 	/**
