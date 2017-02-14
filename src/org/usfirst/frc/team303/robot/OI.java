@@ -43,7 +43,6 @@ public class OI {
 		} 
 		
 		//universal outputs
-		SmartDashboard.putNumber("NavX PID Output", Robot.navX.getPidOutput());
 		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getSpeed());
 		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());

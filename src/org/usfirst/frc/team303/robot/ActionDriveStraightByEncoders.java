@@ -28,11 +28,11 @@ public class ActionDriveStraightByEncoders implements Action{
 		double[] pow = {0,0};
 		
 		if(encoderEndThreshold>=0) { //determines to go forward or backward
-			pow = driveStraightAngle(0.8, getDegreeOffset(0), -0.01); //fwd
+			pow = driveStraightAngle(0.8, getDegreeOffset(0), 0.01); //fwd
 			SmartDashboard.putNumber("Auto Power", pow[1]);
 			Robot.drivebase.drive(pow[0], pow[1]); //when pow is reversed, tuning constant must be reversed as well
 		} else { 
-			pow = driveStraightAngle(-0.8, getDegreeOffset(0), -0.01); //bck
+			pow = driveStraightAngle(-0.8, getDegreeOffset(0), 0.01); //bck
 			SmartDashboard.putNumber("Auto Power", -pow[1]);
 			Robot.drivebase.drive(pow[0], pow[1]);
 		}

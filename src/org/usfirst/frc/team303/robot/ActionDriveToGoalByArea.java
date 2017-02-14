@@ -5,6 +5,8 @@ public class ActionDriveToGoalByArea implements Action {
 	double degreeSetpoint = 0;
 	double pixelPerDegreeConstant = 0.09792; //experimental constant is 0.064, theoretical constant is 0.09792
 	double offsetConstant = 0;
+	boolean goalFinished;
+	ActionDriveStraightByEncoders drive = new ActionDriveStraightByEncoders(-5000);
 	
 	public ActionDriveToGoalByArea() {
 		updateDegreeSetpoint();
@@ -12,14 +14,23 @@ public class ActionDriveToGoalByArea implements Action {
 	
 	@Override
 	public void run() {
-		updateDegreeSetpoint();
-		double[] output = driveStraightAngle(-0.7, getCameraDegreeOffset(), -0.01);
-		Robot.drivebase.drive(output[0], output[1]);
+		
+		if(Robot.camera.getArea()<9000) {
+			goalFinished = true;
+		}
+		
+		if(!goalFinished) {
+			updateDegreeSetpoint();
+			double[] output = driveStraightAngle(-0.7, getCameraDegreeOffset(), -0.01);
+			Robot.drivebase.drive(output[0], output[1]);
+		} else {
+			drive.run();
+		}
 	}
 
 	@Override
 	public boolean isFinished() {
-		return (Robot.camera.getArea()<9000);
+		return (goalFinished && drive.isFinished());
 	} 
 
 	public void updateDegreeSetpoint() {
@@ -40,11 +51,11 @@ public class ActionDriveToGoalByArea implements Action {
 		}
 	}
 		
-	public double[] rotateToAngle(double setpoint) {                                                                                    
+	/*public double[] rotateToAngle(double setpoint) {                                                                                    
 		Robot.navX.setSetpoint(setpoint);
 		double output = Robot.navX.getPidOutput();
 		return new double[] {-1*output, output};
-	}
+	}*/
 
 	public double[] driveStraightAngle(double powSetpoint, double angleDifference, double tuningConstant) {                                                                                                                      //memes
 		return new double[] {(powSetpoint + (angleDifference*tuningConstant)), (powSetpoint - (angleDifference*tuningConstant))};

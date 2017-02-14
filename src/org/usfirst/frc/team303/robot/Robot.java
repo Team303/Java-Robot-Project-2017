@@ -22,7 +22,7 @@ public class Robot extends IterativeRobot {
 	static Drivebase drivebase;
 	static Timer timer = new Timer();
 	static Autonomous auto;
-    static NavX navX;
+	static NavX navX;
 	static Climber climber;
 	static Intake intake;
 	static NacRac nacrac;
@@ -84,7 +84,6 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {		
 		
 		if(!autoRunOnce){
-			navX.initController(OI.preferences.getNumber("nP", 0), OI.preferences.getNumber("nI", 0), OI.preferences.getNumber("nD", 0), 0, 2.0f);
 			auto.taskNum = 0;
 		}
 		

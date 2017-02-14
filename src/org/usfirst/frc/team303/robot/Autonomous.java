@@ -25,7 +25,11 @@ public class Autonomous {
 	}
 	
 	public void assembleAutonomousOne() {
-		arr.add(new ActionDriveStraightByEncoders(10000));
+		//arr.add(new ActionDriveStraightByEncoders(20000));
+		//arr.add(new ActionWait(3));
+		//arr.add(new ActionDriveStraightByEncoders(-20000));
+		
+		arr.add(new ActionTurnToAngle(90, false));
 	}
 	
 } 

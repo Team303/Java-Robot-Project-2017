@@ -35,7 +35,7 @@ public class Camera {
 	
 	public void enableVisionThread() {
 		pipeline = new BoilerPipeline();
-		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.7");
+		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.8");
 		camera.setResolution(cameraResX, cameraResY);
 		
 		CvSink cvSink = CameraServer.getInstance().getVideo(); //capture mats from camera
@@ -58,6 +58,7 @@ public class Camera {
 					
 					pipeline.process(mat); //process the mat (this does not change the mat, and has an internal output to pipeline)
 					int contoursFound = pipeline.filterContoursOutput().size();
+					SmartDashboard.putString("More Vision State","Saw "+contoursFound+" Contours");
 					
 					if(contoursFound>=2) {
 						
@@ -65,12 +66,20 @@ public class Camera {
 						Rect rectTwo = Imgproc.boundingRect(pipeline.filterContoursOutput().get(1)); //get the second MatOfPoint (contour)
 						Rect rectThree = null;
 						
+						if(contoursFound==2) {
+							Rect rectLeft = (rectOne.x<rectTwo.x) ? rectOne : rectTwo;
+							Rect rectRight = (rectOne.x>rectTwo.x) ? rectOne : rectTwo;
+							
+							rectOne = rectRight;
+							rectTwo = rectLeft;
+						}
+						
 						if(contoursFound>2) {
 							
-							SmartDashboard.putString("More Vision State", "Saw Three Contours");
-							rectThree = Imgproc.boundingRect(pipeline.filterContoursOutput().get(2));
+							rectThree = Imgproc.boundingRect(pipeline.filterContoursOutput().get(2)); //saw three+ contours
 							ArrayList<Rect> orderedRectangles= new ArrayList<Rect>();
 							orderedRectangles.add(rectOne);
+							
 							if(rectTwo.area()>rectOne.area()){
 								orderedRectangles.add(0,rectTwo);
 							} else {
@@ -98,7 +107,7 @@ public class Camera {
 							}
 						} 
 						else {
-							SmartDashboard.putString("More Vision State", "Saw Two Contours");			
+							//saw two contours			
 						}
 						
 						//rect.x is the left edge as far as I can tell
@@ -107,6 +116,7 @@ public class Camera {
 						centerYOne = rectOne.y + (rectOne.height/2); //returns the center of the bounding rectangle
 						centerXTwo = rectTwo.x + (rectTwo.width/2);
 						centerYTwo = rectTwo.y + (rectTwo.height/2);
+						
 						double width=rectTwo.x-(rectOne.x+rectOne.width);
 						double height=rectOne.y-(rectTwo.y+rectTwo.height);
 						
