@@ -5,14 +5,31 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ActionTurnToAngle implements Action {
 	
 	double fSetpoint; //final setpoint to feed to controller
-	boolean[] lastEnd = new boolean[4];
 	boolean firstRun;
+	int counter = 0;
 	
 	public ActionTurnToAngle(double setpoint, boolean relative) {
 		firstRun = true;
 		double theta = Robot.navX.getYaw();
 		
 		fSetpoint = relative ? theta+setpoint : setpoint;
+		
+		if (relative){
+			
+			fSetpoint = theta+setpoint;
+			
+			if(fSetpoint>180){
+				
+				fSetpoint-=360;
+				
+			}else if(fSetpoint<-180){
+				
+				fSetpoint+=360;	
+			}
+		}else{
+			
+			fSetpoint = setpoint;
+		}
 		
 		SmartDashboard.putNumber("Auto NavX Setpoint", fSetpoint);
 		Robot.navX.setSetpoint(fSetpoint);
@@ -27,7 +44,7 @@ public class ActionTurnToAngle implements Action {
 		
 		//Robot.navX.turnController.enable();
 		double output = Robot.navX.getPidOutput();
-		Robot.drivebase.drive(output, -output);
+		Robot.drivebase.drive(-output, output);
 		SmartDashboard.putNumber("NavX PID Output", output);
 		
 		firstRun = false;
@@ -35,29 +52,30 @@ public class ActionTurnToAngle implements Action {
 	
 	@Override
 	public boolean isFinished() {
-		boolean end = Robot.navX.turnController.onTarget();
-		
-		lastEnd[0] = end;
-		
-		for(int i=0;i<lastEnd.length-1;i++) {
-			lastEnd[i+1] = lastEnd[i];
-		}
-		
-		for(boolean endState : lastEnd) {
-			if(!end) {
-				if(endState) {
-					end = true;
-				} else  {
-					end = false;
-				}
-			}
-		}
-		
+		double yaw = Robot.navX.getYaw();
+		double setpoint = Robot.navX.turnController.getSetpoint();
+		boolean end = ((yaw<=setpoint+3) && (yaw>=setpoint-3));
+		boolean end2 = false;
+	
 		if(end) {
+			counter++;
+		} else {
+			counter = 0;
+		}
+		
+		if(counter>=6) {
+			end2 = true;
+		} else {
+			end2 = false;
+		}
+		
+		SmartDashboard.putBoolean("END STATE", end);
+		SmartDashboard.putBoolean("ended auto", end2);
+		if(end2) {
 			Robot.navX.turnController.disable();
 		}
 		
-		return end;
+		return end2;
 	}
 	
 }

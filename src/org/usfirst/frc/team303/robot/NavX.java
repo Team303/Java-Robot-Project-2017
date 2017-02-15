@@ -18,7 +18,7 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 		navX = new AHRS(SPI.Port.kMXP);
 		navX.setPIDSourceType(PIDSourceType.kDisplacement);
 		
-		turnController = new PIDController(0.003, 0, 0, navX, this);
+		turnController = new PIDController(0.06, 0.008, 0.11, navX, this); //"kill it with the d" -Josh Tatum 2k17
 		turnController.setInputRange(-180.0f, 180.0f);
 		turnController.setOutputRange(-1, 1);
 		turnController.setAbsoluteTolerance(4.0f);

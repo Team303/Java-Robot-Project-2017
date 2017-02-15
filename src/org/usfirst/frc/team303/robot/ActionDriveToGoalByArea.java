@@ -50,12 +50,6 @@ public class ActionDriveToGoalByArea implements Action {
 			return ((Robot.camera.getCenterX()-Robot.camera.cameraResX+offsetConstant) * pixelPerDegreeConstant);
 		}
 	}
-		
-	/*public double[] rotateToAngle(double setpoint) {                                                                                    
-		Robot.navX.setSetpoint(setpoint);
-		double output = Robot.navX.getPidOutput();
-		return new double[] {-1*output, output};
-	}*/
 
 	public double[] driveStraightAngle(double powSetpoint, double angleDifference, double tuningConstant) {                                                                                                                      //memes
 		return new double[] {(powSetpoint + (angleDifference*tuningConstant)), (powSetpoint - (angleDifference*tuningConstant))};

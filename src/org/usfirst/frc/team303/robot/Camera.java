@@ -11,6 +11,7 @@ import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Camera {
@@ -142,6 +143,8 @@ public class Camera {
 				} else {
 					outputStream.putFrame(mat); //give stream (and CameraServer) a new frame
 				}
+				
+				//Timer.delay(0.09);
 			}
 			
 		});	
