@@ -43,11 +43,11 @@ public class Shooter {
 
 		if(OI.xBtnY) { //set setpoint
 			setpoint = 0;
-			shooter.disable();
-			shooterSlave.disable();
+			//shooter.disable();
+			//shooterSlave.disable();
 		} else if(OI.xBtnX) {
-			shooter.enable();
-			shooterSlave.enable();
+			//shooter.enable();
+			//shooterSlave.enable();
 			setpoint = -25000; // was -26150
 		} else {
 			setpoint = savedSetpoint;

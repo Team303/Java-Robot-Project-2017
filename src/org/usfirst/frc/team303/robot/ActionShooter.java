@@ -18,11 +18,11 @@ public class ActionShooter implements Action{
 
 		if(!shootActive) { //set setpoint
 			setpoint = 0;
-			Robot.shooter.shooter.disable();
-			Robot.shooter.shooterSlave.disable();
+			//Robot.shooter.shooter.disable();
+			//Robot.shooter.shooterSlave.disable();
 		} else if(shootActive) {
-			Robot.shooter.shooter.enable();
-			Robot.shooter.shooterSlave.enable();
+			//Robot.shooter.shooter.enable();
+			//Robot.shooter.shooterSlave.enable();
 			setpoint = -25000; // was -26150
 		} else {
 			setpoint = Robot.shooter.savedSetpoint;
