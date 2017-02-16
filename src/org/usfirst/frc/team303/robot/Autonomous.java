@@ -2,8 +2,6 @@ package org.usfirst.frc.team303.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Autonomous {
 	
 	ArrayList<Action> arr= new ArrayList<Action>();
@@ -28,8 +26,10 @@ public class Autonomous {
 		//arr.add(new ActionDriveStraightByEncoders(20000));
 		//arr.add(new ActionWait(3));
 		//arr.add(new ActionDriveStraightByEncoders(-20000));
-		
+		arr.add(new ActionDriveStraightByEncoders(10000));
+		arr.add(new ActionTurnToAngle(60, true, 6));
 		arr.add(new ActionTurnToGoal());
+		arr.add(new ActionDriveToGoalByArea());
 	}
 	
 } 

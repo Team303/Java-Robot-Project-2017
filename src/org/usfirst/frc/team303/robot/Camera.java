@@ -120,12 +120,10 @@ public class Camera {
 						
 						double width=rectTwo.x-(rectOne.x+rectOne.width);
 						double height=rectOne.y-(rectTwo.y+rectTwo.height);
-						
-						synchronized (imgLock){
+				
 							rectangleArea=width*height;
 							centerYAvg = (centerYOne + centerYTwo)/2;
 							centerXAvg = (centerXOne + centerXTwo)/2;
-						}
 						
 						//scalar(int, int, int) is in BGR color space
 						//the points are the two corners of the rectangle as far as I can tell
@@ -153,9 +151,7 @@ public class Camera {
 	}
 	
 	public double getArea(){
-		synchronized(imgLock) {
 			return rectangleArea;
-		}
 	}
 	
 	public void control() {
@@ -169,15 +165,11 @@ public class Camera {
 	}
 	
 	public double getCenterY() {
-		synchronized(imgLock) {
 			return centerYAvg;
-		}
 	}
 
 	public double getCenterX() {
-		synchronized(imgLock) {
 			return centerXAvg;
-		}
 	}
 
 	public void disableProcessing() {

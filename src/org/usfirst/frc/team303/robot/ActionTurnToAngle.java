@@ -7,9 +7,11 @@ public class ActionTurnToAngle implements Action {
 	double fSetpoint; //final setpoint to feed to controller
 	boolean firstRun;
 	int counter = 0;
+	float tolerance;
 	
-	public ActionTurnToAngle(double setpoint, boolean relative) {
+	public ActionTurnToAngle(double setpoint, boolean relative, float toleranceC) {
 		firstRun = true;
+		tolerance = toleranceC;
 		double theta = Robot.navX.getYaw();
 		
 		fSetpoint = relative ? theta+setpoint : setpoint;
@@ -50,7 +52,7 @@ public class ActionTurnToAngle implements Action {
 	public boolean isFinished() {
 		double yaw = Robot.navX.getYaw();
 		double setpoint = Robot.navX.turnController.getSetpoint();
-		boolean end = ((yaw<=setpoint+3) && (yaw>=setpoint-3));
+		boolean end = ((yaw<=setpoint+tolerance) && (yaw>=setpoint-tolerance));
 		boolean end2 = false;
 	
 		if(end) {
@@ -59,7 +61,7 @@ public class ActionTurnToAngle implements Action {
 			counter = 0;
 		}
 		
-		if(counter>=6) {
+		if(counter>=4) {
 			end2 = true;
 		} else {
 			end2 = false;
