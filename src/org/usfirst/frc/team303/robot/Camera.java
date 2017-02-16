@@ -27,8 +27,8 @@ public class Camera {
 	private double centerXAvg = 0.0;
 	private double centerYAvg = 0.0;
 	private double rectangleArea=0.0;
-	public int cameraResX = 480;
-	public int cameraResY = 360;
+	public static final int cameraResX = 480;
+	public static final int cameraResY = 360;
 	
 	public Camera() {
 		enableVisionThread(); //outputs a processed feed to the dashboard (overlays the found boiler tape)

@@ -105,7 +105,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 		timer.reset();
-		shooter.setPIDF(OI.preferences.getNumber("sP", 0), OI.preferences.getNumber("sI",0), OI.preferences.getNumber("sD",0), OI.preferences.getNumber("sF",0));
 	}
 	
 	/**

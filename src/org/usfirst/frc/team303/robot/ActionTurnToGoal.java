@@ -16,14 +16,13 @@ public class ActionTurnToGoal implements Action{
 	public void run() {
 		
 		if(firstRun) {
-			angleTurn = new ActionTurnToAngle(getCameraDegreeOffset(), true);
+			double degRelSetpoint = getCameraDegreeOffset();
+			angleTurn = new ActionTurnToAngle(degRelSetpoint, true);
+			firstRun = false;
 		} else {
 			angleTurn.run();
 		}
-		
-		if(firstRun) {
-			firstRun = false;
-		}
+
 	}
 
 	@Override
@@ -35,18 +34,18 @@ public class ActionTurnToGoal implements Action{
 		}
 		
 		if(end) {
-			firstRun = false;
+			firstRun = true;
 		}
 		
 		return end;
 	}
 	
 	public double getCameraDegreeOffset() {
-		if(Robot.camera.getCenterX()+offsetConstant<= Robot.camera.cameraResX){
-			return -1*((Robot.camera.cameraResX-Robot.camera.getCenterX()+offsetConstant) * pixelPerDegreeConstant);
+		if(Robot.camera.getCenterX()+offsetConstant>= (Camera.cameraResX/2)){
+			return -1*(((Camera.cameraResX/2)-Robot.camera.getCenterX()+offsetConstant) * pixelPerDegreeConstant);
 		}
 		else {
-			return ((Robot.camera.getCenterX()-Robot.camera.cameraResX+offsetConstant) * pixelPerDegreeConstant);
+			return ((Robot.camera.getCenterX()-(Camera.cameraResX/2)+offsetConstant) * pixelPerDegreeConstant);
 		}
 	}
 		

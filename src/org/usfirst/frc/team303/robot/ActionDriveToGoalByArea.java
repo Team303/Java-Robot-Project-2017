@@ -34,20 +34,20 @@ public class ActionDriveToGoalByArea implements Action {
 	} 
 
 	public void updateDegreeSetpoint() {
-		if(Robot.camera.getCenterX()<= Robot.camera.cameraResX){
-			degreeSetpoint = Robot.navX.getYaw() - ((Robot.camera.cameraResX-Robot.camera.getCenterX()) * pixelPerDegreeConstant);
+		if(Robot.camera.getCenterX()<= Camera.cameraResX){
+			degreeSetpoint = Robot.navX.getYaw() - ((Camera.cameraResX-Robot.camera.getCenterX()) * pixelPerDegreeConstant);
 		}
-		else if(Robot.camera.getCenterX()> Robot.camera.cameraResX){																										                                           //bangbangalloveryou
-			degreeSetpoint = Robot.navX.getYaw() + ((Robot.camera.getCenterX()-Robot.camera.cameraResX) * pixelPerDegreeConstant);
+		else if(Robot.camera.getCenterX()> Camera.cameraResX){																										                                           //bangbangalloveryou
+			degreeSetpoint = Robot.navX.getYaw() + ((Robot.camera.getCenterX()-Camera.cameraResX) * pixelPerDegreeConstant);
 		}
 	}
 	
 	public double getCameraDegreeOffset() {
-		if(Robot.camera.getCenterX()+offsetConstant<= Robot.camera.cameraResX){
-			return -1*((Robot.camera.cameraResX-Robot.camera.getCenterX()+offsetConstant) * pixelPerDegreeConstant);
+		if(Robot.camera.getCenterX()+offsetConstant<= Camera.cameraResX){
+			return -1*((Camera.cameraResX-Robot.camera.getCenterX()+offsetConstant) * pixelPerDegreeConstant);
 		}
 		else {
-			return ((Robot.camera.getCenterX()-Robot.camera.cameraResX+offsetConstant) * pixelPerDegreeConstant);
+			return ((Robot.camera.getCenterX()-Camera.cameraResX+offsetConstant) * pixelPerDegreeConstant);
 		}
 	}
 

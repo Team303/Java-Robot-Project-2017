@@ -14,20 +14,16 @@ public class ActionTurnToAngle implements Action {
 		
 		fSetpoint = relative ? theta+setpoint : setpoint;
 		
-		if (relative){
-			
+		if(relative) {
 			fSetpoint = theta+setpoint;
 			
 			if(fSetpoint>180){
-				
 				fSetpoint-=360;
-				
-			}else if(fSetpoint<-180){
-				
+			} else if(fSetpoint<-180){
 				fSetpoint+=360;	
 			}
-		}else{
 			
+		} else {
 			fSetpoint = setpoint;
 		}
 		
