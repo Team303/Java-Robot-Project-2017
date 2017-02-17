@@ -22,7 +22,7 @@ public class ActionDriveToGoalByArea implements Action {
 			Robot.drivebase.zeroEncoders();
 		}
 		
-		if(Robot.camera.getArea()>9000 || Robot.drivebase.getLeftEncoder()>10000) {
+		if(Robot.camera.getArea()>9500 || Robot.drivebase.getLeftEncoder()>10000) {
 			goalFinished = true;
 		}
 		

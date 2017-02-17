@@ -12,9 +12,9 @@ public class ActionNacRac implements Action{
 	public void run() {
 		
 		if(!active) {
-			Robot.nacrac.set(0.2); //power needed to travel up
+			Robot.nacrac.set(0.3); //power needed to travel up
 		} else {
-			Robot.nacrac.set(-.15); //power needed to travel down
+			Robot.nacrac.set(-.3); //power needed to travel down
 		}
 		
 	}

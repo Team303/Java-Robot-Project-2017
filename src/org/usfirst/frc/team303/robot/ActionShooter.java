@@ -1,12 +1,16 @@
+
 package org.usfirst.frc.team303.robot;
+
+import edu.wpi.first.wpilibj.Timer;
 
 public class ActionShooter implements Action{
 
 	boolean shootActive = false;
-	
+	double savedSetpoint = 0;
+	Timer t;
 	
 	public ActionShooter(boolean setShootActive){
-		
+		t = new Timer();
 		shootActive = setShootActive;
 	}
 	
@@ -25,24 +29,24 @@ public class ActionShooter implements Action{
 			//Robot.shooter.shooterSlave.enable();
 			setpoint = -25000; // was -26150
 		} else {
-			setpoint = Robot.shooter.savedSetpoint;
+			setpoint = savedSetpoint;
 		}
 		
 		Robot.shooter.setSetpoint(setpoint);
 		
 		if(setpoint!=Robot.shooter.savedSetpoint) { //setpoint changed
 			if(setpoint==0) { //setpoint changed and is stopped
-				Robot.shooter.t.stop();
-				Robot.shooter.t.reset();
+				t.stop();
+				t.reset();
 				Robot.shooter.agitator.set(0);
 				Robot.shooter.indexer.set(0);
 			} else { //setpoint changed and is not stopped
-				Robot.shooter.t.start();
+				t.start();
 				Robot.shooter.agitator.set(0);
 				Robot.shooter.indexer.set(0);
 			}
 		} else { //setpoint unchanged
-			if(Robot.shooter.t.get()>0.3) { //setpoint unchanged and delay is over
+			if(t.get()>0.3) { //setpoint unchanged and delay is over
 				Robot.shooter.agitator.set(0.6);
 				Robot.shooter.indexer.set(0.25);
 			} else { //setpoint unchanged and delay is not over

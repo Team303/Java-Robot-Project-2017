@@ -2,7 +2,7 @@ package org.usfirst.frc.team303.robot;
 
 public class ActionTurnToGoal implements Action{
 
-	static final double offsetConstant = 0;
+	static final double offsetConstant = 10;
 	static final double pixelPerDegreeConstant = 0.084;
 	double degreeSetpoint = 0;
 	ActionTurnToAngle angleTurn;
@@ -42,10 +42,10 @@ public class ActionTurnToGoal implements Action{
 	
 	public double getCameraDegreeOffset() {
 		if(Robot.camera.getCenterX()+offsetConstant>=(Camera.cameraResX/2)){
-			return -1*(((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)) * pixelPerDegreeConstant);
+			return (((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)) * pixelPerDegreeConstant);
 		}
 		else {
-			return (((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant) * pixelPerDegreeConstant);
+			return -1*(((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant) * pixelPerDegreeConstant);
 		}
 	}
 		
