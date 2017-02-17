@@ -1,9 +1,10 @@
 package org.usfirst.frc.team303.robot;
 import java.util.ArrayList;
 
-public class ActionParallelAction implements Action{
+public class ActionParallelAction extends ActionAbstract implements Action{
 	ArrayList<Action> conditionActions=new ArrayList<Action>();//actions that control when it is finished
 	ArrayList<Action> nonConditionActions=new ArrayList<Action>(); //actions that run and do not control when finished
+	
 	public ActionParallelAction(ArrayList<Action> conditionActionsC, ArrayList<Action> nonConditionActionsC){
 		conditionActions=conditionActionsC;
 		nonConditionActions=nonConditionActionsC;

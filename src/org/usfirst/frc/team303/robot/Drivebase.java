@@ -2,11 +2,7 @@ package org.usfirst.frc.team303.robot;
 
 import org.usfirst.frc.team303.robot.RobotMap;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.I2C;
 import com.ctre.CANTalon;
-import com.kauailabs.navx.frc.AHRS;
 
 public class Drivebase {
 	CANTalon FL;

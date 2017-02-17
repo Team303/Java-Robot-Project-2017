@@ -1,13 +1,13 @@
 package org.usfirst.frc.team303.robot;
 
-public class ActionDriveToGoalByArea implements Action {
+public class ActionDriveToGoalByArea extends ActionAbstract implements Action {
 
 	double degreeSetpoint = 0;
 	double pixelPerDegreeConstant = 0.084;
 	double offsetConstant = 0;
 	boolean goalFinished;
 	boolean firstRun;
-	ActionDriveStraightByEncoders driveLastBit = new ActionDriveStraightByEncoders(5000);
+	ActionDriveStraightByEncoders driveLastBit = new ActionDriveStraightByEncoders(5000, 0.5);
 	ActionDriveStraightByEncoders drive = new ActionDriveStraightByEncoders(0); //used as nonconditional action
 	
 	
@@ -39,6 +39,11 @@ public class ActionDriveToGoalByArea implements Action {
 
 	@Override
 	public boolean isFinished() {
+		
+		if(firstRun) {
+			return false;
+		}
+		
 		return (goalFinished && driveLastBit.isFinished());
 	}
 	

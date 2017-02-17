@@ -2,7 +2,7 @@ package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 
-public class ActionWait implements Action{
+public class ActionWait extends ActionAbstract implements Action{
 
 	Timer t;
 	double timeThreshold; //in seconds

@@ -9,7 +9,7 @@ public class Autonomous {
 	
 	public Autonomous() {
 		
-		assembleAutonomousOne();
+		assembleGearFromRightStation();
 		arr.add(new ActionWait(999999999));
 	}
 	
@@ -22,21 +22,16 @@ public class Autonomous {
 		}
 	}
 	
-	public void assembleAutonomousOne() {
-		//arr.add(new ActionDriveStraightByEncoders(20000));
-		//arr.add(new ActionWait(3));
-		//arr.add(new ActionDriveStraightByEncoders(-20000));
+	public void assembleGearFromRightStation() {
 		arr.add(new ActionDriveStraightByEncoders(10000));
 		arr.add(new ActionTurnToAngle(62, true, 6));
-		arr.add(new ActionWait(3));
+		arr.add(new ActionWait(3)); 
 		arr.add(new ActionTurnToGoal());
-		arr.add(new ActionWait(5));
+		arr.add(new ActionWait(3)); 
 		arr.add(new ActionDriveToGoalByArea());
-		//ArrayList<Action> nonConAction2 = new ArrayList<Action>();
-		//nonConAction2.add(new ActionNacRac(false));
-		//ArrayList<Action> conAction2 = new ArrayList<Action>();
-		//conAction2.add(new ActionWait(5));
-		//arr.add(new ActionParallelAction(conAction2, nonConAction2));
+		arr.add(getParallelAction(new ActionWait(1), new ActionNacRac(false)));
+		arr.add(getParallelAction(new ActionDriveStraightByEncoders(-10000), new ActionNacRac(true)));
+		
 		//arr.add(new ActionWait(5));
 		//arr.add(new ActionNacRac(true));
 		//arr.add(new ActionNacRac(false));
@@ -51,6 +46,13 @@ public class Autonomous {
 		//conAction1.add(new ActionWait(15));
 		//arr.add(new ActionParallelAction(conAction1, nonConAction1));
 		//arr.add(new ActionShooter(false));
+		
+	}
+	
+	public ActionParallelAction getParallelAction(ActionAbstract con, ActionAbstract nonCon) {
+		ArrayList<Action> nonConAction = new ArrayList<Action>();
+		ArrayList<Action> conAction = new ArrayList<Action>();
+		return new ActionParallelAction(conAction, nonConAction);
 		
 	}
 	

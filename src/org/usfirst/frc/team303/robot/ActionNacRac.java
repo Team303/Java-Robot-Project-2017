@@ -1,9 +1,13 @@
 package org.usfirst.frc.team303.robot;
 
-public class ActionNacRac implements Action{
+public class ActionNacRac extends ActionAbstract implements Action{
 
 	boolean active = false;
 	
+	/**
+	 * active means down, inactive means up
+	 * @param setActive
+	 */
 	public ActionNacRac(boolean setActive){
 		active = setActive;
 	}
