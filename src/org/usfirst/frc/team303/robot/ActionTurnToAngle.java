@@ -2,7 +2,7 @@ package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ActionTurnToAngle implements Action {
+public class ActionTurnToAngle extends ActionAbstract implements Action {
 	
 	double fSetpoint; //final setpoint to feed to controller
 	double iSetpoint;
@@ -43,7 +43,6 @@ public class ActionTurnToAngle implements Action {
 			Robot.navX.turnController.enable();
 		}
 		
-		//Robot.navX.turnController.enable();
 		double output = Robot.navX.getPidOutput();
 		Robot.drivebase.drive(-output, output);
 		SmartDashboard.putNumber("NavX PID Output", output);
@@ -64,15 +63,14 @@ public class ActionTurnToAngle implements Action {
 			counter = 0;
 		}
 		
-		if(counter>=4) {
+		if(counter>=6) {
 			end2 = true;
 		} else {
 			end2 = false;
 		}
 		
-		SmartDashboard.putBoolean("END STATE", end);
-		SmartDashboard.putBoolean("ended auto", end2);
 		if(end2) {
+			firstRun = true;
 			Robot.navX.turnController.disable();
 		}
 		

@@ -27,8 +27,8 @@ public class Camera {
 	private double centerXAvg = 0.0;
 	private double centerYAvg = 0.0;
 	private double rectangleArea=0.0;
-	public static final int cameraResX = 480;
-	public static final int cameraResY = 360;
+	public static final int cameraResX = 320;
+	public static final int cameraResY = 240;
 	
 	public Camera() {
 		enableVisionThread(); //outputs a processed feed to the dashboard (overlays the found boiler tape)
@@ -106,6 +106,13 @@ public class Camera {
 								rectOne = orderedRectangles.get(0);
 								rectTwo = mergedRect;
 							}
+							
+							Rect rectLeft = (rectOne.x<rectTwo.x) ? rectOne : rectTwo;
+							Rect rectRight = (rectOne.x>rectTwo.x) ? rectOne : rectTwo;
+							
+							rectOne = rectRight;
+							rectTwo = rectLeft;
+							
 						} 
 						else {
 							//saw two contours			

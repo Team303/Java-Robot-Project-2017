@@ -10,9 +10,9 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 	boolean firstRun;
 	boolean goingForward;
 	double power;
+	double initialAngle = 0;
 	
 	public ActionDriveStraightByEncoders(double distance, double basePower) { //alternate constructor for power
-		encoders = ((Robot.drivebase.getLeftEncoder()+Robot.drivebase.getRightEncoder())/2);
 		encoderEndThreshold = distance;
 		firstRun=true;
 		power = basePower;
@@ -34,11 +34,11 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 		double[] pow = {0,0};
 		
 		if(encoderEndThreshold>=0) { //determines to go forward or backward
-			pow = driveStraightAngle(power, getDegreeOffset(0), 0.01); //fwd
+			pow = driveStraightAngle(power, Robot.navX.getYaw(), 0.01); //fwd
 			SmartDashboard.putNumber("Auto Power", pow[1]);
 			Robot.drivebase.drive(pow[0], pow[1]); //when pow is reversed, tuning constant must be reversed as well
 		} else { 
-			pow = driveStraightAngle(-power, getDegreeOffset(0), 0.01); //bck
+			pow = driveStraightAngle(-power, Robot.navX.getYaw(), 0.01); //bck
 			SmartDashboard.putNumber("Auto Power", -pow[1]);
 			Robot.drivebase.drive(pow[0], pow[1]);
 		}
@@ -48,22 +48,24 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 		boolean end = false;
 		
 		if(firstRun) {
+			Robot.drivebase.zeroEncoders();
+			initialAngle = Robot.navX.getYaw();
 			return false;
 		}
 		
 		encoders = ((Robot.drivebase.getLeftEncoder()+Robot.drivebase.getRightEncoder())/2);
 		
 		if(encoderEndThreshold>=0) {
-			end = encoders>encoderEndThreshold;
+			end = encoders>encoderEndThreshold; 
 		} else {
 			end = encoders<encoderEndThreshold;
 		}
 		
+		if(end) {
+			firstRun = true;
+		}
+		
 		return end;
-	}
-
-	public double getDegreeOffset(double initialAngle) {
-		return Robot.navX.getYaw();
 	}
 	
 	public double[] driveStraightAngle(double powSetpoint, double angleDifference, double tuningConstant) {                                                                                                                      //memes

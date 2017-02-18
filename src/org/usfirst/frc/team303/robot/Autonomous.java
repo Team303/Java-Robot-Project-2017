@@ -2,6 +2,8 @@ package org.usfirst.frc.team303.robot;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Autonomous {
 	
 	ArrayList<Action> arr= new ArrayList<Action>();
@@ -9,7 +11,8 @@ public class Autonomous {
 	
 	public Autonomous() {
 		
-		assembleGearFromRightStation();
+		//followArea();
+		assembleGearFromNearStation();
 		arr.add(new ActionWait(999999999));
 	}
 	
@@ -20,38 +23,42 @@ public class Autonomous {
 			}
 			arr.get(taskNum).run();
 		}
+		
+		SmartDashboard.putNumber("taskNum", taskNum);
 	}
 	
-	public void assembleGearFromRightStation() {
-		arr.add(new ActionDriveStraightByEncoders(10000));
-		arr.add(new ActionTurnToAngle(62, true, 6));
-		arr.add(new ActionWait(3)); 
-		arr.add(new ActionTurnToGoal());
-		arr.add(new ActionWait(3)); 
-		arr.add(new ActionDriveToGoalByArea());
-		arr.add(getParallelAction(new ActionWait(1), new ActionNacRac(false)));
-		arr.add(getParallelAction(new ActionDriveStraightByEncoders(-10000), new ActionNacRac(true)));
-		
-		//arr.add(new ActionWait(5));
-		//arr.add(new ActionNacRac(true));
-		//arr.add(new ActionNacRac(false));
-		//arr.add(new ActionNacRac(true));
-		//arr.add(new ActionWait(3));
-		//arr.add(new ActionNacRac(false));
-		//arr.add(new ActionWait(2));
-		
-		//ArrayList<Action> nonConAction1 = new ArrayList<Action>();
-		//nonConAction1.add(new ActionShooter(true));
-		//ArrayList<Action> conAction1 = new ArrayList<Action>();
-		//conAction1.add(new ActionWait(15));
-		//arr.add(new ActionParallelAction(conAction1, nonConAction1));
-		//arr.add(new ActionShooter(false));
+	public void assembleGearFromFarStation() {
+
 		
 	}
 	
-	public ActionParallelAction getParallelAction(ActionAbstract con, ActionAbstract nonCon) {
+	public void assembleShooting() {
+		arr.add(makeSimpleParallelAction(new ActionWait(15), new ActionShooter(true)));
+		
+		
+	}
+	
+	public void assembleGearFromNearStation() { //this one works
+		arr.add(new ActionDriveStraightByEncoders(9600)); 
+		arr.add(new ActionTurnToAngle(-61, true, 3)); 
+		arr.add(new ActionDriveToGoalByArea(11500));
+
+		arr.add(new ActionDriveStraightByEncoders(2000)); 
+		arr.add(makeSimpleParallelAction(new ActionWait(0.5), new ActionNacRac(true)));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-8000), new ActionNacRac(false)));
+
+	}
+	
+	public void followArea() {
+		arr.add(new ActionDriveToGoalByArea(20000));
+	}
+	
+	public ActionParallelAction makeSimpleParallelAction(Action con, Action nonCon) {
 		ArrayList<Action> nonConAction = new ArrayList<Action>();
+		nonConAction.add(nonCon);
 		ArrayList<Action> conAction = new ArrayList<Action>();
+		conAction.add(con);
 		return new ActionParallelAction(conAction, nonConAction);
 		
 	}

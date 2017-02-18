@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	static boolean practiceBot = false;
+	
 	//final String defaultAuto = "Default";
 	//final String customAuto = "My Auto";
 	//String autoSelected;
@@ -48,6 +51,7 @@ public class Robot extends IterativeRobot {
 		intake = new Intake();
 		pdp = new PowerDistributionPanel(RobotMap.PDP);
 		nacrac = new NacRac();
+		navX.navX.zeroYaw();
 		
 	}
 
@@ -122,7 +126,10 @@ public class Robot extends IterativeRobot {
 		intake.control();
 		camera.control();
 		drivebase.drive(OI.lY, OI.rY);
-		shooter.control();	
+		shooter.control();
+		
+		navX.collisionDetected();
+		
 	}
 
 	/**

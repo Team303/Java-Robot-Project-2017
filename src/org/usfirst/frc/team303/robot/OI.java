@@ -43,7 +43,7 @@ public class OI {
 		} 
 		
 		//universal outputs
-		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getSpeed());
+		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getSpeed() * -1);
 		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());
 		SmartDashboard.putNumber("Rectangle Area", Robot.camera.getArea());

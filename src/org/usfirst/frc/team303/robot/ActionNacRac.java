@@ -2,12 +2,8 @@ package org.usfirst.frc.team303.robot;
 
 public class ActionNacRac extends ActionAbstract implements Action{
 
-	boolean active = false;
+	boolean active;
 	
-	/**
-	 * active means down, inactive means up
-	 * @param setActive
-	 */
 	public ActionNacRac(boolean setActive){
 		active = setActive;
 	}
@@ -16,9 +12,9 @@ public class ActionNacRac extends ActionAbstract implements Action{
 	public void run() {
 		
 		if(!active) {
-			Robot.nacrac.set(0.3); //power needed to travel up
+			Robot.nacrac.set(0.4); //power needed to travel up
 		} else {
-			Robot.nacrac.set(-.3); //power needed to travel down
+			Robot.nacrac.set(-.4); //power needed to travel down
 		}
 		
 	}

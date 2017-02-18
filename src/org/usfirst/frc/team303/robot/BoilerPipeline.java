@@ -42,9 +42,9 @@ public class BoilerPipeline implements VisionPipeline {
 	@Override	public void process(Mat source0) {
 		// Step HSV_Threshold0:
 		Mat hsvThresholdInput = source0;
-		double[] hsvThresholdHue = {53.41726618705036, 81.51515151515152};
-		double[] hsvThresholdSaturation = {194.91906474820144, 255.0};
-		double[] hsvThresholdValue = {176.57374100719426, 255.0};
+		double[] hsvThresholdHue = {53.0, 85.0};
+		double[] hsvThresholdSaturation = {149.0, 255.0};
+		double[] hsvThresholdValue = {149.0, 255.0};
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 
 		// Step Find_Contours0:

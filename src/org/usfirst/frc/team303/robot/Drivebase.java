@@ -35,10 +35,10 @@ public class Drivebase {
 	}
 	
 	public int getLeftEncoder() {
-		return FL.getEncPosition();
+		return -1*FL.getEncPosition();
 	}
 	
 	public int getRightEncoder() {
-		return BR.getEncPosition();
+		return -1*BR.getEncPosition();
 	}
 }

@@ -1,13 +1,20 @@
 package org.usfirst.frc.team303.robot;
 
-public class ActionTurnToGoal implements Action{
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-	static final double offsetConstant = 0; //was 10 for some reason?
-	static final double pixelPerDegreeConstant = 0.084;
+public class ActionTurnToGoal extends ActionAbstract implements Action{
+
+	static final double offsetConstant = 50; 
+	static final double pixelPerDegreeConstant = 0.1468; //0.084
 	double degreeSetpoint = 0;
 	ActionTurnToAngle angleTurn;
 	boolean firstRun;
 	
+	/**
+	 * Turns to the goal based on offset from center X pixel.
+	 * @deprecated Does not work. Use ActionDriveToGoal instead.
+	 */
+	@Deprecated
 	public ActionTurnToGoal() {
 		firstRun = true;
 	}
@@ -17,7 +24,8 @@ public class ActionTurnToGoal implements Action{
 		
 		if(firstRun) {
 			double degRelSetpoint = getCameraDegreeOffset();
-			angleTurn = new ActionTurnToAngle(degRelSetpoint, true, 1.0f);
+			SmartDashboard.putNumber("Degree Offset", degRelSetpoint);
+			angleTurn = new ActionTurnToAngle(degRelSetpoint, true, 1);
 			firstRun = false;
 		} else {
 			angleTurn.run();
@@ -31,6 +39,10 @@ public class ActionTurnToGoal implements Action{
 		
 		if(!firstRun) {
 			end = angleTurn.isFinished();
+		} 
+		
+		if(end) {
+			firstRun = true;
 		}
 		
 		return end;
@@ -38,10 +50,12 @@ public class ActionTurnToGoal implements Action{
 	
 	public double getCameraDegreeOffset() {
 		if(Robot.camera.getCenterX()+offsetConstant>=(Camera.cameraResX/2)){
-			return (((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)) * pixelPerDegreeConstant);
+			SmartDashboard.putNumber("Center X Offset", (-1*(((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)))));
+			return -1*(((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)) * pixelPerDegreeConstant);
 		}
 		else {
-			return -1*(((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant) * pixelPerDegreeConstant);
+			SmartDashboard.putNumber("Center X Offset", ((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant));	
+			return (((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant) * pixelPerDegreeConstant);
 		}
 	}
 		
