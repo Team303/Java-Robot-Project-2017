@@ -1,8 +1,11 @@
 package org.usfirst.frc.team303.robot;
 
+import org.usfirst.frc.team303.robot.Autonomous.AutoStates;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -12,14 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
-	
-	static boolean practiceBot = false;
-	
-	//final String defaultAuto = "Default";
-	//final String customAuto = "My Auto";
-	//String autoSelected;
-	//SendableChooser<String> chooser = new SendableChooser<>();
+public class Robot extends IterativeRobot {	
+	static AutoStates autoSelected;
+	SendableChooser<AutoStates> chooser = new SendableChooser<>();
 	static Camera camera;
 	static Shooter shooter;
 	static Drivebase drivebase;
@@ -38,15 +36,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		//chooser.addDefault("Default Auto", defaultAuto);
-		//chooser.addObject("My Auto", customAuto);
-		//SmartDashboard.putData("Auto choices", chooser);
+		chooser.addDefault("Default Auto", AutoStates.Default);
+		chooser.addObject("Center Auto", AutoStates.CenterStation);
+		chooser.addObject("Far Auto", AutoStates.FarStation);
+		chooser.addObject("Near Auto", AutoStates.NearStation);
+		chooser.addObject("Boiler Auto", AutoStates.Boiler);
+		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
 		shooter = new Shooter();
 		timer.start();
 		drivebase = new Drivebase();
 		navX = new NavX();
-		System.out.println(navX.getYaw());
 		climber = new Climber();
 		intake = new Intake();
 		pdp = new PowerDistributionPanel(RobotMap.PDP);
@@ -75,10 +75,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		//autoSelected = chooser.getSelected();
 		auto = new Autonomous();
-		// autoSelected = SmartDashboard.getString("Auto Selector", defaultAuto);
-		//System.out.println("Auto selected: " + autoSelected);
 	}
 
 	/**
@@ -88,20 +85,34 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {		
 		
 		if(!autoRunOnce){
+			autoSelected = chooser.getSelected();
+			
+			SmartDashboard.putString("Auto Selected", autoSelected.toString());
+			
+			switch (autoSelected) {
+			case FarStation:
+				auto.assembleGearFromFarStation();
+				break;
+			case NearStation:
+				auto.assembleGearFromNearStation();
+				break;
+			case CenterStation:
+				SmartDashboard.putString("Selected", "yes");
+				auto.assembleGearFromCenterStation();
+				break;
+			case Boiler:
+				auto.assembleGearFromBoiler();
+				break;
+			case Default:
+				default:
+				break;
+			}
+			
+			auto.arr.add(new ActionWait(999999999));
 			auto.taskNum = 0;
 		}
 		
 		auto.run();
-
-/*		switch (autoSelected) {
-		case customAuto:
-			// Put custom auto code here
-			break;
-		case defaultAuto:
-			default:
-			// Put default auto code here
-			break;
-		} */
 		
 		autoRunOnce = true;
 	}

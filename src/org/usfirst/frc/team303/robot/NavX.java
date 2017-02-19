@@ -16,7 +16,7 @@ public class NavX implements PIDOutput { //this class controls the PID for the n
 	double setPoint = 0;
 	double last_world_linear_accel_x;
 	double last_world_linear_accel_y;
-	final static double kCollisionThreshold_DeltaG = 0.5f;
+	final static double kCollisionThreshold_DeltaG = 0.7f;
 	  
 	public NavX() {
 		navX = new AHRS(SPI.Port.kMXP);

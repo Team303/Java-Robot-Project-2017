@@ -25,7 +25,7 @@ public class ActionTurnToGoal extends ActionAbstract implements Action{
 		if(firstRun) {
 			double degRelSetpoint = getCameraDegreeOffset();
 			SmartDashboard.putNumber("Degree Offset", degRelSetpoint);
-			angleTurn = new ActionTurnToAngle(degRelSetpoint, true, 1);
+			angleTurn = new ActionTurnToAngle(degRelSetpoint, true, 1, false);
 			firstRun = false;
 		} else {
 			angleTurn.run();

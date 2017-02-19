@@ -7,7 +7,7 @@ public class ActionDriveToGoalByArea extends ActionAbstract implements Action {
 	boolean goalFinished;
 	boolean firstRun;
 	static final double pixelPerDegreeConstant = 0.146875; //0.084
-	static final double offsetConstant = 0;
+	static final double offsetConstant = 20;
 	int area;
 	
 	public ActionDriveToGoalByArea(int stopArea) {
@@ -23,7 +23,7 @@ public class ActionDriveToGoalByArea extends ActionAbstract implements Action {
 		}
 		
 		double degreeOffset = getCameraDegreeOffset();
-		double[] pow = driveStraightAngle(0.5, degreeOffset, 0.011);
+		double[] pow = driveStraightAngle(0.55, degreeOffset, 0.015);
 		Robot.drivebase.drive(pow[0], pow[1]);
 		
 	}

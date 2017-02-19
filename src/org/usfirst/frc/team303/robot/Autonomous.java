@@ -11,9 +11,10 @@ public class Autonomous {
 	
 	public Autonomous() {
 		
-		//followArea();
-		assembleGearFromNearStation();
-		arr.add(new ActionWait(999999999));
+	}
+	
+	enum AutoStates {
+		Default, NearStation, FarStation, CenterStation, Boiler;
 	}
 	
 	public void run(){
@@ -27,26 +28,36 @@ public class Autonomous {
 		SmartDashboard.putNumber("taskNum", taskNum);
 	}
 	
+	public void assembleGearFromBoiler() {
+		arr.add(makeSimpleParallelAction(new ActionWait(2), new ActionShooter(true)));
+		arr.add(new ActionShooter(false));
+		arr.add(new ActionDriveStraightByEncoders(-3500));
+		arr.add(new ActionTurnToAngle(-200, true, 3, true));
+		scoreGear();
+	}
 	public void assembleGearFromFarStation() {
-
-		
+		arr.add(new ActionDriveStraightByEncoders(9600)); 
+		arr.add(new ActionTurnToAngle(61, true, 3, false)); 
+		scoreGear();
 	}
 	
-	public void assembleShooting() {
-		arr.add(makeSimpleParallelAction(new ActionWait(15), new ActionShooter(true)));
-		
-		
+	public void assembleGearFromCenterStation() {
+		scoreGear();
 	}
 	
 	public void assembleGearFromNearStation() { //this one works
 		arr.add(new ActionDriveStraightByEncoders(9600)); 
-		arr.add(new ActionTurnToAngle(-61, true, 3)); 
+		arr.add(new ActionTurnToAngle(-61, true, 3, false)); 
+		scoreGear();
+	}
+	
+	public void scoreGear() {
+		arr.add(new ActionNacRac(false));
 		arr.add(new ActionDriveToGoalByArea(11500));
-
-		arr.add(new ActionDriveStraightByEncoders(2000)); 
-		arr.add(makeSimpleParallelAction(new ActionWait(0.5), new ActionNacRac(true)));
+		arr.add(new ActionDriveStraightByEncoders(3400, 0.5)); 
+		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
-		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-8000), new ActionNacRac(false)));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-6000), new ActionNacRac(false)));
 
 	}
 	
