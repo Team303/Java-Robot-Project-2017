@@ -17,7 +17,7 @@ public class Shooter {
 	public Shooter() {
 		shooter = new CANTalon(RobotMap.SHOOTER_ID);
 		shooter.changeControlMode(TalonControlMode.Speed);
-		setPIDF(shooter, .1, 0.00003, 0, 0.025);
+		setPIDF(shooter, .2, 0.00003, 3, 0.025);
 		shooter.setSafetyEnabled(true);
 		shooter.reverseOutput(RobotMap.SHOOTER_INV);
 		shooter.enable();
@@ -48,7 +48,7 @@ public class Shooter {
 		} else if(OI.xBtnX) {
 			//shooter.enable();
 			//shooterSlave.enable();
-			setpoint = -25000; // was -26150
+			setpoint = -21500; // was -26150
 		} else {
 			setpoint = savedSetpoint;
 		}
@@ -69,7 +69,7 @@ public class Shooter {
 		} else { //setpoint unchanged
 			if(t.get()>0.3) { //setpoint unchanged and delay is over
 				agitator.set(0.6);
-				indexer.set(0.25);
+				indexer.set(0.35);
 			} else { //setpoint unchanged and delay is not over
 				agitator.set(0); 
 				indexer.set(0);

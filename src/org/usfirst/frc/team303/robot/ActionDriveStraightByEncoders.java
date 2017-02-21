@@ -1,5 +1,6 @@
 package org.usfirst.frc.team303.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ActionDriveStraightByEncoders extends ActionAbstract implements Action{
@@ -11,20 +12,30 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 	boolean goingForward;
 	double power;
 	double initialAngle = 0;
+	Timer t = new Timer();
+	double timeout;
 	
-	public ActionDriveStraightByEncoders(double distance, double basePower) { //alternate constructor for power
+	public ActionDriveStraightByEncoders(double distance, double basePower, double timeout) { //alternate constructor
 		encoderEndThreshold = distance;
 		firstRun=true;
 		power = basePower;
+		this.timeout = timeout;
+	}
+	
+	public ActionDriveStraightByEncoders(double distance, double basePower) {
+		this(distance, basePower, 15);
 	}
 	
 	public ActionDriveStraightByEncoders(double distance) {
-		this(distance, 0.8);
+		this(distance, 0.8, 15);
 	}
 	
 	public void run() {
 		
 		if(firstRun) {
+			t.stop();
+			t.reset();
+			t.start();
 			Robot.drivebase.zeroEncoders();
 			Robot.navX.navX.zeroYaw();
 			firstRun = false;
@@ -56,13 +67,15 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 		encoders = ((Robot.drivebase.getLeftEncoder()+Robot.drivebase.getRightEncoder())/2);
 		
 		if(encoderEndThreshold>=0) {
-			end = encoders>encoderEndThreshold; 
+			end = (encoders>encoderEndThreshold)||t.get()>timeout; 
 		} else {
-			end = encoders<encoderEndThreshold;
+			end = (encoders<encoderEndThreshold)||t.get()>timeout;
 		}
 		
 		if(end) {
 			firstRun = true;
+			t.stop();
+			t.reset();
 		}
 		
 		return end;

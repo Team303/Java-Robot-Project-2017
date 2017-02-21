@@ -14,7 +14,7 @@ public class Autonomous {
 	}
 	
 	enum AutoStates {
-		Default, NearStation, FarStation, CenterStation, Boiler;
+		Default, RightPeg, LeftPeg, MidPeg, rBoiler, bBoiler;
 	}
 	
 	public void run(){
@@ -28,37 +28,56 @@ public class Autonomous {
 		SmartDashboard.putNumber("taskNum", taskNum);
 	}
 	
-	public void assembleGearFromBoiler() {
-		arr.add(makeSimpleParallelAction(new ActionWait(2), new ActionShooter(true)));
+	public void assembleGearFromRBoiler() {
+		arr.add(makeSimpleParallelAction(new ActionWait(4.5), new ActionShooter(true)));
 		arr.add(new ActionShooter(false));
 		arr.add(new ActionDriveStraightByEncoders(-3500));
-		arr.add(new ActionTurnToAngle(-200, true, 3, true));
-		scoreGear();
+		arr.add(new ActionTurnToAngle(-200, true, 3, true, 0.3, false ));
+		scoreGearBoiler();
 	}
-	public void assembleGearFromFarStation() {
+	
+	public void assembleGearFromBBoiler() {
+		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionShooter(true)));
+		arr.add(new ActionShooter(false));
+		arr.add(new ActionTurnToAngle(-185, true, 3, true, 0.3, true));
+		arr.add(new ActionDriveStraightByEncoders(-6000)); // it was at this moment that Rob wanted to khs himself
+		arr.add(new ActionTurnToAngle(-160, true, 3, true, 0.5, true ));
+		scoreGearBoiler();
+	}
+	
+	public void assembleGearFromLeftPeg() {
 		arr.add(new ActionDriveStraightByEncoders(9600)); 
-		arr.add(new ActionTurnToAngle(61, true, 3, false)); 
+		arr.add(new ActionTurnToAngle(61, true, 3, false, 1, false)); 
 		scoreGear();
 	}
 	
-	public void assembleGearFromCenterStation() {
+	public void assembleGearFromMidPeg() {
 		scoreGear();
 	}
 	
-	public void assembleGearFromNearStation() { //this one works
+	public void assembleGearFromRightPeg() { //this one works
 		arr.add(new ActionDriveStraightByEncoders(9600)); 
-		arr.add(new ActionTurnToAngle(-61, true, 3, false)); 
+		arr.add(new ActionTurnToAngle(-61, true, 3, false, 1, false)); 
 		scoreGear();
+	}
+	
+	public void scoreGearBoiler() {
+		arr.add(new ActionNacRac(false));
+		arr.add(new ActionDriveToGoalByArea(12000));
+		arr.add(new ActionDriveStraightByEncoders(5500, 0.48, 1)); 
+		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionNacRac(true)));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-6000), new ActionNacRac(false)));
+
 	}
 	
 	public void scoreGear() {
 		arr.add(new ActionNacRac(false));
 		arr.add(new ActionDriveToGoalByArea(11500));
-		arr.add(new ActionDriveStraightByEncoders(3400, 0.5)); 
+		arr.add(new ActionDriveStraightByEncoders(2000, 0.5, 3)); 
 		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-6000), new ActionNacRac(false)));
-
 	}
 	
 	public void followArea() {

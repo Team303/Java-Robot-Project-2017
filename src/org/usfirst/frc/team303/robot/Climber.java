@@ -40,7 +40,7 @@ public class Climber {
 		current = Robot.pdp.getCurrent(RobotMap.CLIMBER_PDP_CHANNEL);
 		SmartDashboard.putNumber("Climber Amperage", current);
 		
-		double cT = 0.01; //current threshold TODO test this value
+		double cT = 3; //current threshold TODO test this value
 		double lag = 0.1; //in seconds
 		
 		if((t.get()>lag && current>cT) || cTT) {
@@ -54,7 +54,7 @@ public class Climber {
 	}
 	
 	public void control() {
-		boolean btnState = OI.rBtn[RobotMap.CLIMBER_CLIMB_BUTTON];
+		boolean btnState = OI.xLeftBumper && OI.xRightBumper;
 		
 		if(pulse(btnState)) {
 			t.start();

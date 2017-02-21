@@ -68,7 +68,9 @@ public class OI {
 		xrY = xbox.getY(Hand.kRight);
 		
 		xBtnA = xbox.getAButton();
+		SmartDashboard.putBoolean("a state", xBtnA);
 		xBtnB = xbox.getBButton();
+		SmartDashboard.putBoolean("b state", xBtnB);
 		xBtnX = xbox.getXButton();
 		xBtnY = xbox.getYButton();
 		xLeftBumper = xbox.getBumper(Hand.kLeft);

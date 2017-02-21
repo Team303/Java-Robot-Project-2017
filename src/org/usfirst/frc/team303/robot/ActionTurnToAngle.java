@@ -10,14 +10,18 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 	boolean relativeYaw;
 	int counter = 0;
 	float tolerance;
-	boolean biased;
+	boolean pivot;
+	double pivotPower;
+	boolean pivotDirection;
 	
-	public ActionTurnToAngle(double setpoint, boolean relative, float toleranceC, boolean biased) {
+	public ActionTurnToAngle(double setpoint, boolean relative, float tolerance, boolean pivot, double pivotPower, boolean pivotDirection) {
 		firstRun = true;
-		tolerance = toleranceC;
+		this.tolerance = tolerance;
 		iSetpoint = setpoint;
 		relativeYaw = relative;
-		this.biased = biased;
+		this.pivot = pivot;
+		this.pivotPower = pivotPower;
+		this.pivotDirection = pivotDirection;
 	}
 	
 	@Override
@@ -47,8 +51,13 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 		
 		double output = Robot.navX.getPidOutput();
 		
-		if(biased) {
-			Robot.drivebase.drive(-output, 0);
+		if(pivot) {
+			if(pivotDirection) {
+				Robot.drivebase.drive(-pivotPower*output, output);
+			}
+			else {
+				Robot.drivebase.drive(-output, pivotPower*output);
+			}
 		} else {
 			Robot.drivebase.drive(-output, output);	
 		}

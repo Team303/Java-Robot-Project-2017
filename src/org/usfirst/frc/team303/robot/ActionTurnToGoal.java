@@ -12,7 +12,7 @@ public class ActionTurnToGoal extends ActionAbstract implements Action{
 	
 	/**
 	 * Turns to the goal based on offset from center X pixel.
-	 * @deprecated Does not work. Use ActionDriveToGoal instead.
+	 * @deprecated Does not reliably work. Use ActionDriveToGoal instead.
 	 */
 	@Deprecated
 	public ActionTurnToGoal() {
@@ -25,7 +25,7 @@ public class ActionTurnToGoal extends ActionAbstract implements Action{
 		if(firstRun) {
 			double degRelSetpoint = getCameraDegreeOffset();
 			SmartDashboard.putNumber("Degree Offset", degRelSetpoint);
-			angleTurn = new ActionTurnToAngle(degRelSetpoint, true, 1, false);
+			angleTurn = new ActionTurnToAngle(degRelSetpoint, true, 1, false, 1, false);
 			firstRun = false;
 		} else {
 			angleTurn.run();

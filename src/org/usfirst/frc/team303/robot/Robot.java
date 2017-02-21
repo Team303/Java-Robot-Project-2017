@@ -36,11 +36,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		chooser.addDefault("Default Auto", AutoStates.Default);
-		chooser.addObject("Center Auto", AutoStates.CenterStation);
-		chooser.addObject("Far Auto", AutoStates.FarStation);
-		chooser.addObject("Near Auto", AutoStates.NearStation);
-		chooser.addObject("Boiler Auto", AutoStates.Boiler);
+		chooser.addDefault("Do Nothing", AutoStates.Default);
+		chooser.addObject("Middle Peg Auto", AutoStates.MidPeg);
+		chooser.addObject("Left Peg Auto", AutoStates.LeftPeg);
+		chooser.addObject("Right Peg Auto", AutoStates.RightPeg);
+		chooser.addObject("[RED] Boiler/Gear Auto", AutoStates.rBoiler);
+		chooser.addObject("[BLUE] Boiler/Gear Auto", AutoStates.bBoiler);
 		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
 		shooter = new Shooter();
@@ -59,6 +60,15 @@ public class Robot extends IterativeRobot {
 	public void robotPeriodic() {
 		OI.update();
 		OI.outputs();
+		
+		if(OI.lZ<0.5) {
+			drivebase.zeroEncoders();
+		}
+		if(OI.rZ<0.5) {
+			navX.navX.zeroYaw();
+		}
+		
+		
 	}
 	
 	
@@ -90,22 +100,25 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("Auto Selected", autoSelected.toString());
 			
 			switch (autoSelected) {
-			case FarStation:
-				auto.assembleGearFromFarStation();
+			case LeftPeg:
+				auto.assembleGearFromLeftPeg();
 				break;
-			case NearStation:
-				auto.assembleGearFromNearStation();
+			case RightPeg:
+				auto.assembleGearFromRightPeg();
 				break;
-			case CenterStation:
+			case MidPeg:
 				SmartDashboard.putString("Selected", "yes");
-				auto.assembleGearFromCenterStation();
+				auto.assembleGearFromMidPeg();
 				break;
-			case Boiler:
-				auto.assembleGearFromBoiler();
+			case rBoiler:
+				auto.assembleGearFromRBoiler();
+				break;
+			case bBoiler:
+				auto.assembleGearFromBBoiler();
 				break;
 			case Default:
 				default:
-				break;
+				break;		
 			}
 			
 			auto.arr.add(new ActionWait(999999999));
@@ -128,18 +141,18 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		if(OI.lZ<0.5) {
-			drivebase.zeroEncoders();
-		}
-		
 		nacrac.control();
 		climber.control();
 		intake.control();
 		camera.control();
-		drivebase.drive(OI.lY, OI.rY);
-		shooter.control();
 		
-		navX.collisionDetected();
+		if(OI.lBtn[6]){			
+			nacrac.driveToPeg();
+		} else {
+			drivebase.drive(OI.lY, OI.rY);	
+		}
+		
+		shooter.control();
 		
 	}
 
