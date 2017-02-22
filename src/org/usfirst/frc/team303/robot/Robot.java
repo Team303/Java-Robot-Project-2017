@@ -154,6 +154,7 @@ public class Robot extends IterativeRobot {
 		
 		shooter.control();
 		
+		
 	}
 
 	/**

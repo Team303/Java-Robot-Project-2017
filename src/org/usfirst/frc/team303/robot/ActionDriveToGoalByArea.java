@@ -22,9 +22,11 @@ public class ActionDriveToGoalByArea extends ActionAbstract implements Action {
 			firstRun = false;
 		}
 		
-		double scaledCameraArea = (((-(Robot.camera.getArea()-700))+14000)/22000+0.1); //scale the power
+		double minPower = 0.43;
+		double scaledCameraArea = (((-(Robot.camera.getArea()-700))+14000)/23000); //scale the power
+		scaledCameraArea = scaledCameraArea > minPower ? scaledCameraArea : minPower;
 		double degreeOffset = getCameraDegreeOffset();
-		double[] pow = driveStraightAngle(scaledCameraArea, degreeOffset, 0.015); //power was 0.55
+		double[] pow = driveStraightAngle(scaledCameraArea, degreeOffset, 0.01); //power was 0.55
 		Robot.drivebase.drive(pow[0], pow[1]);
 		
 	}

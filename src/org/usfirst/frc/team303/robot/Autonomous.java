@@ -31,17 +31,18 @@ public class Autonomous {
 	public void assembleGearFromRBoiler() {
 		arr.add(makeSimpleParallelAction(new ActionWait(4.5), new ActionShooter(true)));
 		arr.add(new ActionShooter(false));
-		arr.add(new ActionDriveStraightByEncoders(-3500));
-		arr.add(new ActionTurnToAngle(-200, true, 3, true, 0.3, false ));
+		arr.add(new ActionDriveStraightByEncoders(-3400));
+		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false ));
 		scoreGearBoiler();
 	}
 	
 	public void assembleGearFromBBoiler() {
-		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionShooter(true)));
-		arr.add(new ActionShooter(false));
-		arr.add(new ActionTurnToAngle(-185, true, 3, true, 0.3, true));
-		arr.add(new ActionDriveStraightByEncoders(-6000)); // it was at this moment that Rob wanted to khs himself
-		arr.add(new ActionTurnToAngle(-160, true, 3, true, 0.5, true ));
+		//arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionShooter(true)));
+		//arr.add(new ActionShooter(false));
+		//arr.add(new ActionDriveStraightByEncoders(-2500)); 
+		arr.add(new ActionTurnToAngle(60, true, 3, true, 0.02, true));
+		arr.add(new ActionDriveStraightByEncoders(6000));
+		arr.add(new ActionTurnToAngle(90, true, 3, true, 1, true));
 		scoreGearBoiler();
 	}
 	
@@ -63,9 +64,9 @@ public class Autonomous {
 	
 	public void scoreGearBoiler() {
 		arr.add(new ActionNacRac(false));
-		arr.add(new ActionDriveToGoalByArea(12000));
-		arr.add(new ActionDriveStraightByEncoders(5500, 0.48, 1)); 
-		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionNacRac(true)));
+		arr.add(new ActionDriveToGoalByArea(13500));
+		arr.add(makeSimpleParallelAction(new ActionDrive(), new ActionWait(1)));
+		arr.add(makeSimpleParallelAction(new ActionWait(0.75), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-6000), new ActionNacRac(false)));
 
@@ -73,11 +74,12 @@ public class Autonomous {
 	
 	public void scoreGear() {
 		arr.add(new ActionNacRac(false));
-		arr.add(new ActionDriveToGoalByArea(11500));
-		arr.add(new ActionDriveStraightByEncoders(2000, 0.5, 3)); 
-		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionNacRac(true)));
+		arr.add(new ActionDriveToGoalByArea(13500));
+		arr.add(makeSimpleParallelAction(new ActionDrive(), new ActionWait(1)));
+		arr.add(makeSimpleParallelAction(new ActionWait(0.75), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-6000), new ActionNacRac(false)));
+		
 	}
 	
 	public void followArea() {

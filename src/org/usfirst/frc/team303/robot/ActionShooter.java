@@ -27,7 +27,7 @@ public class ActionShooter implements Action{
 		} else if(shootActive) {
 			//Robot.shooter.shooter.enable();
 			//Robot.shooter.shooterSlave.enable();
-			setpoint = -25000; // was -26150
+			setpoint = -21500; // was -26150
 		} else {
 			setpoint = savedSetpoint;
 		}

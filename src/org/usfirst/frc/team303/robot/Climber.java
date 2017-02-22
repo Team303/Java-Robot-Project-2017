@@ -68,7 +68,7 @@ public class Climber {
 			if(findControlMode().equals(ControlStates.NORMAL)) {
 				set(.2);
 			} else {
-				set(1);
+				set(OI.xlY);
 			}
 		} else {
 			t.stop();
