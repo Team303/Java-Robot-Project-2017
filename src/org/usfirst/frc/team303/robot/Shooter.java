@@ -48,7 +48,7 @@ public class Shooter {
 		} else if(OI.xBtnX) {
 			//shooter.enable();
 			//shooterSlave.enable();
-			setpoint = -21500; // was -26150
+			setpoint = 22376; // was -26150
 		} else {
 			setpoint = savedSetpoint;
 		}
@@ -69,7 +69,7 @@ public class Shooter {
 		} else { //setpoint unchanged
 			if(t.get()>0.3) { //setpoint unchanged and delay is over
 				agitator.set(0.6);
-				indexer.set(0.35);
+				indexer.set(1);
 			} else { //setpoint unchanged and delay is not over
 				agitator.set(0); 
 				indexer.set(0);
