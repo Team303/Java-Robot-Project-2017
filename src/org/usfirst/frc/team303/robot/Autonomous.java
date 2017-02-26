@@ -14,7 +14,7 @@ public class Autonomous {
 	}
 	
 	enum AutoStates {
-		Default, RightPeg, LeftPeg, MidPeg, rBoiler, bBoiler;
+		Default, RightPeg, LeftPeg, MidPeg, rBoiler, bBoiler, rHopper;
 	}
 	
 	public void run(){
@@ -29,19 +29,21 @@ public class Autonomous {
 	}
 	
 	public void assembleGearFromRBoiler() {
-		arr.add(makeSimpleParallelAction(new ActionWait(4.5), new ActionShooter(true)));
-		arr.add(new ActionShooter(false));
+		arr.add(makeSimpleParallelAction(new ActionWait(4.5), new ActionShooter(true, 21500)));
+		arr.add(new ActionShooter(false, 21500));
 		arr.add(new ActionDriveStraightByEncoders(-3400));
 		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false ));
 		scoreGearBoiler();
 	}
 	
-	public void assembleGearFromBBoiler() {
+	public void assembleGearFromBBoiler() { // ------------------------------------------------------------------------------
 		//arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionShooter(true)));
 		//arr.add(new ActionShooter(false));
 		//arr.add(new ActionDriveStraightByEncoders(-2500)); 
-		arr.add(new ActionTurnToAngle(60, true, 3, true, 0.02, true));
+		arr.add(new ActionTurnToAngle(85, true, 3, true, 0.005, true));
+		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(6000));
+		arr.add(new ActionZero());
 		arr.add(new ActionTurnToAngle(90, true, 3, true, 1, true));
 		scoreGearBoiler();
 	}
@@ -82,9 +84,17 @@ public class Autonomous {
 		
 	}
 	
-	public void followArea() {
-		arr.add(new ActionDriveToGoalByArea(20000));
+	public void assembleHopperFromRedAllianceStation() {
+		arr.add(new ActionDriveStraightByEncoders(10600)); 
+		arr.add(new ActionTurnToAngle(-90, true, 3, false, 1, false));
+		arr.add(new ActionDriveStraightByCollision(-.6));
+		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionIntake(1)));
+		arr.add(new ActionDriveStraightByEncoders(1000));
+		arr.add(new ActionTurnToAngle(-95, true, 3, false, 1, false));
+		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 27000)));
+		arr.add(new ActionShooter(false, 0));
 	}
+	
 	
 	public ActionParallelAction makeSimpleParallelAction(Action con, Action nonCon) {
 		ArrayList<Action> nonConAction = new ArrayList<Action>();

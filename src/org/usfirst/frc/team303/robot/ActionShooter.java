@@ -7,11 +7,13 @@ public class ActionShooter implements Action{
 
 	boolean shootActive = false;
 	double savedSetpoint = 0;
+	double givenSetpoint;
 	Timer t;
 	
-	public ActionShooter(boolean setShootActive){
+	public ActionShooter(boolean setShootActive, int setpoint){
 		t = new Timer();
 		shootActive = setShootActive;
+		givenSetpoint = setpoint;
 	}
 	
 	@Override
@@ -20,21 +22,17 @@ public class ActionShooter implements Action{
 		
 		double setpoint;
 
-		if(!shootActive) { //set setpoint
+		if(!shootActive) {
 			setpoint = 0;
-			//Robot.shooter.shooter.disable();
-			//Robot.shooter.shooterSlave.disable();
 		} else if(shootActive) {
-			//Robot.shooter.shooter.enable();
-			//Robot.shooter.shooterSlave.enable();
-			setpoint = -21500; // was -26150
+			setpoint = givenSetpoint;
 		} else {
 			setpoint = savedSetpoint;
 		}
 		
 		Robot.shooter.setSetpoint(setpoint);
 		
-		if(setpoint!=Robot.shooter.savedSetpoint) { //setpoint changed
+		if(setpoint!=savedSetpoint) { //setpoint changed
 			if(setpoint==0) { //setpoint changed and is stopped
 				t.stop();
 				t.reset();
@@ -48,14 +46,14 @@ public class ActionShooter implements Action{
 		} else { //setpoint unchanged
 			if(t.get()>0.3) { //setpoint unchanged and delay is over
 				Robot.shooter.agitator.set(0.6);
-				Robot.shooter.indexer.set(0.25);
+				Robot.shooter.indexer.set(1);
 			} else { //setpoint unchanged and delay is not over
 				Robot.shooter.agitator.set(0); 
 				Robot.shooter.indexer.set(0);
 			}
 		}
 		
-		Robot.shooter.savedSetpoint = setpoint;
+		savedSetpoint = setpoint;
 		
 	}
 

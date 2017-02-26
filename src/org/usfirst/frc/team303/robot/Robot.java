@@ -42,6 +42,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Peg Auto", AutoStates.RightPeg);
 		chooser.addObject("[RED] Boiler/Gear Auto", AutoStates.rBoiler);
 		chooser.addObject("[BLUE] Boiler/Gear Auto", AutoStates.bBoiler);
+		chooser.addObject("Red Hopper", AutoStates.rHopper);
 		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
 		shooter = new Shooter();
@@ -116,6 +117,8 @@ public class Robot extends IterativeRobot {
 			case bBoiler:
 				auto.assembleGearFromBBoiler();
 				break;
+			case rHopper:
+				auto.assembleHopperFromRedAllianceStation();
 			case Default:
 				default:
 				break;		

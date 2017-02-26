@@ -89,6 +89,7 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 		if(end2) {
 			firstRun = true;
 			Robot.navX.turnController.disable();
+			Robot.drivebase.zeroEncoders();
 		}
 		
 		return end2;
