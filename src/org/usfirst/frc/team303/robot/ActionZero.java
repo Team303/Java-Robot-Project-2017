@@ -10,6 +10,8 @@ public class ActionZero implements Action{
 
 	@Override
 	public boolean isFinished() {
+		Robot.drivebase.zeroEncoders();
+		Robot.navX.navX.zeroYaw();
 		return true;
 	}
 

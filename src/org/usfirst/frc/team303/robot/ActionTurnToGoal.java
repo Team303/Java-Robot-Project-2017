@@ -47,16 +47,5 @@ public class ActionTurnToGoal extends ActionAbstract implements Action{
 		
 		return end;
 	}
-	
-	public double getCameraDegreeOffset() {
-		if(Robot.camera.getCenterX()+offsetConstant>=(Camera.cameraResX/2)){
-			SmartDashboard.putNumber("Center X Offset", (-1*(((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)))));
-			return -1*(((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)) * pixelPerDegreeConstant);
-		}
-		else {
-			SmartDashboard.putNumber("Center X Offset", ((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant));	
-			return (((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant) * pixelPerDegreeConstant);
-		}
-	}
 		
 }

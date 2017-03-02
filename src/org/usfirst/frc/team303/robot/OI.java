@@ -1,14 +1,13 @@
 package org.usfirst.frc.team303.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class OI {
-	static NetworkTable preferences = NetworkTable.getTable("Preferences");
+	//static NetworkTable preferences = NetworkTable.getTable("Preferences");
 	static Joystick left = new Joystick(0);
 	static Joystick right = new Joystick(1);
 	static XboxController xbox = new XboxController(2);
@@ -30,7 +29,7 @@ public class OI {
 		}
 		
 		updateXbox();
-		preferences = NetworkTable.getTable("Preferences");
+		//preferences = NetworkTable.getTable("Preferences");
 		
 	}
 	
@@ -47,8 +46,8 @@ public class OI {
 		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());
 		SmartDashboard.putNumber("Rectangle Area", Robot.camera.getArea());
-		SmartDashboard.putNumber("Shooter Percent Voltage", (Robot.shooter.shooter.getOutputVoltage()/Robot.pdp.getVoltage()));
-		SmartDashboard.putNumber("Shooter Velocity", Robot.shooter.getSpeed());
+		SmartDashboard.putNumber("Shooter Percent Voltage", (Math.abs(Robot.shooter.shooter.getOutputVoltage()/Robot.pdp.getVoltage())));
+		SmartDashboard.putNumber("Shooter Velocity", Math.abs(Robot.shooter.getSpeed()));
 		SmartDashboard.putNumber("L Encoder", Robot.drivebase.getLeftEncoder());
 		SmartDashboard.putNumber("R Encoder", Robot.drivebase.getRightEncoder());
 	}

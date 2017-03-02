@@ -45,7 +45,7 @@ public class ActionShooter implements Action{
 			}
 		} else { //setpoint unchanged
 			if(t.get()>0.3) { //setpoint unchanged and delay is over
-				Robot.shooter.agitator.set(0.6);
+				Robot.shooter.agitator.set(0.4);
 				Robot.shooter.indexer.set(1);
 			} else { //setpoint unchanged and delay is not over
 				Robot.shooter.agitator.set(0); 

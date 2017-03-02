@@ -1,13 +1,10 @@
 package org.usfirst.frc.team303.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class ActionDriveToGoalByArea extends ActionAbstract implements Action {
 
 	boolean goalFinished;
 	boolean firstRun;
-	static final double pixelPerDegreeConstant = 0.146875; //0.084
-	static final double offsetConstant = 20;
+
 	int area;
 	
 	public ActionDriveToGoalByArea(int stopArea) {
@@ -42,20 +39,4 @@ public class ActionDriveToGoalByArea extends ActionAbstract implements Action {
 		}	
 	}	
 	
-	public double getCameraDegreeOffset() {
-		if(Robot.camera.getCenterX()+offsetConstant>=(Camera.cameraResX/2)){
-			double centerXOffset = (((Camera.cameraResX/2)-(Robot.camera.getCenterX()+offsetConstant)));
-			SmartDashboard.putNumber("Center X Offset", centerXOffset);
-			return centerXOffset*pixelPerDegreeConstant;
-		}
-		else {
-			double centerXOffset = -1*(((Robot.camera.getCenterX()-(Camera.cameraResX/2))+offsetConstant));
-			SmartDashboard.putNumber("Center X Offset", centerXOffset);
-			return centerXOffset * pixelPerDegreeConstant;
-		}
-	}
-	
-	public double[] driveStraightAngle(double powSetpoint, double angleDifference, double tuningConstant) {                                                                                                                      //memes
-		return new double[] {(powSetpoint + (angleDifference*tuningConstant)), (powSetpoint - (angleDifference*tuningConstant))};
-	}
 }

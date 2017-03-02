@@ -1,8 +1,9 @@
 package org.usfirst.frc.team303.robot;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ActionTurnToAngle extends ActionAbstract implements Action {
+public class ActionTurnAngleUntilCollision extends ActionAbstract implements Action {
 	
 	double fSetpoint; //final setpoint to feed to controller
 	double iSetpoint;
@@ -13,12 +14,14 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 	boolean pivot;
 	double pivotPower;
 	boolean pivotDirection;
+	Timer t = new Timer();
+	double timer;
 	
-	public ActionTurnToAngle(double setpoint, boolean relative, float tolerance) { //pivot is assumed false
-		this(setpoint, relative, tolerance, false, 1, false);
+	public ActionTurnAngleUntilCollision(double setpoint, boolean relative, float tolerance) { //pivot is assumed false
+		this(setpoint, relative, tolerance, false, 1, false, 15);
 	}
 	
-	public ActionTurnToAngle(double setpoint, boolean relative, float tolerance, boolean pivot, double pivotPower, boolean pivotDirection) {
+	public ActionTurnAngleUntilCollision(double setpoint, boolean relative, float tolerance, boolean pivot, double pivotPower, boolean pivotDirection, double timerC) {
 		firstRun = true;
 		this.tolerance = tolerance;
 		iSetpoint = setpoint;
@@ -26,6 +29,8 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 		this.pivot = pivot;
 		this.pivotPower = pivotPower;
 		this.pivotDirection = pivotDirection;
+		timer = timerC;
+		
 	}
 	
 	@Override
@@ -34,7 +39,7 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 		if(firstRun) {
 			double theta = Robot.navX.getYaw();
 			fSetpoint = relativeYaw ? theta+iSetpoint : iSetpoint;
-			
+			t.start();
 			if(relativeYaw) {
 				fSetpoint = theta+iSetpoint;
 				
@@ -73,11 +78,13 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 	
 	@Override
 	public boolean isFinished() {
+		
 		double yaw = Robot.navX.getYaw();
 		double setpoint = Robot.navX.turnController.getSetpoint();
-		boolean end = ((yaw<=setpoint+tolerance) && (yaw>=setpoint-tolerance));
+		boolean end = (((yaw<=setpoint+tolerance) && (yaw>=setpoint-tolerance))) || (t.get() >= timer) ;
 		boolean end2 = false;
-	
+		
+		
 		if(end) {
 			counter++;
 		} else {
@@ -92,6 +99,7 @@ public class ActionTurnToAngle extends ActionAbstract implements Action {
 		
 		if(end2) {
 			firstRun = true;
+			t.stop();
 			Robot.navX.turnController.disable();
 			Robot.drivebase.zeroEncoders();
 		}

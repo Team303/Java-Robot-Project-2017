@@ -29,7 +29,9 @@ public class Camera {
 	private double rectangleArea=0.0;
 	public static final int cameraResX = 320;
 	public static final int cameraResY = 240;
-
+	public static final double pegCorrectConst = .0001;
+	private double pegCorrectAngle = 0;
+	
 	public Camera() {
 		enableVisionThread(); //outputs a processed feed to the dashboard (overlays the found boiler tape)
 	}
@@ -70,7 +72,7 @@ public class Camera {
 						if(contoursFound>2) {
 
 							Rect rectThree = Imgproc.boundingRect(pipeline.filterContoursOutput().get(2)); //saw three+ contours, get the third contour
-
+							
 							//initialize rectangle sorting ArrayList
 							ArrayList<Rect> orderedRectangles= new ArrayList<Rect>();
 							ContourAreaComparator areaComparator = new ContourAreaComparator();
@@ -80,14 +82,14 @@ public class Camera {
 
 							//sort the rectangles by area
 							Collections.sort(orderedRectangles, areaComparator);
-
+							
 							//sort the smaller rectangles vertically
 							Rect topRect = (orderedRectangles.get(2).y>orderedRectangles.get(1).y) ? orderedRectangles.get(1) : orderedRectangles.get(2); 
 							Rect bottomRect = (orderedRectangles.get(2).y>orderedRectangles.get(1).y) ? orderedRectangles.get(2) : orderedRectangles.get(1);
 
 							//repair the image using top and bottom rectangles
-							Rect mergedRect = new Rect(topRect.x, topRect.y, (int)(bottomRect.br().x-topRect.tl().x), (int)(bottomRect.br().y-topRect.tl().y));
-
+							Rect mergedRect = new Rect((int) topRect.tl().x, (int) topRect.tl().y, (int)(bottomRect.br().x-topRect.tl().x), (int)(bottomRect.br().y-topRect.tl().y));
+							
 							//recreate the rectangles from the repaired image
 							if(rectOne==orderedRectangles.get(1) || rectOne==orderedRectangles.get(2)){
 								rectOne = mergedRect;
@@ -109,7 +111,7 @@ public class Camera {
 						centerYOne = rectOne.y + (rectOne.height/2); //returns the center of the bounding rectangle
 						centerXTwo = rectTwo.x + (rectTwo.width/2);
 						centerYTwo = rectTwo.y + (rectTwo.height/2);
-
+						
 						double width=rectTwo.x-(rectOne.x+rectOne.width);
 						double height=rectOne.y-(rectTwo.y+rectTwo.height);
 
@@ -117,9 +119,13 @@ public class Camera {
 						centerYAvg = (centerYOne + centerYTwo)/2;
 						centerXAvg = (centerXOne + centerXTwo)/2;
 
+						double slope = (rectOne.tl().y-rectTwo.tl().y)/(rectOne.tl().x-rectTwo.tl().x);
+						double pegCorrectAng = slope*Math.sqrt(Math.abs(rectangleArea))*pegCorrectConst;
+						pegCorrectAngle = pegCorrectAng;
+						
 						//draws the rectangles onto the camera image sent to the dashboard
 						Imgproc.rectangle(mat, new Point(rectOne.x, rectOne.y), new Point(rectTwo.x + rectTwo.width, rectTwo.y + rectTwo.height), new Scalar(0, 0, 255), 2); 
-						Imgproc.rectangle(mat, new Point(centerXAvg-3,centerYAvg-3), new Point(centerXAvg+3,centerYAvg+3), new Scalar(255, 0, 0), 5);
+						Imgproc.rectangle(mat, new Point(centerXAvg-3,centerYAvg-3), new Point(centerXAvg+3,centerYAvg+3), new Scalar(255, 0, 0), 3);
 
 						SmartDashboard.putString("Vision State", "Executed overlay!");
 					}
@@ -138,6 +144,10 @@ public class Camera {
 		visionThread.start();
 	}
 
+	public double getPegCorrectAngle() {
+		return pegCorrectAngle;
+	}
+	
 	public double getArea(){
 		return rectangleArea;
 	}
@@ -169,4 +179,3 @@ public class Camera {
 	}
 
 }
-

@@ -39,8 +39,4 @@ public class ActionDriveStraightByCollision extends ActionAbstract implements Ac
 		
 	}
 	
-	public double[] driveStraightAngle(double powSetpoint, double angleDifference, double tuningConstant) {                                                                                                                      //memes
-		return new double[] {(powSetpoint + (angleDifference*tuningConstant)), (powSetpoint - (angleDifference*tuningConstant))};
-	}
-	
 }

@@ -61,6 +61,7 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 		if(firstRun) {
 			Robot.drivebase.zeroEncoders();
 			initialAngle = Robot.navX.getYaw();
+			encoders = 0;
 			return false;
 		}
 		
@@ -73,6 +74,7 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 		}
 		
 		if(end) {
+			encoders = 0;
 			firstRun = true;
 			t.stop();
 			t.reset();
@@ -81,8 +83,6 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 		return end;
 	}
 	
-	public double[] driveStraightAngle(double powSetpoint, double angleDifference, double tuningConstant) {                                                                                                                      //memes
-		return new double[] {(powSetpoint + (angleDifference*tuningConstant)), (powSetpoint - (angleDifference*tuningConstant))};
-	}
+	
 	
 }

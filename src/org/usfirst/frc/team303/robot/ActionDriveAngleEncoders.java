@@ -36,7 +36,4 @@ public class ActionDriveAngleEncoders extends ActionAbstract implements Action{
 		}	
 	}
 	
-	public double[] driveStraightAngle(double powSetpoint, double angleDifference, double tuningConstant) {                                                                                                                      //memes
-		return new double[] {(powSetpoint + (angleDifference*tuningConstant)), (powSetpoint - (angleDifference*tuningConstant))};
-	}
 }

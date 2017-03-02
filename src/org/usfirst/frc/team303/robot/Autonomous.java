@@ -19,38 +19,41 @@ public class Autonomous {
 	
 	public void run(){
 		if(arr.size()>=taskNum){
+			arr.get(taskNum).run();
 			if(arr.get(taskNum).isFinished()) {
 				taskNum++;
 			}
-			arr.get(taskNum).run();
+			//arr.get(taskNum).run();
 		}
 		
 		SmartDashboard.putNumber("taskNum", taskNum);
 	}
 	
 	public void assembleGearFromRBoiler() {
-		arr.add(makeSimpleParallelAction(new ActionWait(4.5), new ActionShooter(true, 21500)));
-		arr.add(new ActionShooter(false, 21500));
+		arr.add(makeSimpleParallelAction(new ActionWait(4), new ActionShooter(true, 23000)));
+		arr.add(new ActionShooter(false, 0));
+		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(-3400));
 		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false ));
 		scoreGearBoiler();
 	}
 	
 	public void assembleGearFromBBoiler() { // ------------------------------------------------------------------------------
-		//arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionShooter(true)));
-		//arr.add(new ActionShooter(false));
-		//arr.add(new ActionDriveStraightByEncoders(-2500)); 
-		arr.add(new ActionTurnToAngle(85, true, 3, true, 0.005, true));
-		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByEncoders(6000));
-		arr.add(new ActionZero());
-		arr.add(new ActionTurnToAngle(90, true, 3, true, 1, true));
+		//arr.add(makeSimpleParallelAction(new ActionWait(4), new ActionShooter(true, 29000)));
+		//arr.add(new ActionShooter(false, 0));
+		//arr.add(new ActionDriveStraightByEncoders(500));
+		//arr.add(new ActionTurnToAngle(85, true, 3, true, 0.005, true));
+		//arr.add(new ActionDriveStraightByEncoders(6000));
+		//arr.add(new ActionTurnToAngle(65, true, 3, true, 1, true));
+		arr.add(makeSimpleParallelAction(new ActionWait(4), new ActionShooter(true, 23000)));
+		arr.add(new ActionShooter(false, 0));
+		arr.add(new ActionTurnAngleUntilCollision(181, true, 15, true, 0, true, 1.8));
 		scoreGearBoiler();
 	}
 	
 	public void assembleGearFromLeftPeg() {
 		arr.add(new ActionDriveStraightByEncoders(9600)); 
-		arr.add(new ActionTurnToAngle(61, true, 3, false, 1, false)); 
+		arr.add(new ActionTurnToAngle(61, true, 3)); 
 		scoreGear();
 	}
 	
@@ -58,9 +61,9 @@ public class Autonomous {
 		scoreGear();
 	}
 	
-	public void assembleGearFromRightPeg() { //this one works
+	public void assembleGearFromRightPeg() {
 		arr.add(new ActionDriveStraightByEncoders(9600)); 
-		arr.add(new ActionTurnToAngle(-61, true, 3, false, 1, false)); 
+		arr.add(new ActionTurnToAngle(-61, true, 3)); 
 		scoreGear();
 	}
 	
@@ -86,11 +89,11 @@ public class Autonomous {
 	
 	public void assembleHopperFromRedAllianceStation() {
 		arr.add(new ActionDriveStraightByEncoders(10600)); 
-		arr.add(new ActionTurnToAngle(-90, true, 3, false, 1, false));
+		arr.add(new ActionTurnToAngle(-90, true, 3));
 		arr.add(new ActionDriveStraightByCollision(-.6));
 		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionIntake(1)));
 		arr.add(new ActionDriveStraightByEncoders(1000));
-		arr.add(new ActionTurnToAngle(-95, true, 3, false, 1, false));
+		arr.add(new ActionTurnToAngle(-95, true, 3));
 		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 27000)));
 		arr.add(new ActionShooter(false, 0));
 	}
