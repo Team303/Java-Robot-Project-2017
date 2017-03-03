@@ -34,7 +34,7 @@ public class NacRac {
 		scaledCameraArea = scaledCameraArea > minPower ? scaledCameraArea : minPower;
 		SmartDashboard.putNumber("Vision Align Power", scaledCameraArea);
 		
-		double degreeOffset = ActionAbstract.getCameraDegreeOffset()+Robot.camera.getPegCorrectAngle();
+		double degreeOffset = ActionAbstract.getCameraDegreeOffset();
 		double[] pow = ActionAbstract.driveStraightAngle(scaledCameraArea, degreeOffset, 0.011);
 		Robot.drivebase.drive(pow[0], pow[1]);
 	}
