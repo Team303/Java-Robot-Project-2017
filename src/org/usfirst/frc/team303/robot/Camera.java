@@ -29,8 +29,6 @@ public class Camera {
 	private double rectangleArea=0.0;
 	public static final int cameraResX = 320;
 	public static final int cameraResY = 240;
-	public static final double pegCorrectConst = .0001;
-	private double pegCorrectAngle = 0;
 	
 	public Camera() {
 		enableVisionThread(); //outputs a processed feed to the dashboard (overlays the found boiler tape)
@@ -118,11 +116,7 @@ public class Camera {
 						rectangleArea=width*height;
 						centerYAvg = (centerYOne + centerYTwo)/2;
 						centerXAvg = (centerXOne + centerXTwo)/2;
-
-						double slope = (rectOne.tl().y-rectTwo.tl().y)/(rectOne.tl().x-rectTwo.tl().x);
-						double pegCorrectAng = slope*Math.sqrt(Math.abs(rectangleArea))*pegCorrectConst;
-						pegCorrectAngle = pegCorrectAng;
-						
+		
 						//draws the rectangles onto the camera image sent to the dashboard
 						Imgproc.rectangle(mat, new Point(rectOne.x, rectOne.y), new Point(rectTwo.x + rectTwo.width, rectTwo.y + rectTwo.height), new Scalar(0, 0, 255), 2); 
 						Imgproc.rectangle(mat, new Point(centerXAvg-3,centerYAvg-3), new Point(centerXAvg+3,centerYAvg+3), new Scalar(255, 0, 0), 3);
@@ -143,23 +137,13 @@ public class Camera {
 		visionThread.setDaemon(true);
 		visionThread.start();
 	}
-
-	public double getPegCorrectAngle() {
-		return pegCorrectAngle;
-	}
 	
 	public double getArea(){
 		return rectangleArea;
 	}
 
 	public void control() {
-		if(OI.xBtnA){
-			enableProcessing();
-
-		}
-		else if(OI.xBtnB){
-			disableProcessing();
-		}
+		
 	}
 
 	public double getCenterY() {

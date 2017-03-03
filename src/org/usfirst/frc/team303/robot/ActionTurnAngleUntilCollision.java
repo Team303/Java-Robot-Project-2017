@@ -81,7 +81,14 @@ public class ActionTurnAngleUntilCollision extends ActionAbstract implements Act
 		
 		double yaw = Robot.navX.getYaw();
 		double setpoint = Robot.navX.turnController.getSetpoint();
-		boolean end = (((yaw<=setpoint+tolerance) && (yaw>=setpoint-tolerance))) || (t.get() >= timer) ;
+		boolean end = false;
+		
+		if(relativeYaw) {
+			end = (((yaw<=fSetpoint+tolerance) && (yaw>=fSetpoint-tolerance))) || (t.get() >= timer) ;
+		} else {
+			end = (((yaw<=setpoint+tolerance) && (yaw>=setpoint-tolerance))) || (t.get() >= timer) ;
+		}
+		
 		boolean end2 = false;
 		
 		
