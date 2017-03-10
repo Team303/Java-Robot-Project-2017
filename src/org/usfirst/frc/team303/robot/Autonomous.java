@@ -30,8 +30,8 @@ public class Autonomous {
 	}
 	
 	public void assembleGearFromRBoiler() {
-		//arr.add(makeSimpleParallelAction(new ActionWait(4), new ActionShooter(true, 23000)));
-		//arr.add(new ActionShooter(false, 0));
+		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 20725)));
+		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(-3400));
 		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false ));
@@ -39,8 +39,9 @@ public class Autonomous {
 	}
 	
 	public void assembleGearFromBBoiler() { // ------------------------------------------------------------------------------
-		//arr.add(makeSimpleParallelAction(new ActionWait(4), new ActionShooter(true, 29000)));
-		//arr.add(new ActionShooter(false, 0));
+		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 29000)));
+		arr.add(new ActionShooter(false, 0));
+		arr.add(new ActionZero());
 		//arr.add(new ActionDriveStraightByEncoders(500));
 		//arr.add(new ActionTurnToAngle(85, true, 3, true, 0.005, true));
 		//arr.add(new ActionDriveStraightByEncoders(6000));
