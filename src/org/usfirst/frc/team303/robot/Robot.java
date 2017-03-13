@@ -47,6 +47,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Shoot", AutoStates.shoot);
 		chooser.addObject("[RED] Hopper", AutoStates.rHopper);
 		chooser.addObject("[BLUE] Hopper", AutoStates.bHopper);
+		chooser.addObject("[BLUE] Boiler Auto Line", AutoStates.bBoilerAutoline);
+		chooser.addObject("[RED] Boiler Auto Line", AutoStates.rBoilerAutoline);
 		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
 		shooter = new Shooter();
@@ -129,11 +131,20 @@ public class Robot extends IterativeRobot {
 				break;
 			case rHopper:
 				auto.assembleHopperFromRedAllianceStation();
+				break;
 			case bHopper:
 				auto.assembleHopperFromBlueAllianceStation();
+				break;
+			case bBoilerAutoline:
+				auto.assembleBlueBoilerAutoLine();
+				break;
+			case rBoilerAutoline:
+				auto.assembleRedBoilerAutoLine();
+				break;
 			case Default:
 				default:
-				break;		
+				break;	
+			
 			}
 			
 			auto.arr.add(new ActionWait(999999999));
