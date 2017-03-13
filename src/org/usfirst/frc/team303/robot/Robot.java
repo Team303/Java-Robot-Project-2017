@@ -43,6 +43,8 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Peg Auto", AutoStates.RightPeg);
 		chooser.addObject("[RED] Boiler/Gear Auto", AutoStates.rBoiler);
 		chooser.addObject("[BLUE] Boiler/Gear Auto", AutoStates.bBoiler);
+		chooser.addObject("[RED] Boiler/Align Auto", AutoStates.rShootAlign);
+		chooser.addObject("Shoot", AutoStates.shoot);
 		chooser.addObject("[RED] Hopper", AutoStates.rHopper);
 		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
@@ -102,6 +104,12 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("Auto Selected", autoSelected.toString());
 			
 			switch (autoSelected) {
+			case rShootAlign:
+				auto.assembleShooterAlignR();
+				break;
+			case shoot:
+				auto.assembleShooter();
+				break;
 			case LeftPeg:
 				auto.assembleGearFromLeftPeg();
 				break;
@@ -153,7 +161,7 @@ public class Robot extends IterativeRobot {
 		if(OI.lBtn[6]){			
 			nacrac.driveToPeg();
 		} else {
-			drivebase.drive(OI.lY, OI.rY);	
+			drivebase.drive(OI.lY, OI.rY);
 		}
 		
 		shooter.control();

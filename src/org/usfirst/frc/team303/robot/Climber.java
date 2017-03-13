@@ -36,45 +36,11 @@ public class Climber {
 	}
 	
 	
-	public ControlStates findControlMode() {
-		current = Robot.pdp.getCurrent(RobotMap.CLIMBER_PDP_CHANNEL);
-		SmartDashboard.putNumber("Climber Amperage", current);
-		
-		double cT = 3; //current threshold TODO test this value
-		double lag = 0.1; //in seconds
-		
-		if((t.get()>lag && current>cT) || cTT) {
-			cTT = true;
-			return ControlStates.HIGH;
-		}
-		else{
-			return ControlStates.NORMAL;
-		}
-		
-	}
-	
 	public void control() {
-		boolean btnState = OI.xLeftBumper && OI.xRightBumper;
 		
-		if(pulse(btnState)) {
-			t.start();
-		} else {
-			
-		}
-		
-		if(btnState) {
+		if(OI.xLeftBumper && OI.xRightBumper) {
 			Robot.intake.set(0.9);
-			
-			if(findControlMode().equals(ControlStates.NORMAL)) {
-				set(.2);
-			} else {
-				set(-OI.xlY);
-			}
-		} else {
-			t.stop();
-			t.reset();
-			cTT = false;
-			set(0);
+			set(-OI.xlY);
 		}
 		
 	}

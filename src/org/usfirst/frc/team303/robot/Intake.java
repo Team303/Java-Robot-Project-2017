@@ -17,13 +17,16 @@ public class Intake {
 	
 	public void control(){
 		
-		if(!OI.xBtnA && !OI.xBtnB) {
+		if(OI.xLeftBumper && OI.xRightBumper) {
+			
+		} else if(!OI.xBtnA && !OI.xBtnB) {
 			set(0);
 		} else if(OI.xBtnB){
 			set(1);
 		}else if(OI.xBtnA){
 			set(-1);
 		}
+		
 	}
 	
 	public void set(double percentVoltage){

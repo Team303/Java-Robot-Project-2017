@@ -17,7 +17,7 @@ public class Shooter {
 	public Shooter() {
 		shooter = new CANTalon(RobotMap.SHOOTER_ID);
 		shooter.changeControlMode(TalonControlMode.Speed);
-		setPIDF(shooter, .4, 0.000000, 0, 0.02475);
+		setPIDF(shooter, .3, 0.000003, 1, 0.02475);
 		shooter.setSafetyEnabled(true);
 		shooter.reverseOutput(RobotMap.SHOOTER_INV);
 		shooter.enable();

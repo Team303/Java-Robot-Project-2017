@@ -14,7 +14,7 @@ public class Autonomous {
 	}
 	
 	enum AutoStates {
-		Default, RightPeg, LeftPeg, MidPeg, rBoiler, bBoiler, rHopper;
+		Default, RightPeg, LeftPeg, MidPeg, rBoiler, bBoiler, rHopper, rShootAlign, shoot;
 	}
 	
 	public void run(){
@@ -39,7 +39,7 @@ public class Autonomous {
 	}
 	
 	public void assembleGearFromBBoiler() { // ------------------------------------------------------------------------------
-		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 29000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(3), new ActionShooter(true, 22000)));
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		//arr.add(new ActionDriveStraightByEncoders(500));
@@ -100,7 +100,19 @@ public void assembleHopperFromRedAllianceStation() {
 		arr.add(new ActionShooter(false, 0));
 	}
 	
-	
+	public void assembleShooterAlignR() {
+		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20725)));
+		arr.add(new ActionShooter(false, 0));
+		arr.add(new ActionZero());
+		arr.add(new ActionDriveStraightByEncoders(-3400));
+		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false ));
+	}
+
+	public void assembleShooter() {
+		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20725)));
+		arr.add(new ActionShooter(false, 0));
+	}
+
 	public ActionParallelAction makeSimpleParallelAction(Action con, Action nonCon) {
 		ArrayList<Action> nonConAction = new ArrayList<Action>();
 		nonConAction.add(nonCon);
