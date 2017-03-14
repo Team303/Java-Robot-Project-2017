@@ -47,9 +47,8 @@ public class Autonomous {
 		// arr.add(new ActionTurnToAngle(85, true, 3, true, 0.005, true));
 		// arr.add(new ActionDriveStraightByEncoders(6000));
 		// arr.add(new ActionTurnToAngle(65, true, 3, true, 1, true));
-		// arr.add(makeSimpleParallelAction(new ActionWait(4), new
-		// ActionShooter(true, 23000)));
-		// arr.add(new ActionShooter(false, 0));
+		arr.add(makeSimpleParallelAction(new ActionWait(4), new ActionShooter(true, 23000)));
+		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionTurnAngleUntilCollision(181, true, 15, true, 0, true, 1.9));
 		arr.add(new ActionTurnAngleUntilCollision(-10, true, 6, true, 0.4, true, 1));
@@ -99,9 +98,8 @@ public class Autonomous {
 		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionIntake(1)));
 		arr.add(new ActionDriveStraightByEncoders(1000));
 		arr.add(new ActionTurnToAngle(-95, true, 3));
-		// arr.add(makeSimpleParallelAction(new ActionWait(5),new
-		// ActionShooter(true, 27000)));
-		// arr.add(new ActionShooter(false, 0));
+		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 27000)));
+		arr.add(new ActionShooter(false, 0));
 	}
 
 	public void assembleHopperFromBlueAllianceStation() {
@@ -111,14 +109,13 @@ public class Autonomous {
 		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionIntake(1)));
 		arr.add(new ActionDriveStraightByEncoders(1000));
 		arr.add(new ActionTurnToAngle(110, true, 3));
-		// arr.add(makeSimpleParallelAction(new ActionWait(5),new
-		// ActionShooter(true, 27000)));
-		// arr.add(new ActionShooter(false, 0));
+		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 27000)));
+		arr.add(new ActionShooter(false, 0));
 	}
 	public void assembleBlueBoilerAutoLine () {
 		//used when another team can get the auto gear for us, so we can shoot longer
-		//arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20725)));
-		//arr.add(new ActionShooter(false, 0));
+		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20725)));
+		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionTurnAngleUntilCollision(181, true, 15, true, 0, true, 1.9));
 		arr.add(new ActionTurnAngleUntilCollision(-10, true, 6, true, 0.4, true, 1));
@@ -127,8 +124,8 @@ public class Autonomous {
 	
 	public void assembleRedBoilerAutoLine () {
 		//used when another team can get the auto gear for us, so we can shoot longer
-		//arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20725)));
-		//arr.add(new ActionShooter(false, 0));
+		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20725)));
+		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(-3400));
 		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false));
