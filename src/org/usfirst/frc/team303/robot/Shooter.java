@@ -13,6 +13,7 @@ public class Shooter {
 	Agitator agitator;
 	Timer t;
 	double savedSetpoint;
+	static final double maxFeedError = 0.15;
 	
 	public Shooter() {
 		shooter = new CANTalon(RobotMap.SHOOTER_ID);
@@ -40,7 +41,7 @@ public class Shooter {
 	public void control() {
 		
 		double setpoint;
-
+		
 		if(OI.xBtnY) { //set setpoint
 			setpoint = 0;
 			//shooter.disable();
@@ -55,25 +56,12 @@ public class Shooter {
 		
 		setSetpoint(setpoint);
 		
-		if(setpoint!=savedSetpoint) { //setpoint changed
-			if(setpoint==0) { //setpoint changed and is stopped
-				t.stop();
-				t.reset();
-				agitator.set(0);
-				indexer.set(0);
-			} else { //setpoint changed and is not stopped
-				t.start();
-				agitator.set(0);
-				indexer.set(0);
-			}
-		} else { //setpoint unchanged
-			if(t.get()>1) { //setpoint unchanged and delay is over
-				agitator.set(0.6);
-				indexer.set(1);
-			} else { //setpoint unchanged and delay is not over
-				agitator.set(0); 
-				indexer.set(0);
-			}
+		if(setpoint!=0 && (getSpeed()<=(setpoint*(1+maxFeedError)) && getSpeed()>=(setpoint*(1-maxFeedError)))) { //feed fuel if shooter is close to setpoint
+			agitator.set(0.6);
+			indexer.set(1);
+		} else {
+			agitator.set(0);
+			indexer.set(0);
 		}
 		
 		savedSetpoint = setpoint;

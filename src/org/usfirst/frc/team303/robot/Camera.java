@@ -18,7 +18,7 @@ public class Camera {
 
 	public Object imgLock = new Object();
 	private Thread visionThread;
-	private BoilerPipeline pipeline;
+	private GearPipeline pipeline;
 	private boolean runProcessing = false;
 	private double centerXOne = 0.0;
 	private double centerYOne = 0.0;
@@ -35,7 +35,7 @@ public class Camera {
 	}
 
 	public void enableVisionThread() {
-		pipeline = new BoilerPipeline();
+		pipeline = new GearPipeline();
 		AxisCamera camera = CameraServer.getInstance().addAxisCamera("10.3.3.8");
 		camera.setResolution(cameraResX, cameraResY);
 

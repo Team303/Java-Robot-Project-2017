@@ -39,8 +39,10 @@ public class Climber {
 	public void control() {
 		
 		if(OI.xLeftBumper && OI.xRightBumper) {
-			Robot.intake.set(0.9);
+			Robot.intake.set(0.8);
 			set(-OI.xlY);
+		} else {
+			set(0);
 		}
 		
 	}

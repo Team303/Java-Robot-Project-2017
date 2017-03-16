@@ -32,26 +32,14 @@ public class ActionShooter implements Action{
 		
 		Robot.shooter.setSetpoint(setpoint);
 		
-		if(setpoint!=savedSetpoint) { //setpoint changed
-			if(setpoint==0) { //setpoint changed and is stopped
-				t.stop();
-				t.reset();
-				Robot.shooter.agitator.set(0);
-				Robot.shooter.indexer.set(0);
-			} else { //setpoint changed and is not stopped
-				t.start();
-				Robot.shooter.agitator.set(0);
-				Robot.shooter.indexer.set(0);
-			}
-		} else { //setpoint unchanged
-			if(t.get()>0.55) { //setpoint unchanged and delay is over
-				Robot.shooter.agitator.set(.4);
-				Robot.shooter.indexer.set(1);
-			} else { //setpoint unchanged and delay is not over
-				Robot.shooter.agitator.set(0); 
-				Robot.shooter.indexer.set(0);
-			}
+		if(setpoint!=0 && (Robot.shooter.getSpeed()<=(setpoint*(1+Shooter.maxFeedError)) && Robot.shooter.getSpeed()>=(setpoint*(1-Shooter.maxFeedError)))) { //feed fuel if shooter is close to setpoint
+			Robot.shooter.agitator.set(0.6);
+			Robot.shooter.indexer.set(1);
+		} else {
+			Robot.shooter.agitator.set(0);
+			Robot.shooter.indexer.set(0);
 		}
+	
 		
 		savedSetpoint = setpoint;
 		
