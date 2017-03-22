@@ -62,6 +62,7 @@ public class ActionDriveStraightByEncoders extends ActionAbstract implements Act
 			Robot.drivebase.zeroEncoders();
 			initialAngle = Robot.navX.getYaw();
 			encoders = 0;
+			firstRun = false;
 			return false;
 		}
 		

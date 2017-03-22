@@ -49,6 +49,12 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("[BLUE] Hopper", AutoStates.bHopper);
 		chooser.addObject("[BLUE] Boiler Auto Line", AutoStates.bBoilerAutoline);
 		chooser.addObject("[RED] Boiler Auto Line", AutoStates.rBoilerAutoline);
+		chooser.addObject("[RED] Center Shoot", AutoStates.rCenterShoot);
+		chooser.addObject("[BLUE] Center Shoot" , AutoStates.bCenterShoot);
+		chooser.addObject("Score Op Right", AutoStates.scoreOpRight);
+		chooser.addObject("Score Op Left", AutoStates.scoreOpLeft);
+		chooser.addObject("Score Op Right Cent", AutoStates.scoreOpRightCent);
+		chooser.addObject("Score Op Left Cent", AutoStates.scoreOpLeftCent);
 		SmartDashboard.putData("Auto choices", chooser);
 		camera = new Camera();
 		shooter = new Shooter();
@@ -140,6 +146,24 @@ public class Robot extends IterativeRobot {
 				break;
 			case rBoilerAutoline:
 				auto.assembleRedBoilerAutoLine();
+				break;
+			case rCenterShoot:
+				auto.assembleRedCenterShoot();
+				break;
+			case bCenterShoot:
+				auto.assembleBlueCenterShoot();
+				break;
+			case scoreOpRight:
+				auto.assembleScoreOpRight();
+				break;
+			case scoreOpLeft:
+				auto.assembleScoreOpLeft();
+				break;
+			case scoreOpRightCent:
+				auto.assembleScoreOpRightCent();
+				break;
+			case scoreOpLeftCent:
+				auto.assembleScoreOpLeftCent();
 				break;
 			case Default:
 				default:

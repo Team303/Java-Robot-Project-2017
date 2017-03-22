@@ -4,6 +4,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter {
 
@@ -13,7 +14,7 @@ public class Shooter {
 	Agitator agitator;
 	Timer t;
 	double savedSetpoint;
-	static final double maxFeedError = 0.15;
+	static final double maxFeedError = 0.15; //.15
 	
 	public Shooter() {
 		shooter = new CANTalon(RobotMap.SHOOTER_ID);
@@ -42,6 +43,7 @@ public class Shooter {
 		
 		double setpoint;
 		
+		
 		if(OI.xBtnY) { //set setpoint
 			setpoint = 0;
 			//shooter.disable();
@@ -49,16 +51,22 @@ public class Shooter {
 		} else if(OI.xBtnX) {
 			//shooter.enable();
 			//shooterSlave.enable();
-			setpoint =20725; // was -26150
+			setpoint =-20000; // was -26150
 		} else {
 			setpoint = savedSetpoint;
 		}
 		
 		setSetpoint(setpoint);
 		
-		if(setpoint!=0 && (getSpeed()<=(setpoint*(1+maxFeedError)) && getSpeed()>=(setpoint*(1-maxFeedError)))) { //feed fuel if shooter is close to setpoint
-			agitator.set(0.6);
-			indexer.set(1);
+		if(setpoint!=0 ){//&& (getSpeed()<=(setpoint*(1+maxFeedError)) && getSpeed()>=(setpoint*(1-maxFeedError)))) { //feed fuel if shooter is close to setpoint
+			SmartDashboard.putNumber("agitator current", Robot.pdp.getCurrent(11));
+			
+			if(Robot.pdp.getCurrent(11)>=10){
+				agitator.set(-0.2);
+			}else{
+				agitator.set(0.75);
+			}
+			indexer.set(.4);
 		} else {
 			agitator.set(0);
 			indexer.set(0);

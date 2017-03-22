@@ -40,6 +40,8 @@ public class ActionTurnAngleUntilCollision extends ActionAbstract implements Act
 			double theta = Robot.navX.getYaw();
 			fSetpoint = relativeYaw ? theta+iSetpoint : iSetpoint;
 			t.start();
+			firstRun = false;
+			
 			if(relativeYaw) {
 				fSetpoint = theta+iSetpoint;
 				
@@ -73,7 +75,6 @@ public class ActionTurnAngleUntilCollision extends ActionAbstract implements Act
 		
 		SmartDashboard.putNumber("NavX PID Output", output);
 		
-		firstRun = false;
 	}
 	
 	@Override
@@ -107,6 +108,7 @@ public class ActionTurnAngleUntilCollision extends ActionAbstract implements Act
 		if(end2) {
 			firstRun = true;
 			t.stop();
+			t.reset();
 			Robot.navX.turnController.disable();
 			Robot.drivebase.zeroEncoders();
 		}

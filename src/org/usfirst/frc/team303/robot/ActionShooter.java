@@ -34,7 +34,7 @@ public class ActionShooter implements Action{
 		
 		if(setpoint!=0 && (Robot.shooter.getSpeed()<=(setpoint*(1+Shooter.maxFeedError)) && Robot.shooter.getSpeed()>=(setpoint*(1-Shooter.maxFeedError)))) { //feed fuel if shooter is close to setpoint
 			Robot.shooter.agitator.set(0.6);
-			Robot.shooter.indexer.set(1);
+			Robot.shooter.indexer.set(0.4);
 		} else {
 			Robot.shooter.agitator.set(0);
 			Robot.shooter.indexer.set(0);
