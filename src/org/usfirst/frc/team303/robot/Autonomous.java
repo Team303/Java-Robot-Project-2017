@@ -29,7 +29,7 @@ public class Autonomous {
 	}
 
 	public void assembleGearFromRBoiler() {
-		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 20000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 20375)));
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(-3400));
@@ -38,7 +38,7 @@ public class Autonomous {
 	}
 
 	public void assembleGearFromBBoiler() {
-		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 20500)));
+		arr.add(makeSimpleParallelAction(new ActionWait(3.5), new ActionShooter(true, 20375)));
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionTurnAngleUntilCollision(181, true, 15, true, 0, true, 1.9));
@@ -105,7 +105,7 @@ public class Autonomous {
 	}
 	public void assembleBlueBoilerAutoLine () {
 		//used when another team can get the auto gear for us, so we can shoot longer
-		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(7.5), new ActionShooter(true, 20375)));
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionTurnAngleUntilCollision(181, true, 15, true, 0, true, 1.9));
@@ -115,7 +115,7 @@ public class Autonomous {
 	
 	public void assembleRedBoilerAutoLine () {
 		//used when another team can get the auto gear for us, so we can shoot longer
-		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(7.5), new ActionShooter(true, 20375)));
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(-3400));
@@ -124,7 +124,7 @@ public class Autonomous {
 	}
 
 	public void assembleShooterAlignR() {
-		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20375)));
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(-3400));
@@ -132,7 +132,7 @@ public class Autonomous {
 	}
 
 	public void assembleShooter() {
-		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20375)));
 		arr.add(new ActionShooter(false, 0));
 	}
 	
@@ -149,14 +149,32 @@ public class Autonomous {
 		arr.add(new ActionTurnToAngle(106, false, 1.5f));
 		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(16000));
-		arr.add(new ActionTurnAngleUntilCollision(18, true, 1.5f, false, 1, false, 3));
-		arr.add(new ActionDriveStraightByEncoders(7000));
-		//arr.add(makeSimpleParallelAction(new ActionWait(5), new ActionShooter(true, -29000)));
+		arr.add(new ActionZero());
+		arr.add(new ActionTurnAngleUntilCollision(30, true, 3f, false, 1, false, 3));
+		arr.add(new ActionZero());
+		arr.add(new ActionDriveStraightByCollision(0.75));
+		arr.add(makeSimpleParallelAction(new ActionWait(7), new ActionShooter(true, 20375)));
 		
 	}
 	
 	public void assembleBlueCenterShoot(){
+		arr.add(new ActionNacRac(false));
+		arr.add(new ActionDriveToGoalByArea(13500));
+		arr.add(makeSimpleParallelAction(new ActionDrive(), new ActionWait(1)));
+		arr.add(makeSimpleParallelAction(new ActionWait(0.75), new ActionNacRac(true)));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(false)));
 		
+		//double setpoint, boolean relative, float tolerance, boolean pivot, double pivotPower, boolean pivotDirection
+		
+		arr.add(new ActionTurnToAngle(-101, false, 1.5f));
+		arr.add(new ActionZero());
+		arr.add(new ActionDriveStraightByEncoders(16500));
+		arr.add(new ActionZero());
+		arr.add(new ActionTurnAngleUntilCollision(-30, true, 3f, false, 1, false, 3));
+		arr.add(new ActionZero());
+		arr.add(new ActionDriveStraightByCollision(0.75));
+		arr.add(makeSimpleParallelAction(new ActionWait(7), new ActionShooter(true, 20375)));
 	}
 	
 	public void assembleScoreOpRight(){
