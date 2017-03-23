@@ -144,13 +144,14 @@ public class Autonomous {
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(true)));
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(false)));
 		
-		arr.add(new ActionZero()); //double setpoint, boolean relative, float tolerance, boolean pivot, double pivotPower, boolean pivotDirection
+		//double setpoint, boolean relative, float tolerance, boolean pivot, double pivotPower, boolean pivotDirection
 		
-		arr.add(new ActionTurnToAngle(111, true, 3 ));
+		arr.add(new ActionTurnToAngle(106, false, 1.5f));
 		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByEncoders(14000));
-		arr.add(new ActionDriveStraightByEncoders(2000));
-		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionShooter(true, -29000)));
+		arr.add(new ActionDriveStraightByEncoders(16000));
+		arr.add(new ActionTurnAngleUntilCollision(18, true, 1.5f, false, 1, false, 3));
+		arr.add(new ActionDriveStraightByEncoders(7000));
+		//arr.add(makeSimpleParallelAction(new ActionWait(5), new ActionShooter(true, -29000)));
 		
 	}
 	
