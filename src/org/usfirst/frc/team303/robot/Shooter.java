@@ -14,6 +14,7 @@ public class Shooter {
 	Agitator agitator;
 	Timer t;
 	double savedSetpoint;
+	int count = 0;
 	static final double maxFeedError = 0.15; //.15
 	
 	public Shooter() {
@@ -51,7 +52,7 @@ public class Shooter {
 		} else if(OI.xBtnX) {
 			//shooter.enable();
 			//shooterSlave.enable();
-			setpoint =-20000; // was -26150
+			setpoint =20250; // was -26150
 		} else {
 			setpoint = savedSetpoint;
 		}
@@ -62,13 +63,23 @@ public class Shooter {
 			
 			SmartDashboard.putNumber("agitator current", Robot.pdp.getCurrent(11));
 			
-			agitator.set((Robot.pdp.getCurrent(11)>=10) ? -0.2 : 0.75);
-			indexer.set(.4);
+			//agitator.set((Robot.pdp.getCurrent(11)>=10) ? -0.2 : 0.75);
+		
+			if(count<0) {
+				count++;
+				agitator.set(-0.2);
+			}
+			else if (Robot.pdp.getCurrent(11)>=13){
+				count = -20;
+			} else {
+				agitator.set(0.75);
+			}
+			
 		} else {
 			agitator.set(0);
 			indexer.set(0);
 		}
-		
+		SmartDashboard.putBoolean("shooter good?", !(Robot.pdp.getCurrent(11)>=10));
 		savedSetpoint = setpoint;
 	}
 	

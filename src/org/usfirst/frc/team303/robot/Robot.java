@@ -113,9 +113,6 @@ public class Robot extends IterativeRobot {
 			SmartDashboard.putString("Auto Selected", autoSelected.toString());
 			
 			switch (autoSelected) {
-			case rShootAlign:
-				auto.assembleShooterAlignR();
-				break;
 			case shoot:
 				auto.assembleShooter();
 				break;
@@ -170,6 +167,8 @@ public class Robot extends IterativeRobot {
 				break;	
 			
 			}
+			
+			
 			
 			auto.arr.add(new ActionWait(999999999));
 			auto.taskNum = 0;

@@ -42,7 +42,7 @@ public class Autonomous {
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionTurnAngleUntilCollision(181, true, 15, true, 0, true, 1.9));
-		arr.add(new ActionTurnAngleUntilCollision(-10, true, 6, true, 0.4, true, 1));
+		//arr.add(new ActionTurnAngleUntilCollision(-160, false, 6, true, 0.4, true, 1));
 		scoreGearBoiler();
 	}
 
@@ -109,7 +109,7 @@ public class Autonomous {
 		arr.add(new ActionShooter(false, 0));
 		arr.add(new ActionZero());
 		arr.add(new ActionTurnAngleUntilCollision(181, true, 15, true, 0, true, 1.9));
-		arr.add(new ActionTurnAngleUntilCollision(-10, true, 6, true, 0.4, true, 1));
+		//arr.add(new ActionTurnAngleUntilCollision(-160, false, 6, true, 0.4, true, 1));
 		scoreGear();
 	}
 	
@@ -121,14 +121,6 @@ public class Autonomous {
 		arr.add(new ActionDriveStraightByEncoders(-3400));
 		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false));
 		scoreGear();
-	}
-
-	public void assembleShooterAlignR() {
-		arr.add(makeSimpleParallelAction(new ActionWait(10), new ActionShooter(true, 20375)));
-		arr.add(new ActionShooter(false, 0));
-		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByEncoders(-3400));
-		arr.add(new ActionTurnToAngle(-190, true, 3, true, 0.3, false));
 	}
 
 	public void assembleShooter() {
