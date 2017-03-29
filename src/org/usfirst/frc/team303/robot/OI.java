@@ -11,6 +11,7 @@ public class OI {
 	static Joystick left = new Joystick(0);
 	static Joystick right = new Joystick(1);
 	static XboxController xbox = new XboxController(2);
+	static boolean disabledState = false;
 	
 	static double lX = 0, lY = 0, lZ = 0;
 	static double rX = 0, rY = 0, rZ = 0;
@@ -26,6 +27,7 @@ public class OI {
 		for(int i=1;i<8;i++) { //wpilib buttons are 1 indexed
 			lBtn[i] = left.getRawButton(i);
 			rBtn[i] = right.getRawButton(i);
+			SmartDashboard.putNumber("POV value", right.getPOV());
 		}
 		
 		updateXbox();
@@ -80,5 +82,18 @@ public class OI {
 		xRightStickBtn = xbox.getStickButton(Hand.kRight);
 		xLeftTrigger = xbox.getTriggerAxis(Hand.kLeft);
 		xRightTrigger = xbox.getTriggerAxis(Hand.kRight);
+	}
+	
+	public static boolean pulse(boolean input){
+	
+		if(input){
+			if(!disabledState){
+				disabledState = true;
+				return true;
+			}
+			return false;
+		}
+		disabledState = false;
+		return false;
 	}
 }

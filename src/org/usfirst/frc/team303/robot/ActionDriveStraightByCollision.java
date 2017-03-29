@@ -1,24 +1,27 @@
 package org.usfirst.frc.team303.robot;
 
+import edu.wpi.first.wpilibj.Timer;
+
 public class ActionDriveStraightByCollision extends ActionAbstract implements Action {
 
 	double power;
 	boolean firstRun = false;
 	int startCounter = 0;
-
-	public ActionDriveStraightByCollision(double power) {
+	Timer t = new Timer();
+	double timeout;
+	
+	public ActionDriveStraightByCollision(double power, double timeoutC) {
 		this.power = power;
 		firstRun = true;
 		startCounter = 0;
+		timeout = timeoutC;
 	}
 	
 	public void run() {
 		if(firstRun){
-			
+			t.start();
 			Robot.navX.navX.zeroYaw();
-			
 			firstRun = false;
-			
 		}
 		
 		double[] pow = {0,0};
@@ -31,7 +34,9 @@ public class ActionDriveStraightByCollision extends ActionAbstract implements Ac
 	public boolean isFinished() {
 		boolean collision = Robot.navX.collisionDetected();
 		
-		if(collision && startCounter>10){
+		if((collision && startCounter>10) || t.get()>timeout){
+			t.stop();
+			t.reset();
 			firstRun = true;
 			startCounter = 0;
 			return true;		

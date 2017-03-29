@@ -193,17 +193,20 @@ public class Robot extends IterativeRobot {
 		nacrac.control();
 		climber.control();
 		intake.control();
-		camera.control();
-		
-		if(OI.lBtn[6]){			
-			nacrac.driveToPeg();
-		} else {
-			drivebase.drive(OI.lY, OI.rY);
-		}
-		
 		shooter.control();
 		
-		
+		if(OI.lBtn[6]){
+			nacrac.driveToPeg();
+		}else if(OI.lBtn[2]) {
+			if(OI.pulse(OI.lBtn[2])) {
+				navX.turnController.enable();
+				navX.turnController.setSetpoint(OI.right.getPOV());	
+			}
+			drivebase.drive(navX.getPidOutput(), navX.getPidOutput()*-1);
+		}
+		else {
+			drivebase.drive(OI.lY, OI.rY);
+		}
 	}
 
 	/**

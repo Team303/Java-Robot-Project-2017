@@ -60,6 +60,10 @@ public class Autonomous {
 		arr.add(new ActionDriveStraightByEncoders(9600));
 		arr.add(new ActionTurnToAngle(-61, true, 3));
 		scoreGear();
+		arr.add(new ActionZero());
+		arr.add(new ActionTurnToAngle(-119, true, 3));
+		arr.add(new ActionZero());
+		arr.add(new ActionDriveStraightByEncoders(-25000));
 	}
 
 	public void scoreGearBoiler() {
@@ -83,26 +87,31 @@ public class Autonomous {
 	}
 
 	public void assembleHopperFromRedAllianceStation() {
-		arr.add(new ActionDriveStraightByEncoders(10600));
-		arr.add(new ActionTurnToAngle(-90, true, 3));
-		arr.add(new ActionDriveStraightByCollision(-.6));
-		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionIntake(1)));
-		arr.add(new ActionDriveStraightByEncoders(1000));
-		arr.add(new ActionTurnToAngle(-95, true, 3));
-		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 27000)));
+		arr.add(new ActionDriveStraightByEncoders(9800));
+		arr.add(new ActionTurnToAngle(-95, true, 3)); //turn to the hopper
+		arr.add(new ActionDriveStraightByCollision(-.6, 1.5));
+		arr.add(makeSimpleParallelAction(new ActionWait(2), new ActionIntake(1)));
+		arr.add(new ActionDriveStraightByEncoders(2000));
+		arr.add(new ActionTurnToAngle(-95, true, 1)); //turn to the boiler
+		arr.add(new ActionDriveStraightByEncoders(7700));
+		arr.add(new ActionTurnAngleUntilCollision(-30, true, 15, false, 0, false, 1));
+		arr.add(makeSimpleParallelAction (new ActionDriveStraightByCollision(0.75, 1),new ActionShooterSpinUp(true, 27000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 20375)));
 		arr.add(new ActionShooter(false, 0));
 	}
 
-	public void assembleHopperFromBlueAllianceStation() {
-		arr.add(new ActionDriveStraightByEncoders(10600));
-		arr.add(new ActionTurnToAngle(90, true, 3));
-		arr.add(new ActionDriveStraightByCollision(-.6));
-		arr.add(makeSimpleParallelAction(new ActionWait(1), new ActionIntake(1)));
-		arr.add(new ActionDriveStraightByEncoders(1000));
-		arr.add(new ActionTurnToAngle(110, true, 3));
-		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 27000)));
-		arr.add(new ActionShooter(false, 0));
-	}
+	public void assembleHopperFromBlueAllianceStation() { //untested and unfinished
+		arr.add(new ActionDriveStraightByEncoders(9800));
+		arr.add(new ActionTurnToAngle(95, true, 6)); //turn to the hopper
+		arr.add(new ActionDriveStraightByCollision(-.6, 1.5));
+		arr.add(makeSimpleParallelAction(new ActionWait(2), new ActionIntake(1)));
+		arr.add(new ActionDriveStraightByEncoders(2000));
+		arr.add(new ActionTurnToAngle(95, true, 1)); //turn to the boiler
+		arr.add(new ActionDriveStraightByEncoders(7700));
+		arr.add(new ActionTurnAngleUntilCollision(30, true, 15, false, 0, false, 1));
+		arr.add(makeSimpleParallelAction (new ActionDriveStraightByCollision(0.75, 1),new ActionShooterSpinUp(true, 27000)));
+		arr.add(makeSimpleParallelAction(new ActionWait(5),new ActionShooter(true, 20375)));
+		arr.add(new ActionShooter(false, 0));	}
 	public void assembleBlueBoilerAutoLine () {
 		//used when another team can get the auto gear for us, so we can shoot longer
 		arr.add(makeSimpleParallelAction(new ActionWait(7.5), new ActionShooter(true, 20375)));
@@ -137,14 +146,16 @@ public class Autonomous {
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByEncoders(-1000), new ActionNacRac(false)));
 		
 		//double setpoint, boolean relative, float tolerance, boolean pivot, double pivotPower, boolean pivotDirection
-		
-		arr.add(new ActionTurnToAngle(106, false, 1.5f));
+		//Original Settings, too scared I will break something. ActionTurnToAngle(106, false, 1.5f) ActionDriveStraightByEncoders(16000)
+		//Current settings seem to work with our fuel bumper simulation, don't know how it will fare with actual bumpers
+		//Cannot test shooter at this time
+		arr.add(new ActionTurnToAngle(112, false, 1f));
 		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByEncoders(16000));
+		arr.add(new ActionDriveStraightByEncoders(15965));
 		arr.add(new ActionZero());
-		arr.add(new ActionTurnAngleUntilCollision(30, true, 3f, false, 1, false, 3));
+		arr.add(makeSimpleParallelAction(new ActionTurnAngleUntilCollision(30, true, 3f, false, 1, false, 3), new ActionShooterSpinUp(true, 20375)));
 		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByCollision(0.75));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByCollision(0.75, 1), new ActionShooterSpinUp(true, 20375)));
 		arr.add(makeSimpleParallelAction(new ActionWait(7), new ActionShooter(true, 20375)));
 		
 	}
@@ -161,11 +172,11 @@ public class Autonomous {
 		
 		arr.add(new ActionTurnToAngle(-101, false, 1.5f));
 		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByEncoders(16500));
+		arr.add(new ActionDriveStraightByEncoders(17000));
 		arr.add(new ActionZero());
-		arr.add(new ActionTurnAngleUntilCollision(-30, true, 3f, false, 1, false, 3));
+		arr.add(makeSimpleParallelAction(new ActionTurnAngleUntilCollision(-30, true, 3f, false, 1, false, 3), new ActionShooterSpinUp(true, 20375)));
 		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByCollision(0.75));
+		arr.add(makeSimpleParallelAction(new ActionDriveStraightByCollision(0.75, 1), new ActionShooterSpinUp(true, 20375)));
 		arr.add(makeSimpleParallelAction(new ActionWait(7), new ActionShooter(true, 20375)));
 	}
 	

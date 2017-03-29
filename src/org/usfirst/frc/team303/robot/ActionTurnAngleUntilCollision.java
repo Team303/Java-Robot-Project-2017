@@ -16,7 +16,7 @@ public class ActionTurnAngleUntilCollision extends ActionAbstract implements Act
 	boolean pivotDirection;
 	Timer t = new Timer();
 	double timer;
-	
+
 	public ActionTurnAngleUntilCollision(double setpoint, boolean relative, float tolerance) { //pivot is assumed false
 		this(setpoint, relative, tolerance, false, 1, false, 15);
 	}

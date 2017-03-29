@@ -142,10 +142,6 @@ public class Camera {
 		return rectangleArea;
 	}
 
-	public void control() {
-		
-	}
-
 	public double getCenterY() {
 		return centerYAvg;
 	}

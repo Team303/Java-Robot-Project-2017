@@ -63,23 +63,26 @@ public class Shooter {
 			
 			SmartDashboard.putNumber("agitator current", Robot.pdp.getCurrent(11));
 			
-			//agitator.set((Robot.pdp.getCurrent(11)>=10) ? -0.2 : 0.75);
-		
+			indexer.set(.4);
+			
 			if(count<0) {
 				count++;
-				agitator.set(-0.2);
+				agitator.set(-0.4);
+				SmartDashboard.putBoolean("shooter good?", false);
 			}
 			else if (Robot.pdp.getCurrent(11)>=13){
 				count = -20;
+				SmartDashboard.putBoolean("shooter good?", false);
 			} else {
-				agitator.set(0.75);
+				agitator.set(0.8);
+				SmartDashboard.putBoolean("shooter good?", true);
 			}
 			
 		} else {
 			agitator.set(0);
 			indexer.set(0);
 		}
-		SmartDashboard.putBoolean("shooter good?", !(Robot.pdp.getCurrent(11)>=10));
+
 		savedSetpoint = setpoint;
 	}
 	
