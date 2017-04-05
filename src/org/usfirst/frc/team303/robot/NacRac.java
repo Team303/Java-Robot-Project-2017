@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class NacRac {
 	CANTalon nacRac;
 	static final double pixelPerDegreeConstant = 0.146875; //0.084
-	static final double offsetConstant = 20;
+	static final double offsetConstant = 0;
 	
 	NacRac() {
 		nacRac = new CANTalon(RobotMap.NACRAC_ID);

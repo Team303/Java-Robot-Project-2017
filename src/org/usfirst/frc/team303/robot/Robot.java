@@ -43,7 +43,6 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Peg Auto", AutoStates.RightPeg);
 		chooser.addObject("[RED] Boiler/Gear Auto", AutoStates.rBoiler);
 		chooser.addObject("[BLUE] Boiler/Gear Auto", AutoStates.bBoiler);
-		chooser.addObject("[RED] Boiler/Align Auto", AutoStates.rShootAlign);
 		chooser.addObject("Shoot", AutoStates.shoot);
 		chooser.addObject("[RED] Hopper", AutoStates.rHopper);
 		chooser.addObject("[BLUE] Hopper", AutoStates.bHopper);
