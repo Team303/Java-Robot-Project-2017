@@ -61,7 +61,6 @@ public class Shooter {
 		
 		if(setpoint!=0 && (getSpeed()<=(setpoint*(1+maxFeedError)) && getSpeed()>=(setpoint*(1-maxFeedError)))) { //feed fuel if shooter is close to setpoint
 			
-			SmartDashboard.putNumber("agitator current", Robot.pdp.getCurrent(11));
 			
 			indexer.set(0.8);
 			

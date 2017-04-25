@@ -43,8 +43,20 @@ public class OI {
 			
 		} 
 		
+		//amperage outputs
+		SmartDashboard.putNumber("Right Drive Current", Robot.pdp.getCurrent(2));
+		SmartDashboard.putNumber("Right Drive Current 2", Robot.pdp.getCurrent(3));
+		SmartDashboard.putNumber("Climber Current", Robot.pdp.getCurrent(14));		
+		SmartDashboard.putNumber("Climber Current 2", Robot.pdp.getCurrent(15));
+		SmartDashboard.putNumber("Intake current", Robot.pdp.getCurrent(10));
+		SmartDashboard.putNumber("Agitator current", Robot.pdp.getCurrent(11));
+		SmartDashboard.putNumber("NACRAC Current", Robot.pdp.getCurrent(4));	
+		SmartDashboard.putNumber("Left Drive Current", Robot.pdp.getCurrent(12));
+		SmartDashboard.putNumber("Left Drive Current 2", Robot.pdp.getCurrent(13));
+		SmartDashboard.putNumber("Big Fan Current", Robot.pdp.getCurrent(6));
+		SmartDashboard.putNumber("PDP Temperature", (Robot.pdp.getTemperature()*1.8)+32);
+		
 		//universal outputs
-		SmartDashboard.putNumber("Shooter Speed", Robot.shooter.getSpeed() * -1);
 		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());
 		SmartDashboard.putNumber("Rectangle Area", Robot.camera.getArea());

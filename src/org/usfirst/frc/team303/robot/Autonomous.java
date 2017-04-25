@@ -57,6 +57,7 @@ public class Autonomous {
 	}
 
 	public void assembleGearFromMidPeg() {
+		arr.add(new ActionDriveStraightByEncoders(2500));
 		scoreGear();
 	}
 
@@ -91,6 +92,7 @@ public class Autonomous {
 	}
 
 	public void assembleHopperFromRedAllianceStation() {
+		arr.add(new ActionZero());
 		arr.add(new ActionDriveStraightByEncoders(9500));
 		arr.add(new ActionTurnToAngle(-90, true, 3)); //turn to the hopper
 		arr.add(new ActionDriveStraightByCollision(-.6, 1.5));

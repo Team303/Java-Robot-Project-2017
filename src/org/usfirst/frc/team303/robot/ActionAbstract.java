@@ -3,7 +3,7 @@ package org.usfirst.frc.team303.robot;
 public abstract class ActionAbstract {
 	
 	static final double pixelPerDegreeConstant = 0.146875;
-	static final double offsetConstant = 0;
+	static final double offsetConstant = 20;
 	
 	public static double getCameraDegreeOffset() {
 		double centerXIdeal = Camera.cameraResX/2;
