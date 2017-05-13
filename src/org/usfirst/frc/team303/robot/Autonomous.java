@@ -161,11 +161,11 @@ public class Autonomous {
 		//Original Settings, too scared I will break something. ActionTurnToAngle(106, false, 1.5f) ActionDriveStraightByEncoders(16000)
 		//Current settings seem to work with our fuel bumper simulation, don't know how it will fare with actual bumpers
 		//Cannot test shooter at this time
-		arr.add(new ActionTurnToAngle(106, false, 1f));  //109
+		arr.add(new ActionTurnToAngle(106, false, 1f));  //106
 		arr.add(new ActionZero());
-		arr.add(new ActionDriveStraightByEncoders(16200));
+		arr.add(new ActionDriveStraightByEncoders(16200)); //16200
 		arr.add(new ActionZero());
-		arr.add(makeSimpleParallelAction(new ActionTurnAngleUntilCollision(30, true, 3f, false, 1, false, 3), new ActionShooterSpinUp(true, 20250)));
+		arr.add(makeSimpleParallelAction(new ActionTurnAngleUntilCollision(28, true, 3f, false, 1, false, 3), new ActionShooterSpinUp(true, 20250)));
 		arr.add(new ActionZero());
 		arr.add(makeSimpleParallelAction(new ActionDriveStraightByCollision(0.75, 1), new ActionShooterSpinUp(true, 20250)));
 		arr.add(makeSimpleParallelAction(new ActionWait(7), new ActionShooter(true, 20250)));
