@@ -69,7 +69,7 @@ public class Shooter {
 				agitator.set(-0.4);
 				SmartDashboard.putBoolean("shooter good?", false);
 			}
-			else if (Robot.pdp.getCurrent(11)>=18){
+			else if (Robot.pdp.getCurrent(11)>=13){
 				count = -20;
 				SmartDashboard.putBoolean("shooter good?", false);
 			} else {
