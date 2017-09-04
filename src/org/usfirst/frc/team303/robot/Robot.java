@@ -29,6 +29,7 @@ public class Robot extends IterativeRobot {
 	static NacRac nacrac;
 	static boolean autoRunOnce = false;
 	static PowerDistributionPanel pdp;
+	static PathFinder pathfinder;
 	
 	
 	/**
@@ -64,7 +65,9 @@ public class Robot extends IterativeRobot {
 		intake = new Intake();
 		pdp = new PowerDistributionPanel(RobotMap.PDP);
 		nacrac = new NacRac();
+		pathfinder = new PathFinder();
 		navX.navX.zeroYaw();
+		Robot.pathfinder.pathFinderInit();
 		
 	}
 
