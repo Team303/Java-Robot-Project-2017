@@ -15,7 +15,7 @@ public class PathFinder {
 	double maxAccel = 7;
 	double maxJerk = 180;
 	double wheelBaseWidth = 3;
-	int ticksPerRev = 1000;
+	int ticksPerRev = 1000; //TODO- THIS IS WRONG. FIGURE OUT CORRECT VALUE. IS EITHER 360 OR 1440.
 	double wheelDiameter = 0.3333;
 	//done in feet for now
 	
@@ -35,6 +35,9 @@ public class PathFinder {
 	double l;
 	double r;
 	
+	EncoderFollower testEncLeft;
+	EncoderFollower testEncRight;
+	
 	public void pathFinderInit(){
 		
 		Waypoint[] testPoints = new Waypoint[]{
@@ -50,23 +53,26 @@ public class PathFinder {
 		Trajectory testLeftTrajectory = testModifier.getLeftTrajectory();
 		Trajectory testRightTrajectory = testModifier.getRightTrajectory();
 		
-		EncoderFollower testEncLeft = new EncoderFollower(testModifier.getLeftTrajectory());
-		EncoderFollower testEncRight = new EncoderFollower(testModifier.getRightTrajectory());
+		testEncLeft = new EncoderFollower(testModifier.getLeftTrajectory());
+		testEncRight = new EncoderFollower(testModifier.getRightTrajectory());
 		
 		testEncLeft.configureEncoder(Robot.drivebase.getLeftEncoder(), ticksPerRev, wheelDiameter);
 		testEncRight.configureEncoder(Robot.drivebase.getRightEncoder(), ticksPerRev, wheelDiameter);
 		testEncLeft.configurePIDVA(p, i, d, velocityRatio, accelGain);
 		testEncRight.configurePIDVA(p, i, d, velocityRatio, accelGain);
 		
-		
 	}
 	
-	
-	
 	public void followPath(){
-	
+		l = testEncLeft.calculate(Robot.drivebase.getLeftEncoder());
+		r = testEncRight.calculate(Robot.drivebase.getRightEncoder());
 		
-		Robot.drivebase.drive(l, r);
+		double theta = Robot.navX.getYaw();
+		double desiredHeading = Pathfinder.r2d(testEncLeft.getHeading());
+		double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading-theta);
+		double turn = 0.8*(-1.0/80.0)*angleDifference;
+		
+		Robot.drivebase.drive(l+turn, r-turn);
 		
 	}
 	
