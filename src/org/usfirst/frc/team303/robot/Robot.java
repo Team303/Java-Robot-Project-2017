@@ -205,6 +205,8 @@ public class Robot extends IterativeRobot {
 				navX.turnController.setSetpoint(OI.right.getPOV());	
 			}
 			drivebase.drive(navX.getPidOutput(), navX.getPidOutput()*-1);
+		}else if(OI.lBtn[4]){
+			pathfinder.followPath();
 		}
 		else {
 			drivebase.drive(OI.lY, OI.rY);

@@ -1,4 +1,5 @@
 package org.usfirst.frc.team303.robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -14,12 +15,12 @@ public class PathFinder {
 	double maxVel = 6;
 	double maxAccel = 7;
 	double maxJerk = 180;
-	double wheelBaseWidth = 3;
-	int ticksPerRev = 1000; //TODO- THIS IS WRONG. FIGURE OUT CORRECT VALUE. IS EITHER 360 OR 1440.
-	double wheelDiameter = 0.3333;
+	double wheelBaseWidth = 2.5;
+	int ticksPerRev = 2304; 
+	double wheelDiameter = 0.3283333333333333 ;
 	//done in feet for now
 	
-	double p = 1;
+	double p = 0.3;
 	double i = 0;
 	double d = 0;
 	double velocityRatio = 1/maxVel;
@@ -41,9 +42,11 @@ public class PathFinder {
 	public void pathFinderInit(){
 		
 		Waypoint[] testPoints = new Waypoint[]{
-			new Waypoint(2,0,Pathfinder.d2r(0)),
-			new Waypoint(3,1,Pathfinder.d2r(-45)),
-			new Waypoint(3,2,Pathfinder.d2r(-90))
+			new Waypoint(0,0,Pathfinder.boundHalfDegrees(0)),
+			new Waypoint(8,0,Pathfinder.d2r(0)),
+			
+			new Waypoint(10,4,Pathfinder.d2r(90)),
+			//new Waypoint(4,2,Pathfinder.d2r(90))
 		};
 		
 		Trajectory.Config testConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, timeStep, maxVel, maxAccel, maxJerk);
@@ -70,9 +73,13 @@ public class PathFinder {
 		double theta = Robot.navX.getYaw();
 		double desiredHeading = Pathfinder.r2d(testEncLeft.getHeading());
 		double angleDifference = Pathfinder.boundHalfDegrees(desiredHeading-theta);
-		double turn = 0.8*(-1.0/80.0)*angleDifference;
+		double turn = -0.02*angleDifference;
 		
 		Robot.drivebase.drive(l+turn, r-turn);
+		
+		
+		
+		SmartDashboard.putNumber("left power mopro", l);
 		
 	}
 	
