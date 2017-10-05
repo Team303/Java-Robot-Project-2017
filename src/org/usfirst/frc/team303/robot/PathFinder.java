@@ -1,8 +1,8 @@
 package org.usfirst.frc.team303.robot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.Trajectory.Segment;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 import java.io.BufferedWriter;
@@ -10,8 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
-
+import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 public class PathFinder {
 
@@ -43,9 +42,11 @@ public class PathFinder {
 	double l;
 	double r;
 
+	Trajectory testLeftTrajectory;
+	Trajectory testRightTrajectory;
 	EncoderFollower testEncLeft;
 	EncoderFollower testEncRight;
-
+	
 	public void pathFinderInit(){
 		
 		Waypoint[] testPoints = new Waypoint[]{
@@ -59,9 +60,9 @@ public class PathFinder {
 		Trajectory.Config testConfig = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, timeStep, maxVel, maxAccel, maxJerk);
 		Trajectory testTrajectory = Pathfinder.generate(testPoints, testConfig);
 		TankModifier testModifier = new TankModifier(testTrajectory).modify(wheelBaseWidth);
-
-		Trajectory testLeftTrajectory = testModifier.getLeftTrajectory();
-		Trajectory testRightTrajectory = testModifier.getRightTrajectory();
+		
+		testLeftTrajectory = testModifier.getLeftTrajectory();
+		testRightTrajectory = testModifier.getRightTrajectory();
 		
 		testEncLeft = new EncoderFollower(testLeftTrajectory);
 		testEncRight = new EncoderFollower(testRightTrajectory);
@@ -71,6 +72,7 @@ public class PathFinder {
 		testEncLeft.configurePIDVA(p, i, d, velocityRatio, accelGain);
 		testEncRight.configurePIDVA(p, i, d, velocityRatio, accelGain);
 
+		startIOThread();
 	}
 
 	public void followPath(){
@@ -86,24 +88,40 @@ public class PathFinder {
 		
 	}
 
-	public void IOThread() {
+	public void startIOThread() {
 		Thread t = new Thread(()-> {
-
 			File f;
 			FileWriter fw;
 			BufferedWriter bw;
 
 			try {
-				f = new File("/home/lvuser/Output.txt");
+				ThreadTimeManagerRush timer = new ThreadTimeManagerRush(20);
+				timer.disableDebug();
+				timer.silence();
+				
+				f = new File("/home/lvuser/Output.csv");
+				if(f.exists()) {f.delete();}
+				f.createNewFile();
 				fw = new FileWriter(f);
 				bw = new BufferedWriter(fw);
+				
+				while(!OI.lBtn[4] && !Thread.interrupted()) {try {Thread.sleep(10);} catch (Exception e) {}}
 
-				while(!OI.lBtn[4]) {try {Thread.sleep(1);} catch (Exception e) {}}
-
-				while(OI.lBtn[4]) {
+				timer.start();
+				int lastLeftEncoder = 0;
+				while(OI.lBtn[4] && !Thread.interrupted() && !testEncLeft.isFinished() && !testEncRight.isFinished()) {	
+					Segment segLeft = testEncLeft.getSegment();
+					double commandedVelocityLeft = segLeft.velocity;
+					double actualVelocityLeft = (Robot.drivebase.getLeftEncoder()-lastLeftEncoder)/segLeft.dt;
+					double velocityErrorLeft = commandedVelocityLeft-actualVelocityLeft;
 					
+					bw.write(commandedVelocityLeft+","+actualVelocityLeft+","+velocityErrorLeft+"\n");
+					
+					lastLeftEncoder = Robot.drivebase.getLeftEncoder();
+					timer.run();
 				}
 
+				timer.stop();
 				bw.close();
 				fw.close();
 			} catch (IOException e) {e.printStackTrace();}
