@@ -1,6 +1,8 @@
 package org.usfirst.frc.team303.robot;
 
 import org.usfirst.frc.team303.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,6 +27,10 @@ public class Drivebase {
 		drivebase.setInvertedMotor(RobotDrive.MotorType.kRearLeft, RobotMap.REAR_LEFT_INV);
 		drivebase.setInvertedMotor(RobotDrive.MotorType.kRearRight, RobotMap.REAR_RIGHT_INV);
 		drivebase.setSafetyEnabled(true);	
+	}
+	
+	public void arcadeDrive() {
+		drivebase.arcadeDrive(OI.left.getRawAxis(4), OI.left.getRawAxis(3), true);
 	}
 	
 	public void drive(double left, double right) {

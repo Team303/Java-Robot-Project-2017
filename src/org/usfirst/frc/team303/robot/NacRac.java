@@ -17,10 +17,10 @@ public class NacRac {
 	
 	public void control() {
 		
-		if(!OI.rBtn[3]) {
-			set(0.4); //power needed to travel up
+		if(OI.rBtn[3] || OI.lBtn[16]) {
+			set(-0.4); //power needed to travel down
 		} else {
-			set(-.4); //power needed to travel down
+			set(0.4); //power needed to travel up
 		}
 	}
 	

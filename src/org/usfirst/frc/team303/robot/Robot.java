@@ -29,7 +29,7 @@ public class Robot extends IterativeRobot {
 	static NacRac nacrac;
 	static boolean autoRunOnce = false;
 	static PowerDistributionPanel pdp;
-	static PathFinder pathfinder;
+	//static PathFinder pathfinder;
 	
 	
 	/**
@@ -65,9 +65,9 @@ public class Robot extends IterativeRobot {
 		intake = new Intake();
 		pdp = new PowerDistributionPanel(RobotMap.PDP);
 		nacrac = new NacRac();
-		pathfinder = new PathFinder();
+		//pathfinder = new PathFinder();
 		navX.navX.zeroYaw();
-		Robot.pathfinder.pathFinderInit();
+		//Robot.pathfinder.pathFinderInit();
 		
 	}
 
@@ -197,7 +197,7 @@ public class Robot extends IterativeRobot {
 		intake.control();
 		shooter.control();
 		
-		if(OI.lBtn[6]){
+		if(OI.lBtn[6] || OI.lBtn[10]){
 			nacrac.driveToPeg();
 		}else if(OI.lBtn[2]) {
 			if(OI.pulse(OI.lBtn[2])) {
@@ -206,10 +206,11 @@ public class Robot extends IterativeRobot {
 			}
 			drivebase.drive(navX.getPidOutput(), navX.getPidOutput()*-1);
 		}else if(OI.lBtn[4]){
-			pathfinder.followPath();
+			//pathfinder.followPath();
 		}
 		else {
-			drivebase.drive(OI.lY, OI.rY);
+			drivebase.arcadeDrive();
+			//drivebase.drive(OI.lY, OI.rY);
 		}
 	}
 

@@ -45,11 +45,11 @@ public class Shooter {
 		double setpoint;
 		
 		
-		if(OI.xBtnY) { //set setpoint
+		if(OI.xBtnY || OI.lBtn[12]) { //set setpoint
 			setpoint = 0;
 			//shooter.disable();
 			//shooterSlave.disable();
-		} else if(OI.xBtnX) {
+		} else if(OI.xBtnX || OI.lBtn[13]) {
 			//shooter.enable();
 			//shooterSlave.enable();
 			setpoint =20250; // was -26150

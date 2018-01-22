@@ -18,16 +18,15 @@ public class OI {
 	static double xlX = 0, xlY = 0, xrX = 0, xrY = 0;
 	static double xLeftTrigger=0, xRightTrigger=0;
 	
-	static boolean[] lBtn = new boolean[9];
-	static boolean[] rBtn = new boolean[9];	
+	static boolean[] lBtn = new boolean[17];
+	static boolean[] rBtn = new boolean[17];	
 	static boolean xBtnA, xBtnB, xBtnX, xBtnY, xLeftBumper, xRightBumper, xBtnStart, xBtnBack, xLeftStickBtn, xRightStickBtn;
 	
 	public static void update() {
 		
-		for(int i=1;i<8;i++) { //wpilib buttons are 1 indexed
+		for(int i=1;i<17;i++) { //wpilib buttons are 1 indexed
 			lBtn[i] = left.getRawButton(i);
 			rBtn[i] = right.getRawButton(i);
-			SmartDashboard.putNumber("POV value", right.getPOV());
 		}
 		
 		updateXbox();
@@ -44,8 +43,6 @@ public class OI {
 		} 
 		
 		//amperage outputs
-		SmartDashboard.putNumber("Right Drive Current", Robot.pdp.getCurrent(2));
-		SmartDashboard.putNumber("Right Drive Current 2", Robot.pdp.getCurrent(3));
 		SmartDashboard.putNumber("Climber Current", Robot.pdp.getCurrent(14));		
 		SmartDashboard.putNumber("Climber Current 2", Robot.pdp.getCurrent(15));
 		SmartDashboard.putNumber("Intake current", Robot.pdp.getCurrent(10));
@@ -53,11 +50,9 @@ public class OI {
 		SmartDashboard.putNumber("NACRAC Current", Robot.pdp.getCurrent(4));	
 		SmartDashboard.putNumber("Left Drive Current", Robot.pdp.getCurrent(12));
 		SmartDashboard.putNumber("Left Drive Current 2", Robot.pdp.getCurrent(13));
-		SmartDashboard.putNumber("Big Fan Current", Robot.pdp.getCurrent(6));
 		SmartDashboard.putNumber("PDP Temperature", (Robot.pdp.getTemperature()*1.8)+32);
 		
 		//universal outputs
-		SmartDashboard.putNumber("Time Elapsed", Robot.timer.get());
 		SmartDashboard.putNumber("Theta", Robot.navX.getYaw());
 		SmartDashboard.putNumber("Rectangle Area", Robot.camera.getArea());
 		SmartDashboard.putNumber("Shooter Percent Voltage", (Math.abs(Robot.shooter.shooter.getOutputVoltage()/Robot.pdp.getVoltage())));
@@ -97,7 +92,6 @@ public class OI {
 	}
 	
 	public static boolean pulse(boolean input){
-	
 		if(input){
 			if(!disabledState){
 				disabledState = true;

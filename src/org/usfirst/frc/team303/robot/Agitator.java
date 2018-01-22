@@ -1,20 +1,18 @@
 package org.usfirst.frc.team303.robot;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Agitator {
 
-	CANTalon agitator;
+	TalonSRX agitator;
 	
 	public Agitator(){
-		agitator = new CANTalon(RobotMap.AGITATOR_ID);
-		agitator.changeControlMode(TalonControlMode.PercentVbus);
+		agitator = new TalonSRX(RobotMap.AGITATOR_ID);
 		agitator.setInverted(RobotMap.AGITATOR_INV);
-		agitator.setSafetyEnabled(true);
 	}
 	
 	public void set(double percentVoltage) {
-		agitator.set(percentVoltage);
+		agitator.set(ControlMode.Current, percentVoltage);
 	}
 }
